@@ -6,7 +6,7 @@ import { CourseIcon } from '@/components/CourseIcon';
 import { ListRow } from '@/components/ListRow';
 import { Palette } from '@/styles/palette';
 
-import { ExploreCourse } from '../types';
+import { ExploreCourse } from '../courseTypes';
 
 function getBadge({ myStatus, ended }: ExploreCourse): { label: string; variant: BadgeVariant } | null {
   if (myStatus === 'subscribed') return { label: '구독 중', variant: 'subscribed' };

@@ -1,4 +1,4 @@
-import { ExploreCourse, ExploreCourseDetail, ExploreCoursePage, ExploreSort } from '../types';
+import { ExploreCourse, ExploreCourseDetail, ExploreCoursePage, ExploreSort } from '../courseTypes';
 
 // API 연동 후 이 폴더는 삭제한다.
 const term = '2026년 2학기';

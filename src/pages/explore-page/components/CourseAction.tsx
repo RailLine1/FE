@@ -4,7 +4,7 @@ import { Button } from '@/components/Button';
 import { Fonts } from '@/styles/font';
 import { Palette } from '@/styles/palette';
 
-import { ExploreCourseDetail } from '../types';
+import { ExploreCourseDetail } from '../courseTypes';
 
 type Action = {
   label: string;

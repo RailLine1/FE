@@ -1,7 +1,7 @@
 import { useSyncExternalStore } from 'react';
 
 import { dummyStore, getDummyCourses } from '../dummy/courses';
-import { ExploreCoursePage, ExploreSort } from '../types';
+import { ExploreCoursePage, ExploreSort } from '../courseTypes';
 
 // import { useList } from '@/api/4-탐색-구독/4-탐색-구독';
 
