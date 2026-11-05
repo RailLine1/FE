@@ -1,4 +1,5 @@
 import { useRouter } from 'expo-router';
+import { useState } from 'react';
 
 import { Icon } from '@/components/Icon';
 import { IconBox } from '@/components/IconBox';
@@ -7,15 +8,18 @@ import { ListRow } from '@/components/ListRow';
 import { Palette } from '@/styles/palette';
 
 import { CourseFolder } from '../courseTypes';
+import { useFolderActions } from '../hooks/useFolderActions';
+import { EditFolderSheet, NewFolderSheet } from './FolderNameSheets';
 import { GroupSection } from './GroupSection';
 
 type FolderRowProps = {
   folder: CourseFolder;
   canManage: boolean;
   onPress: () => void;
+  onManage: () => void;
 };
 
-function FolderRow({ folder, canManage, onPress }: FolderRowProps) {
+function FolderRow({ folder, canManage, onPress, onManage }: FolderRowProps) {
   const custom = folder.kind === 'custom';
 
   return (
@@ -29,7 +33,7 @@ function FolderRow({ folder, canManage, onPress }: FolderRowProps) {
       }
       trailing={
         custom && canManage ? (
-          <IconButton compact icon="more" accessibilityLabel="폴더 관리" />
+          <IconButton compact icon="more" accessibilityLabel="폴더 관리" onPress={onManage} />
         ) : undefined
       }
       chevron={!(custom && canManage)}
@@ -46,6 +50,9 @@ type MaterialSectionProps = {
 
 export function MaterialSection({ courseId, folders, canManage }: MaterialSectionProps) {
   const router = useRouter();
+  const { createFolder, renameFolder, deleteFolder } = useFolderActions(courseId);
+  const [newVisible, setNewVisible] = useState(false);
+  const [editing, setEditing] = useState<CourseFolder | null>(null);
 
   return (
     <GroupSection title="학습자료">
@@ -54,6 +61,7 @@ export function MaterialSection({ courseId, folders, canManage }: MaterialSectio
           key={folder.folderId}
           folder={folder}
           canManage={canManage}
+          onManage={() => setEditing(folder)}
           onPress={() =>
             router.push({
               pathname: '/classroom/[courseId]/folder/[folderId]',
@@ -62,7 +70,23 @@ export function MaterialSection({ courseId, folders, canManage }: MaterialSectio
           }
         />
       ))}
-      {canManage && <ListRow title="＋ 새 폴더" titleTone="accent" />}
+      {canManage && (
+        <ListRow title="＋ 새 폴더" titleTone="accent" onPress={() => setNewVisible(true)} />
+      )}
+      <NewFolderSheet
+        visible={newVisible}
+        onClose={() => setNewVisible(false)}
+        onCreate={createFolder}
+      />
+      {editing && (
+        <EditFolderSheet
+          key={editing.folderId}
+          folder={editing}
+          onClose={() => setEditing(null)}
+          onRename={(name) => renameFolder(editing.folderId, name)}
+          onDelete={() => deleteFolder(editing.folderId)}
+        />
+      )}
     </GroupSection>
   );
 }
