@@ -24,12 +24,13 @@ const sources: Record<string, number> = {
   terminal: require('@/assets/icons/course/terminal.png'),
 };
 
-const glyphSizes = { 32: 18, 36: 20, 48: 26, 64: 30 };
+const glyphSizes = { 32: 18, 36: 20, 48: 26, 56: 28, 64: 30 };
 
 const glyphColors = {
   main: Palette.white,
   soft: Palette.purpleStrong,
   muted: Palette.textSub,
+  golden: Palette.goldenInk,
 };
 
 type CourseIconProps = {
