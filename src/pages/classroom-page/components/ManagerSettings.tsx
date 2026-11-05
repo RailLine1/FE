@@ -111,6 +111,12 @@ export function ManagerSettings({ courseId, settings, onSaved }: ManagerSettings
             badgeVariant="danger"
             meta={requestCount > 0 ? undefined : '없음'}
             chevron
+            onPress={() =>
+              router.push({
+                pathname: '/classroom/[courseId]/requests',
+                params: { courseId: String(courseId) },
+              })
+            }
           />
         )}
         <ListRow
