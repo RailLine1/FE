@@ -8,10 +8,13 @@ const icons: Record<string, IconName> = {
   closeInverse: 'close-white-22',
   add: 'plus-22',
   more: 'more-22',
+  settings: 'settings-22',
 };
 
+export type IconButtonIcon = 'back' | 'close' | 'closeInverse' | 'add' | 'more' | 'settings';
+
 type IconButtonProps = {
-  icon: 'back' | 'close' | 'closeInverse' | 'add' | 'more';
+  icon: IconButtonIcon;
   accessibilityLabel: string;
   onPress?: () => void;
 };

@@ -24,11 +24,12 @@ const icons = {
   'profile-22': { source: require('@/assets/icons/profile-22.png'), size: 22 },
   'profile-purple-22': { source: require('@/assets/icons/profile-purple-22.png'), size: 22 },
   'github-20': { source: require('@/assets/icons/github-20.png'), size: 20 },
+  'settings-22': { source: require('@/assets/icons/settings-22.png'), size: 22 },
 };
 
 export type IconName = keyof typeof icons;
 
-export function Icon({ name }: { name: IconName }) {
+export function Icon({ name, color }: { name: IconName; color?: string }) {
   const { source, size } = icons[name];
-  return <Image source={source} style={{ width: size, height: size }} />;
+  return <Image source={source} style={{ width: size, height: size, tintColor: color }} />;
 }

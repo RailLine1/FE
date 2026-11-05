@@ -1,6 +1,8 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { ReactNode } from 'react';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { Badge } from '@/components/Badge';
+import { Badge, BadgeVariant } from '@/components/Badge';
+import { Icon } from '@/components/Icon';
 import { Fonts } from '@/styles/font';
 import { Palette } from '@/styles/palette';
 
@@ -10,20 +12,65 @@ type ListRowProps = {
   rank?: number;
   value?: string;
   badge?: string;
+  badgeVariant?: BadgeVariant;
+  leading?: ReactNode;
+  trailing?: ReactNode;
+  chevron?: boolean;
+  highlighted?: boolean;
+  titleTone?: 'default' | 'accent' | 'danger';
+  onPress?: () => void;
 };
 
-export function ListRow({ title, subtitle, rank, value, badge }: ListRowProps) {
-  return (
-    <View style={[styles.row, subtitle ? styles.tall : styles.short]}>
+export function ListRow({
+  title,
+  subtitle,
+  rank,
+  value,
+  badge,
+  badgeVariant = 'subscribed',
+  leading,
+  trailing,
+  chevron,
+  highlighted,
+  titleTone = 'default',
+  onPress,
+}: ListRowProps) {
+  const rowStyle = [
+    styles.row,
+    subtitle ? styles.tall : styles.short,
+    highlighted && styles.highlighted,
+  ];
+  const content = (
+    <>
       {rank !== undefined && <Text style={styles.rank}>{rank}</Text>}
+      {leading}
       <View style={styles.main}>
-        <Text style={[styles.title, subtitle ? Fonts.bold : Fonts.semiBold]}>{title}</Text>
+        <Text
+          style={[
+            styles.title,
+            subtitle ? Fonts.bold : Fonts.semiBold,
+            titleTone === 'accent' && styles.accent,
+            titleTone === 'danger' && styles.danger,
+          ]}>
+          {title}
+        </Text>
         {subtitle && <Text style={styles.subtitle}>{subtitle}</Text>}
       </View>
       {value && <Text style={styles.value}>{value}</Text>}
-      {badge && <Badge label={badge} variant="subscribed" />}
-    </View>
+      {badge && <Badge label={badge} variant={badgeVariant} />}
+      {trailing}
+      {chevron && <Icon name="chevron-right-20" />}
+    </>
   );
+
+  if (onPress) {
+    return (
+      <Pressable accessibilityRole="button" onPress={onPress} style={rowStyle}>
+        {content}
+      </Pressable>
+    );
+  }
+  return <View style={rowStyle}>{content}</View>;
 }
 
 const styles = StyleSheet.create({
@@ -40,6 +87,12 @@ const styles = StyleSheet.create({
   tall: {
     paddingVertical: 10,
   },
+  // ListGroup의 좌우 여백까지 배경을 채운다.
+  highlighted: {
+    marginHorizontal: -16,
+    paddingHorizontal: 16,
+    backgroundColor: Palette.purpleTint,
+  },
   rank: {
     ...Fonts.extraBold,
     width: 28,
@@ -55,6 +108,12 @@ const styles = StyleSheet.create({
     fontSize: 15,
     lineHeight: 22.5,
     color: Palette.text,
+  },
+  accent: {
+    color: Palette.purpleStrong,
+  },
+  danger: {
+    color: Palette.red,
   },
   subtitle: {
     ...Fonts.semiBold,
