@@ -77,7 +77,9 @@ export default function CourseInfoPage() {
             <Text accessibilityRole="header" style={styles.name}>
               {course.name}
             </Text>
-            <Text style={styles.meta}>{`${course.term} · 관리자 ${course.admin}`}</Text>
+            <Text style={styles.meta}>
+              {[course.term, `관리자 ${course.admin}`].filter(Boolean).join(' · ')}
+            </Text>
             <View style={styles.badge}>
               <Badge label={badge.label} variant={badge.variant} />
             </View>
@@ -90,10 +92,14 @@ export default function CourseInfoPage() {
               )}
             </ListGroup>
           )}
-          <SectionLabel>소개</SectionLabel>
-          <ListGroup>
-            <Text style={styles.intro}>{course.intro}</Text>
-          </ListGroup>
+          {course.intro && (
+            <>
+              <SectionLabel>소개</SectionLabel>
+              <ListGroup>
+                <Text style={styles.intro}>{course.intro}</Text>
+              </ListGroup>
+            </>
+          )}
           <View style={styles.spacer} />
           <CourseAction
             course={course}
