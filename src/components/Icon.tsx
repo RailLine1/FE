@@ -24,6 +24,9 @@ const icons = {
   'profile-22': { source: require('@/assets/icons/profile-22.png'), size: 22 },
   'profile-purple-22': { source: require('@/assets/icons/profile-purple-22.png'), size: 22 },
   'github-20': { source: require('@/assets/icons/github-20.png'), size: 20 },
+  'folder-20': { source: require('@/assets/icons/folder-20.png'), size: 20 },
+  'archive-20': { source: require('@/assets/icons/archive-20.png'), size: 20 },
+  'sparkle-20': { source: require('@/assets/icons/sparkle-20.png'), size: 20 },
   'settings-22': { source: require('@/assets/icons/settings-22.png'), size: 22 },
 };
 
