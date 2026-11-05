@@ -26,22 +26,28 @@ const sources: Record<string, number> = {
 
 const glyphSizes = { 32: 18, 36: 20, 48: 26, 64: 30 };
 
+const glyphColors = {
+  main: Palette.white,
+  soft: Palette.purpleStrong,
+  muted: Palette.textSub,
+};
+
 type CourseIconProps = {
   // API의 과목 icon 값. 모르는 값이면 책 아이콘을 보여준다.
   icon: string;
   size?: keyof typeof glyphSizes;
-  muted?: boolean;
+  tone?: keyof typeof glyphColors;
   raised?: boolean;
 };
 
-export function CourseIcon({ icon, size = 36, muted, raised }: CourseIconProps) {
+export function CourseIcon({ icon, size = 36, tone = 'main', raised }: CourseIconProps) {
   const glyph = glyphSizes[size];
 
   return (
-    <IconBox size={size} tone={muted ? 'muted' : 'main'} raised={raised}>
+    <IconBox size={size} tone={tone} raised={raised}>
       <Image
         source={sources[icon] ?? sources.book}
-        style={{ width: glyph, height: glyph, tintColor: muted ? Palette.textSub : Palette.white }}
+        style={{ width: glyph, height: glyph, tintColor: glyphColors[tone] }}
       />
     </IconBox>
   );

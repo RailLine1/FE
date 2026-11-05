@@ -73,7 +73,12 @@ export default function CourseInfoPage() {
       {course && badge && (
         <ScrollView style={styles.scroll} contentContainerStyle={styles.content}>
           <View style={styles.hero}>
-            <CourseIcon icon={course.icon} size={64} muted={course.ended} raised={!course.ended} />
+            <CourseIcon
+              icon={course.icon}
+              size={64}
+              tone={course.ended ? 'muted' : 'main'}
+              raised={!course.ended}
+            />
             <Text accessibilityRole="header" style={styles.name}>
               {course.name}
             </Text>
