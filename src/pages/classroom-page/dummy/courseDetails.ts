@@ -1,4 +1,4 @@
-import { CourseDetail, CourseMember, MyConnector } from '../courseTypes';
+import { CourseDetail, MyConnector } from '../courseTypes';
 
 // API 연동 후 이 폴더는 삭제한다.
 const term = '2026년 2학기';
@@ -66,22 +66,23 @@ let details: CourseDetail[] = [
     archiveCount: 2,
     state: 'active',
   },
+  {
+    courseId: 5,
+    name: '자료구조',
+    icon: 'tree',
+    intro: '혼자 운영하는 과목',
+    term,
+    subscribers: 3,
+    role: 'co',
+    rawAllowed: true,
+    archiveCount: 2,
+    state: 'active',
+  },
   pastCourse(11, '선형대수', 'calculator', '2026년 1학기'),
   pastCourse(12, '확률과 통계', 'sigma', '2026년 1학기'),
   pastCourse(13, '모바일 프로그래밍', 'code', '2025년 2학기'),
   pastCourse(14, '컴퓨터 구조', 'layers', '2025년 2학기'),
 ];
-
-export const dummyMembers: Record<number, CourseMember[]> = {
-  3: [
-    { userId: 1, nickname: '나', role: 'admin', coSince: null },
-    { userId: 2, nickname: '밤샘금지', role: 'co', coSince: '2026-09-01T10:00:00+09:00' },
-    { userId: 3, nickname: '시험전날', role: 'member', coSince: null },
-    { userId: 4, nickname: '코딩하는감자', role: 'member', coSince: null },
-    { userId: 5, nickname: '복습왕', role: 'member', coSince: null },
-  ],
-  4: [{ userId: 1, nickname: '나', role: 'admin', coSince: null }],
-};
 
 export const dummyConnector: MyConnector = {
   clients: [
@@ -94,7 +95,6 @@ export const dummyConnector: MyConnector = {
 export function addDummyDetail(detail: CourseDetail) {
   details = [...details, detail];
   listeners.forEach((listener) => listener());
-  dummyMembers[detail.courseId] = [{ userId: 1, nickname: '나', role: 'admin', coSince: null }];
 }
 
 const listeners = new Set<() => void>();
