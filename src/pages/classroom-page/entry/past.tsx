@@ -1,4 +1,3 @@
-import { useRouter } from 'expo-router';
 import { ScrollView, StyleSheet, Text } from 'react-native';
 
 import { AppBar } from '@/components/AppBar';
@@ -8,17 +7,12 @@ import { Fonts } from '@/styles/font';
 import { Palette } from '@/styles/palette';
 
 import { TileGrid } from '../components/TileGrid';
+import { useGoBackToClassroom } from '../hooks/useGoBackToClassroom';
 import { useMyCourses } from '../hooks/useMyCourses';
 
 export default function PastCoursesPage() {
-  const router = useRouter();
+  const goBack = useGoBackToClassroom();
   const { data: courses, isLoading, isError } = useMyCourses('ended');
-
-  // 주소로 바로 들어오면 돌아갈 화면이 없어 강의실로 보낸다.
-  const goBack = () => {
-    if (router.canGoBack()) router.back();
-    else router.replace('/classroom');
-  };
 
   return (
     <Screen>
