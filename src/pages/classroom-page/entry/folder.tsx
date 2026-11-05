@@ -52,7 +52,17 @@ export default function FolderPage() {
         leading={{ icon: 'back', accessibilityLabel: '뒤로', onPress: goBack }}
         trailing={
           canManage && folder ? (
-            <Button label="+ 자료" size="small" style={styles.addFile} />
+            <Button
+              label="+ 자료"
+              size="small"
+              style={styles.addFile}
+              onPress={() =>
+                router.push({
+                  pathname: '/classroom/[courseId]/folder/[folderId]/upload',
+                  params: { courseId: params.courseId, folderId: params.folderId },
+                })
+              }
+            />
           ) : undefined
         }
       />
