@@ -11,6 +11,7 @@ import { Screen } from '@/components/Screen';
 import { Fonts } from '@/styles/font';
 import { Palette } from '@/styles/palette';
 
+import { AiSection } from '../components/AiSection';
 import { CourseSummary } from '../components/CourseSummary';
 import { GroupSection } from '../components/GroupSection';
 import { MaterialSection } from '../components/MaterialSection';
@@ -52,6 +53,7 @@ export default function CoursePage() {
               chevron
             />
           </GroupSection>
+          <AiSection />
           <View style={styles.spacer} />
           <Pressable accessibilityRole="button" style={styles.leave}>
             <Text style={styles.leaveLabel}>탈퇴하기</Text>
