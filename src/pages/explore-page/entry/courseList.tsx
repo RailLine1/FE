@@ -4,13 +4,13 @@ import { ScrollView, StyleSheet, Text } from 'react-native';
 
 import { AppBar } from '@/components/AppBar';
 import { ListGroup } from '@/components/ListGroup';
+import { QueryStatus } from '@/components/QueryStatus';
 import { Screen } from '@/components/Screen';
 import { Fonts } from '@/styles/font';
 import { Palette } from '@/styles/palette';
 
 import { CourseRow } from '../components/CourseRow';
 import { Pagination } from '../components/Pagination';
-import { QueryStatus } from '../components/QueryStatus';
 import { useExploreCourses } from '../hooks/useExploreCourses';
 import { useGoBackToExplore } from '../hooks/useGoBackToExplore';
 

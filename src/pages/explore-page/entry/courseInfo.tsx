@@ -7,13 +7,13 @@ import { Badge, BadgeVariant } from '@/components/Badge';
 import { CourseIcon } from '@/components/CourseIcon';
 import { ListGroup } from '@/components/ListGroup';
 import { ListRow } from '@/components/ListRow';
+import { QueryStatus } from '@/components/QueryStatus';
 import { Screen } from '@/components/Screen';
+import { SectionLabel } from '@/components/SectionLabel';
 import { Fonts } from '@/styles/font';
 import { Palette } from '@/styles/palette';
 
 import { CourseAction } from '../components/CourseAction';
-import { QueryStatus } from '../components/QueryStatus';
-import { SectionLabel } from '../components/SectionLabel';
 import { Toast } from '../components/Toast';
 import { useCourseInfo } from '../hooks/useCourseInfo';
 import { useGoBackToExplore } from '../hooks/useGoBackToExplore';
@@ -47,8 +47,7 @@ export default function CourseInfoPage() {
     return () => clearTimeout(timer);
   }, [toast]);
 
-  // 강의실 홈 화면이 만들어지면 경로를 맞춘다.
-  const openClassroom = () => router.replace('/');
+  const openClassroom = () => router.replace('/classroom');
 
   const handleSubscribe = () => {
     subscribe((status) => {
@@ -73,7 +72,12 @@ export default function CourseInfoPage() {
       {course && badge && (
         <ScrollView style={styles.scroll} contentContainerStyle={styles.content}>
           <View style={styles.hero}>
-            <CourseIcon icon={course.icon} size={64} muted={course.ended} raised={!course.ended} />
+            <CourseIcon
+              icon={course.icon}
+              size={64}
+              tone={course.ended ? 'muted' : 'main'}
+              raised={!course.ended}
+            />
             <Text accessibilityRole="header" style={styles.name}>
               {course.name}
             </Text>
