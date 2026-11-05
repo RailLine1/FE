@@ -13,7 +13,9 @@ import { Palette } from '@/styles/palette';
 
 import { CourseSummary } from '../components/CourseSummary';
 import { GroupSection } from '../components/GroupSection';
+import { MaterialSection } from '../components/MaterialSection';
 import { useCourseDetail } from '../hooks/useCourseDetail';
+import { useCourseFolders } from '../hooks/useCourseFolders';
 import { useGoBackToClassroom } from '../hooks/useGoBackToClassroom';
 
 export default function CoursePage() {
@@ -21,6 +23,10 @@ export default function CoursePage() {
   const params = useLocalSearchParams<{ courseId: string }>();
   const courseId = Number(params.courseId);
   const { data: course, isLoading, isError } = useCourseDetail(courseId);
+  const canManage = course?.role === 'admin' || course?.role === 'co';
+  // 원본 열람이 꺼지면 멤버에게 학습자료를 숨긴다(P-MAT-05).
+  const canViewMaterials = canManage || course?.rawAllowed === true;
+  const { data: folders } = useCourseFolders(courseId, canViewMaterials);
 
   return (
     <Screen>
@@ -33,6 +39,7 @@ export default function CoursePage() {
       {course && (
         <ScrollView style={styles.scroll} contentContainerStyle={styles.content}>
           <CourseSummary course={course} />
+          {folders && <MaterialSection folders={folders} canManage={canManage} />}
           <GroupSection title="아카이브">
             <ListRow
               title="기록"
