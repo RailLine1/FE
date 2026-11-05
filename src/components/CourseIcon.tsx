@@ -5,6 +5,10 @@ import { Palette } from '@/styles/palette';
 
 const sources: Record<string, number> = {
   atom: require('@/assets/icons/course/atom.png'),
+  bulb: require('@/assets/icons/course/lightbulb.png'),
+  calc: require('@/assets/icons/course/calculator.png'),
+  cap: require('@/assets/icons/course/graduation.png'),
+  tree: require('@/assets/icons/course/network.png'),
   book: require('@/assets/icons/course/book.png'),
   calculator: require('@/assets/icons/course/calculator.png'),
   chart: require('@/assets/icons/course/chart.png'),
@@ -24,7 +28,31 @@ const sources: Record<string, number> = {
   terminal: require('@/assets/icons/course/terminal.png'),
 };
 
-const glyphSizes = { 32: 18, 36: 20, 48: 26, 56: 28, 64: 30 };
+// 아이콘 선택에 보여줄 18개. 값은 API의 icon으로 저장한다(P-COURSE-01).
+export const courseIconNames = [
+  'book',
+  'cpu',
+  'globe',
+  'database',
+  'tree',
+  'layers',
+  'sigma',
+  'code',
+  'terminal',
+  'flask',
+  'calc',
+  'chart',
+  'pen',
+  'compass',
+  'bulb',
+  'music',
+  'cap',
+  'atom',
+] as const;
+
+export const getCourseIconSource = (icon: string) => sources[icon] ?? sources.book;
+
+const glyphSizes = { 32: 18, 36: 20, 48: 26, 56: 28, 64: 30, 72: 34 };
 
 const glyphColors = {
   main: Palette.white,
@@ -47,7 +75,7 @@ export function CourseIcon({ icon, size = 36, tone = 'main', raised }: CourseIco
   return (
     <IconBox size={size} tone={tone} raised={raised}>
       <Image
-        source={sources[icon] ?? sources.book}
+        source={getCourseIconSource(icon)}
         style={{ width: glyph, height: glyph, tintColor: glyphColors[tone] }}
       />
     </IconBox>
