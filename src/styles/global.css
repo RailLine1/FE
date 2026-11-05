@@ -1,8 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-/* 아래는 웹 전용. 색상과 폰트 토큰은 palette.ts, font.ts에 둔다. */
+/* 웹 전용. 색상과 폰트 토큰은 palette.ts, font.ts에 둔다. */
 
 /* 굵기별 Nunito 파일을 쓰므로 브라우저가 한 번 더 굵게 만들지 않게 한다. */
 * {
