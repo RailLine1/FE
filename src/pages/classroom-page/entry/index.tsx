@@ -22,7 +22,13 @@ export default function ClassroomPage() {
       <AppBar
         large
         title="강의실"
-        trailing={<IconButton icon="add" accessibilityLabel="과목 만들기" />}
+        trailing={
+          <IconButton
+            icon="add"
+            accessibilityLabel="과목 만들기"
+            onPress={() => router.push('/classroom/new')}
+          />
+        }
       />
       <ScrollView style={styles.scroll} contentContainerStyle={styles.content}>
         <View style={styles.header}>
