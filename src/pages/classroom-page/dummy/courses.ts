@@ -36,3 +36,8 @@ export function removeDummyCourse(courseId: number) {
   };
   listeners.forEach((listener) => listener());
 }
+
+export function addDummyCourse(course: CourseTile) {
+  courses = { ...courses, active: [...courses.active, course] };
+  listeners.forEach((listener) => listener());
+}

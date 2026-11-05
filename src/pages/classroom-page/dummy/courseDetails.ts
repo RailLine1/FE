@@ -87,3 +87,9 @@ export const dummyConnector: MyConnector = {
     { client: 'chatgpt', lastCalledAt: null },
   ],
 };
+
+// 새로 만든 과목도 상세 화면을 열 수 있게 한다.
+export function addDummyDetail(detail: CourseDetail) {
+  dummyDetails.push(detail);
+  dummyMembers[detail.courseId] = [{ userId: 1, nickname: '나', role: 'admin', coSince: null }];
+}
