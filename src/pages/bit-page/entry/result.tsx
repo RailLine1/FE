@@ -1,6 +1,16 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Animated, Platform, ScrollView, Share, StyleSheet, Text, View } from 'react-native';
+import {
+  Animated,
+  Easing,
+  Platform,
+  Pressable,
+  ScrollView,
+  Share,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 
 import { useRecords, useTicket } from '@/api/7-bit/7-bit';
 import { Button } from '@/components/Button';
@@ -11,30 +21,32 @@ import { Fonts } from '@/styles/font';
 import { Palette } from '@/styles/palette';
 
 import { circledNumber, compareToAverage, evidenceText, formatSeconds } from '../bitFormat';
+import { CONFETTI_COLORS, CONFETTI_PIECES } from '../confettiPieces';
 
 const useNativeDriver = Platform.OS !== 'web';
 
-const CONFETTI_COLORS = [
-  Palette.purple,
-  Palette.purpleShadow,
-  Palette.golden,
-  Palette.blue,
-  Palette.green,
-  Palette.orange,
-  Palette.red,
-];
+// 시간 숫자 아래 한 점에서 터진다. 이 지점까지 퍼졌을 때 조각 위치가 시안 프레임과 같다.
+const BURST_ORIGIN_Y = 185;
+const BURST_END = 0.18;
 
-// 렌더링마다 바뀌지 않게 번호로 위치와 크기를 정한다.
-const CONFETTI = Array.from({ length: 70 }, (_, index) => ({
-  color: CONFETTI_COLORS[index % CONFETTI_COLORS.length],
-  left: `${(index * 37) % 100}%` as const,
-  width: 6 + (index * 5) % 9,
-  height: 6 + (index * 3) % 9,
-  round: index % 9 === 0,
-  delay: ((index * 13) % 40) / 100,
-  drift: ((index * 29) % 80) - 40,
-  turns: 1 + (index % 4),
-}));
+function playBurst(confetti: Animated.Value, pop: Animated.Value) {
+  confetti.setValue(0);
+  pop.setValue(0);
+  Animated.parallel([
+    Animated.timing(confetti, {
+      toValue: 1,
+      duration: 3200,
+      easing: Easing.linear,
+      useNativeDriver,
+    }),
+    Animated.timing(pop, {
+      toValue: 1,
+      duration: 500,
+      easing: Easing.out(Easing.back(1.6)),
+      useNativeDriver,
+    }),
+  ]).start();
+}
 
 const CORRECT_TILES = ['solved', 'solved', 'today', 'solved', 'solved', 'solved'] as const;
 const WRONG_TILES = ['solved', 'solved', 'empty', 'solved', 'empty', 'next'] as const;
@@ -55,12 +67,13 @@ export default function ResultPage() {
     { query: { enabled: correct === false && Boolean(courseId) } },
   );
   const [confetti] = useState(() => new Animated.Value(0));
+  const [pop] = useState(() => new Animated.Value(1));
   const [shake] = useState(() => new Animated.Value(0));
 
   useEffect(() => {
     if (correct === undefined) return;
     if (correct) {
-      Animated.timing(confetti, { toValue: 1, duration: 2600, useNativeDriver }).start();
+      playBurst(confetti, pop);
       return;
     }
     // 시안에 오답 모션 프레임이 없어 카드를 짧게 흔든다.
@@ -69,7 +82,7 @@ export default function ResultPage() {
         Animated.timing(shake, { toValue, duration: 70, useNativeDriver }),
       ),
     ).start();
-  }, [confetti, correct, shake]);
+  }, [confetti, correct, pop, shake]);
 
   const close = () => router.dismissTo('/bit');
   const openRecords = () => router.push({ pathname: '/bit/[bitId]/records', params });
@@ -112,15 +125,33 @@ export default function ResultPage() {
       <ScrollView style={styles.scroll} contentContainerStyle={styles.content}>
         <View style={styles.header}>
           <IconButton icon="closeInverse" accessibilityLabel="닫기" onPress={close} />
+          {correct && (
+            <Pressable
+              accessibilityRole="button"
+              onPress={() => playBurst(confetti, pop)}
+              style={styles.replay}>
+              <Text style={styles.replayLabel}>다시 터뜨리기</Text>
+            </Pressable>
+          )}
         </View>
         <View style={styles.eyebrow}>
           <Text style={styles.eyebrowLabel}>
             {correct ? '한 번에 정답, 힌트 없이' : '아쉽게 오답'}
           </Text>
         </View>
-        <Text accessibilityRole="header" style={styles.time}>
+        <Animated.Text
+          accessibilityRole="header"
+          style={[
+            styles.time,
+            {
+              opacity: pop.interpolate({ inputRange: [0, 1], outputRange: [0.3, 1], extrapolate: 'clamp' }),
+              transform: [
+                { scale: pop.interpolate({ inputRange: [0, 1], outputRange: [0.72, 1] }) },
+              ],
+            },
+          ]}>
           {formatSeconds(ticket.elapsedSec)}
-        </Text>
+        </Animated.Text>
         <Text style={styles.summary}>
           {`${ticket.courseName} #${ticket.no} · 오늘 평균 ${formatSeconds(ticket.averageSec)}`}
         </Text>
@@ -180,44 +211,55 @@ export default function ResultPage() {
 
       {correct && (
         <View pointerEvents="none" style={styles.confetti}>
-          {CONFETTI.map((piece, index) => {
-            const start = piece.delay;
+          {CONFETTI_PIECES.map(([x, y, length, thickness, angle, color, round, opacity], index) => {
+            const fall = 260 + ((index * 53) % 260);
+            const drift = ((index * 29) % 80) - 40;
+            const spin = (index % 2 ? -1 : 1) * (180 + (index % 4) * 120);
             return (
               <Animated.View
                 key={index}
-                style={{
-                  position: 'absolute',
-                  top: -20,
-                  left: piece.left,
-                  width: piece.width,
-                  height: piece.height,
-                  borderRadius: piece.round ? piece.width / 2 : 2,
-                  backgroundColor: piece.color,
-                  opacity: confetti.interpolate({
-                    inputRange: [0, start, start + 0.01, 0.85, 1],
-                    outputRange: [0, 0, 1, 1, 0],
-                  }),
-                  transform: [
-                    {
-                      translateY: confetti.interpolate({
-                        inputRange: [0, start, 1],
-                        outputRange: [0, 0, 880],
-                      }),
-                    },
-                    {
-                      translateX: confetti.interpolate({
-                        inputRange: [0, 1],
-                        outputRange: [0, piece.drift],
-                      }),
-                    },
-                    {
-                      rotate: confetti.interpolate({
-                        inputRange: [0, 1],
-                        outputRange: ['0deg', `${piece.turns * 360}deg`],
-                      }),
-                    },
-                  ],
-                }}
+                style={[
+                  styles.piece,
+                  {
+                    marginLeft: x - length / 2,
+                    marginTop: y - thickness / 2,
+                    width: length,
+                    height: thickness,
+                    borderRadius: round ? length / 2 : 2,
+                    backgroundColor: CONFETTI_COLORS[color],
+                    opacity: confetti.interpolate({
+                      inputRange: [0, 0.01, 0.75, 1],
+                      outputRange: [0, opacity, opacity, 0],
+                    }),
+                    transform: [
+                      {
+                        translateX: confetti.interpolate({
+                          inputRange: [0, 0.03, 0.08, BURST_END, 1],
+                          outputRange: [-x, -x * 0.55, -x * 0.2, 0, drift],
+                        }),
+                      },
+                      {
+                        translateY: confetti.interpolate({
+                          inputRange: [0, 0.03, 0.08, BURST_END, 0.5, 1],
+                          outputRange: [
+                            BURST_ORIGIN_Y - y,
+                            (BURST_ORIGIN_Y - y) * 0.55,
+                            (BURST_ORIGIN_Y - y) * 0.2,
+                            0,
+                            fall * 0.3,
+                            fall,
+                          ],
+                        }),
+                      },
+                      {
+                        rotate: confetti.interpolate({
+                          inputRange: [0, BURST_END, 1],
+                          outputRange: [`${angle - 120}deg`, `${angle}deg`, `${angle + spin}deg`],
+                        }),
+                      },
+                    ],
+                  },
+                ]}
               />
             );
           })}
@@ -244,10 +286,28 @@ const styles = StyleSheet.create({
     left: 0,
     overflow: 'hidden',
   },
+  piece: {
+    position: 'absolute',
+    top: 0,
+    left: '50%',
+  },
   header: {
-    justifyContent: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     height: 56,
     paddingLeft: 4,
+    paddingRight: 4,
+  },
+  replay: {
+    paddingVertical: 12,
+    paddingHorizontal: 10,
+  },
+  replayLabel: {
+    ...Fonts.bold,
+    fontSize: 14,
+    lineHeight: 21,
+    color: '#ffffffb3',
   },
   eyebrow: {
     alignSelf: 'center',
