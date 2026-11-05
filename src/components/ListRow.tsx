@@ -11,6 +11,8 @@ type ListRowProps = {
   subtitle?: string;
   rank?: number;
   value?: string;
+  // 오른쪽의 작은 보조 글자
+  meta?: string;
   badge?: string;
   badgeVariant?: BadgeVariant;
   leading?: ReactNode;
@@ -26,6 +28,7 @@ export function ListRow({
   subtitle,
   rank,
   value,
+  meta,
   badge,
   badgeVariant = 'subscribed',
   leading,
@@ -57,6 +60,7 @@ export function ListRow({
         {subtitle && <Text style={styles.subtitle}>{subtitle}</Text>}
       </View>
       {value && <Text style={styles.value}>{value}</Text>}
+      {meta && <Text style={styles.meta}>{meta}</Text>}
       {badge && (
         <View>
           <Badge label={badge} variant={badgeVariant} />
@@ -146,6 +150,11 @@ const styles = StyleSheet.create({
     ...Fonts.semiBold,
     fontSize: 12,
     lineHeight: 18,
+    color: Palette.textSub,
+  },
+  meta: {
+    ...Fonts.semiBold,
+    fontSize: 12,
     color: Palette.textSub,
   },
   value: {
