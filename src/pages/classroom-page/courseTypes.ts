@@ -56,3 +56,40 @@ export type CourseFile = {
   pages: number | null;
   uploadedAt: string;
 };
+
+// GET /courses/{courseId}/archive
+export type ArchivePost = {
+  bitId: number;
+  no: number;
+  archivedAt: string;
+  stem: string;
+  choices: string[];
+  // choices의 0부터 시작하는 번호
+  answer: number;
+  explanation: string;
+  evidence: {
+    fileId: number | null;
+    file: string;
+    page: number;
+  };
+  stats: {
+    attempts: number;
+    accuracy: number;
+    averageSec: number;
+  };
+  memoCount: number;
+};
+
+export type ArchivePage = {
+  items: ArchivePost[];
+  total: number;
+  page: number;
+  size: number;
+};
+
+// GET /archive/{bitId}/memos. 작성자는 내려주지 않는다(P-ARC-03).
+export type Memo = {
+  memoId: number;
+  body: string;
+  mine: boolean;
+};
