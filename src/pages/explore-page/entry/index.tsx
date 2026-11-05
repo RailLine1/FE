@@ -12,7 +12,7 @@ import { Palette } from '@/styles/palette';
 import { CourseSection } from '../components/CourseSection';
 import { SearchResults } from '../components/SearchResults';
 import { useExploreCourses } from '../hooks/useExploreCourses';
-import { ExploreSort } from '../types';
+import { ExploreSort } from '../courseTypes';
 
 export default function ExplorePage() {
   const router = useRouter();

@@ -18,7 +18,7 @@ import { Toast } from '../components/Toast';
 import { useCourseInfo } from '../hooks/useCourseInfo';
 import { useGoBackToExplore } from '../hooks/useGoBackToExplore';
 import { useSubscribeCourse } from '../hooks/useSubscribeCourse';
-import { ExploreCourseDetail } from '../types';
+import { ExploreCourseDetail } from '../courseTypes';
 
 const TOAST_DURATION = 2500;
 

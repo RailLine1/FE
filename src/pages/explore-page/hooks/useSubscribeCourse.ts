@@ -1,5 +1,5 @@
 import { subscribeDummyCourse } from '../dummy/courses';
-import { MyStatus } from '../types';
+import { MyStatus } from '../courseTypes';
 
 // import { useQueryClient } from '@tanstack/react-query';
 // import { useSubscribe } from '@/api/4-탐색-구독/4-탐색-구독';

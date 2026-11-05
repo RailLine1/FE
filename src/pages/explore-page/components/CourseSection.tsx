@@ -4,7 +4,7 @@ import { ListGroup } from '@/components/ListGroup';
 import { Fonts } from '@/styles/font';
 import { Palette } from '@/styles/palette';
 
-import { ExploreCourse } from '../types';
+import { ExploreCourse } from '../courseTypes';
 import { CourseRow } from './CourseRow';
 import { QueryStatus } from './QueryStatus';
 import { SectionLabel } from './SectionLabel';
