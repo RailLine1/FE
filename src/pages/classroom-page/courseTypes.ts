@@ -45,3 +45,14 @@ export type CourseMember = {
   role: CourseRole;
   coSince: string | null;
 };
+
+// GET /folders/{folderId}/files
+export type FileStatus = 'processing' | 'ready' | 'failed';
+
+export type CourseFile = {
+  fileId: number;
+  title: string;
+  status: FileStatus;
+  pages: number | null;
+  uploadedAt: string;
+};
