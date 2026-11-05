@@ -41,3 +41,10 @@ export function addDummyCourse(course: CourseTile) {
   courses = { ...courses, active: [...courses.active, course] };
   listeners.forEach((listener) => listener());
 }
+
+export function updateDummyCourse(courseId: number, patch: Partial<CourseTile>) {
+  const apply = (course: CourseTile) =>
+    course.courseId === courseId ? { ...course, ...patch } : course;
+  courses = { active: courses.active.map(apply), ended: courses.ended.map(apply) };
+  listeners.forEach((listener) => listener());
+}

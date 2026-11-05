@@ -111,3 +111,33 @@ export type CreatedCourse = {
   id: number;
   code: string;
 };
+
+// GET /courses/{courseId}/settings. 멤버는 code, role, notify만 온다(P-ROLE-01).
+export type CourseSettings = {
+  code: string;
+  role: CourseRole;
+  notify: boolean;
+  icon: string | null;
+  intro: string | null;
+  visibility: CourseVisibility | null;
+  midExamDate: string | null;
+  finalExamDate: string | null;
+  rawAllowed: boolean | null;
+};
+
+// PATCH /courses/{courseId}. 바꾼 항목만 보낸다.
+export type UpdateCourseInput = {
+  icon?: string;
+  intro?: string | null;
+  visibility?: CourseVisibility;
+  midExamDate?: string | null;
+  finalExamDate?: string | null;
+  rawAllowed?: boolean;
+};
+
+// GET /courses/{courseId}/join-requests
+export type JoinRequest = {
+  requestId: number;
+  nickname: string;
+  requestedAt: string;
+};

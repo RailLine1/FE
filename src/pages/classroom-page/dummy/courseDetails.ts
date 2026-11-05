@@ -17,7 +17,7 @@ const pastCourse = (courseId: number, name: string, icon: string, intro: string)
 });
 
 // 1 멤버, 2 멤버(원본 열람 꺼짐), 3 관리자, 4 공동 관리자가 없는 관리자
-export const dummyDetails: CourseDetail[] = [
+let details: CourseDetail[] = [
   {
     courseId: 1,
     name: '운영체제',
@@ -77,6 +77,8 @@ export const dummyMembers: Record<number, CourseMember[]> = {
     { userId: 1, nickname: '나', role: 'admin', coSince: null },
     { userId: 2, nickname: '밤샘금지', role: 'co', coSince: '2026-09-01T10:00:00+09:00' },
     { userId: 3, nickname: '시험전날', role: 'member', coSince: null },
+    { userId: 4, nickname: '코딩하는감자', role: 'member', coSince: null },
+    { userId: 5, nickname: '복습왕', role: 'member', coSince: null },
   ],
   4: [{ userId: 1, nickname: '나', role: 'admin', coSince: null }],
 };
@@ -90,6 +92,27 @@ export const dummyConnector: MyConnector = {
 
 // 새로 만든 과목도 상세 화면을 열 수 있게 한다.
 export function addDummyDetail(detail: CourseDetail) {
-  dummyDetails.push(detail);
+  details = [...details, detail];
+  listeners.forEach((listener) => listener());
   dummyMembers[detail.courseId] = [{ userId: 1, nickname: '나', role: 'admin', coSince: null }];
+}
+
+const listeners = new Set<() => void>();
+
+// 실제 API의 캐시 갱신을 대신해 환경설정 저장을 과목 상세에 반영한다.
+export const dummyDetailStore = {
+  subscribe(listener: () => void) {
+    listeners.add(listener);
+    return () => {
+      listeners.delete(listener);
+    };
+  },
+  getDetails: () => details,
+};
+
+export function updateDummyDetail(courseId: number, patch: Partial<CourseDetail>) {
+  details = details.map((detail) =>
+    detail.courseId === courseId ? { ...detail, ...patch } : detail,
+  );
+  listeners.forEach((listener) => listener());
 }

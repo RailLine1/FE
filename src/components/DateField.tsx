@@ -110,7 +110,7 @@ export function DateField({ label, value, onChange }: DateFieldProps) {
         accessibilityLabel={`${label} 날짜 선택`}
         onPress={() => setVisible(true)}
         style={styles.input}>
-        <Text style={value ? styles.value : styles.placeholder}>{value ?? '날짜 선택'}</Text>
+        <Text style={value ? styles.value : styles.placeholder}>{value?.replaceAll('-', '.') ?? '날짜 선택'}</Text>
       </Pressable>
       <BottomSheet visible={visible} title={`${label} 날짜`} onClose={() => setVisible(false)}>
         {visible && (
