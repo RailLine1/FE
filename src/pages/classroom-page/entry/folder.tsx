@@ -1,7 +1,9 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { ScrollView, StyleSheet, Text } from 'react-native';
+import { useState } from 'react';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { AppBar } from '@/components/AppBar';
+import { BottomSheet } from '@/components/BottomSheet';
 import { Button } from '@/components/Button';
 import { ListGroup } from '@/components/ListGroup';
 import { QueryStatus } from '@/components/QueryStatus';
@@ -10,8 +12,10 @@ import { Fonts } from '@/styles/font';
 import { Palette } from '@/styles/palette';
 
 import { FileRow } from '../components/FileRow';
+import { CourseFile } from '../courseTypes';
 import { useCourseDetail } from '../hooks/useCourseDetail';
 import { useCourseFolders } from '../hooks/useCourseFolders';
+import { useDeleteCourseFile } from '../hooks/useDeleteCourseFile';
 import { useFolderFiles } from '../hooks/useFolderFiles';
 import { useOpenFile } from '../hooks/useOpenFile';
 
@@ -33,6 +37,8 @@ export default function FolderPage() {
     isError,
   } = useFolderFiles(folderId, canView && Boolean(folder));
   const openFile = useOpenFile();
+  const deleteFile = useDeleteCourseFile(folderId);
+  const [deleting, setDeleting] = useState<CourseFile | null>(null);
 
   const goBack = () => {
     if (router.canGoBack()) router.back();
@@ -66,7 +72,7 @@ export default function FolderPage() {
                   file={file}
                   canManage={canManage}
                   onOpen={() => openFile(file.fileId)}
-                  onDelete={() => {}}
+                  onDelete={() => setDeleting(file)}
                 />
               ))}
             </ListGroup>
@@ -83,6 +89,23 @@ export default function FolderPage() {
           </Text>
         </ScrollView>
       )}
+      <BottomSheet
+        visible={Boolean(deleting)}
+        title={`${deleting?.title}를 삭제할까요?`}
+        description="삭제한 자료는 되돌릴 수 없어요."
+        onClose={() => setDeleting(null)}>
+        <View style={styles.sheetActions}>
+          <Button
+            label="삭제"
+            variant="danger"
+            onPress={() => {
+              if (deleting) deleteFile(deleting.fileId);
+              setDeleting(null);
+            }}
+          />
+          <Button label="취소" variant="text" onPress={() => setDeleting(null)} />
+        </View>
+      </BottomSheet>
     </Screen>
   );
 }
@@ -103,6 +126,9 @@ const styles = StyleSheet.create({
     ...Fonts.semiBold,
     fontSize: 12,
     color: Palette.textSub,
+  },
+  sheetActions: {
+    gap: 12,
   },
   note: {
     ...Fonts.semiBold,
