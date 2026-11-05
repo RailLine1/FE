@@ -1,12 +1,7 @@
-import { CourseDetail, CourseFolder, CourseMember, MyConnector } from '../courseTypes';
+import { CourseDetail, CourseMember, MyConnector } from '../courseTypes';
 
 // API 연동 후 이 폴더는 삭제한다.
 const term = '2026년 2학기';
-
-const defaultFolders: CourseFolder[] = [
-  { folderId: 1, name: 'final', kind: 'final', fileCount: 3 },
-  { folderId: 2, name: 'mid', kind: 'mid', fileCount: 4 },
-];
 
 const pastCourse = (courseId: number, name: string, icon: string, intro: string): CourseDetail => ({
   courseId,
@@ -76,13 +71,6 @@ export const dummyDetails: CourseDetail[] = [
   pastCourse(13, '모바일 프로그래밍', 'code', '2025년 2학기'),
   pastCourse(14, '컴퓨터 구조', 'layers', '2025년 2학기'),
 ];
-
-export const dummyFolders: Record<number, CourseFolder[]> = {
-  1: [...defaultFolders, { folderId: 3, name: '참고자료', kind: 'custom', fileCount: 2 }],
-  3: [...defaultFolders, { folderId: 4, name: '기출 정리', kind: 'custom', fileCount: 2 }],
-};
-
-export const dummyFoldersDefault = defaultFolders;
 
 export const dummyMembers: Record<number, CourseMember[]> = {
   3: [

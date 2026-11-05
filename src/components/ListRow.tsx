@@ -62,10 +62,21 @@ export function ListRow({
           <Badge label={badge} variant={badgeVariant} />
         </View>
       )}
-      {trailing}
       {chevron && <Icon name="chevron-right-20" />}
     </>
   );
+
+  // 줄을 누르는 동작과 오른쪽 버튼이 함께 있으면 버튼이 겹치지 않게 나란히 둔다.
+  if (onPress && trailing) {
+    return (
+      <View style={rowStyle}>
+        <Pressable accessibilityRole="button" onPress={onPress} style={styles.pressable}>
+          {content}
+        </Pressable>
+        {trailing}
+      </View>
+    );
+  }
 
   if (onPress) {
     return (
@@ -74,7 +85,12 @@ export function ListRow({
       </Pressable>
     );
   }
-  return <View style={rowStyle}>{content}</View>;
+  return (
+    <View style={rowStyle}>
+      {content}
+      {trailing}
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -84,6 +100,13 @@ const styles = StyleSheet.create({
     gap: 12,
     borderBottomWidth: 1,
     borderBottomColor: Palette.line,
+  },
+  pressable: {
+    flex: 1,
+    minWidth: 0,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
   },
   short: {
     paddingVertical: 12,
