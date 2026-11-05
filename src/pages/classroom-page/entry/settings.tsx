@@ -1,9 +1,11 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
+import { KeyboardAvoidingView, StyleSheet } from 'react-native';
 
 import { AppBar } from '@/components/AppBar';
 import { QueryStatus } from '@/components/QueryStatus';
 import { Screen } from '@/components/Screen';
 
+import { ManagerSettings } from '../components/ManagerSettings';
 import { MemberSettings } from '../components/MemberSettings';
 import { useCourseSettings } from '../hooks/useCourseSettings';
 
@@ -25,7 +27,18 @@ export default function SettingsPage() {
         leading={{ icon: 'back', accessibilityLabel: '뒤로', onPress: goBack }}
       />
       <QueryStatus isLoading={isLoading} isError={isError} errorMessage="과목을 찾을 수 없어요." />
-      {settings && <MemberSettings courseId={courseId} settings={settings} />}
+      <KeyboardAvoidingView behavior="padding" style={styles.keyboard}>
+        {settings?.role === 'member' && <MemberSettings courseId={courseId} settings={settings} />}
+        {settings && settings.role !== 'member' && (
+          <ManagerSettings courseId={courseId} settings={settings} onSaved={goBack} />
+        )}
+      </KeyboardAvoidingView>
     </Screen>
   );
 }
+
+const styles = StyleSheet.create({
+  keyboard: {
+    flex: 1,
+  },
+});
