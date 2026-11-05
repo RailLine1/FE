@@ -49,7 +49,20 @@ export default function CoursePage() {
       <AppBar
         title={course?.name}
         leading={{ icon: 'back', accessibilityLabel: '뒤로', onPress: goBack }}
-        trailing={course && <IconButton icon="settings" accessibilityLabel="환경설정" />}
+        trailing={
+          course && (
+            <IconButton
+              icon="settings"
+              accessibilityLabel="환경설정"
+              onPress={() =>
+                router.push({
+                  pathname: '/classroom/[courseId]/settings',
+                  params: { courseId: String(courseId) },
+                })
+              }
+            />
+          )
+        }
       />
       <QueryStatus isLoading={isLoading} isError={isError} errorMessage="과목을 찾을 수 없어요." />
       {course && (

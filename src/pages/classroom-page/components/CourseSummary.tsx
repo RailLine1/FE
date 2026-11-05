@@ -7,7 +7,7 @@ import { Palette } from '@/styles/palette';
 
 import { CourseDetail, CourseRole } from '../courseTypes';
 
-const roleBadges: Record<CourseRole, { label: string; variant: BadgeVariant }> = {
+export const roleBadges: Record<CourseRole, { label: string; variant: BadgeVariant }> = {
   admin: { label: '관리자', variant: 'admin' },
   co: { label: '공동 관리자', variant: 'pending' },
   member: { label: '멤버', variant: 'member' },
