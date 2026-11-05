@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
@@ -34,6 +35,7 @@ type ManagerSettingsProps = {
 
 // 관리자와 공동 관리자의 전체 설정(P-ROLE-01). 알림만 개인 설정이라 바로 저장한다.
 export function ManagerSettings({ courseId, settings, onSaved }: ManagerSettingsProps) {
+  const router = useRouter();
   const { updateCourse, isPending } = useUpdateCourse(courseId);
   const updateNotify = useCourseNotify(courseId);
   const { coCount, memberCount, requestCount } = useMemberSummary(courseId);
@@ -111,7 +113,17 @@ export function ManagerSettings({ courseId, settings, onSaved }: ManagerSettings
             chevron
           />
         )}
-        <ListRow title="멤버 관리" meta={`공동 관리자 ${coCount} · 멤버 ${memberCount}`} chevron />
+        <ListRow
+          title="멤버 관리"
+          meta={`공동 관리자 ${coCount} · 멤버 ${memberCount}`}
+          chevron
+          onPress={() =>
+            router.push({
+              pathname: '/classroom/[courseId]/members',
+              params: { courseId: String(courseId) },
+            })
+          }
+        />
       </GroupSection>
       <GroupSection title="자료 · 알림">
         <Toggle
