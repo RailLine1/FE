@@ -47,8 +47,7 @@ export default function CourseInfoPage() {
     return () => clearTimeout(timer);
   }, [toast]);
 
-  // 강의실 홈 화면이 만들어지면 경로를 맞춘다.
-  const openClassroom = () => router.replace('/');
+  const openClassroom = () => router.replace('/classroom');
 
   const handleSubscribe = () => {
     subscribe((status) => {
