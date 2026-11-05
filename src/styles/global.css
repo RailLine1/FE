@@ -10,3 +10,9 @@ input:focus-visible,
 textarea:focus-visible {
   outline: none;
 }
+
+/* 큰 화면에서 앱 너비를 제한한다. */
+#root {
+  max-width: 480px;
+  margin: 0 auto;
+}
