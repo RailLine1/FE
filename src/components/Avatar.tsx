@@ -7,6 +7,8 @@ const colors = {
   purple: Palette.purple,
   blue: Palette.blue,
   orange: Palette.orange,
+  green: Palette.green,
+  purpleDeep: Palette.purpleShadow,
 };
 
 type AvatarProps = {
