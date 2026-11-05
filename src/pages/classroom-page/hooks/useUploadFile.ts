@@ -46,7 +46,7 @@ export function useUploadFile(folderId: number) {
 
   return {
     upload: ({ title, picked }: UploadInput, onSuccess: () => void) => {
-      uploadDummyFile(folderId, title || picked.name.replace(/\.pdf$/i, ''));
+      uploadDummyFile(folderId, title);
       onSuccess();
     },
     isPending: false,

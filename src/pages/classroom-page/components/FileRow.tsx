@@ -6,6 +6,11 @@ import { Palette } from '@/styles/palette';
 
 import { CourseFile } from '../courseTypes';
 
+// 이름 없이 올린 자료를 목록에서 구분할 수 있게 한다.
+export function getFileTitle({ title }: CourseFile) {
+  return title.trim() || '제목 없는 자료';
+}
+
 function formatDate(uploadedAt: string) {
   const date = new Date(uploadedAt);
   const startOfDay = (value: Date) =>
@@ -31,11 +36,11 @@ type FileRowProps = {
 };
 
 export function FileRow({ file, canManage, onOpen, onDelete }: FileRowProps) {
-  const { status, title } = file;
+  const { status } = file;
 
   return (
     <ListRow
-      title={title}
+      title={getFileTitle(file)}
       subtitle={getSubtitle(file)}
       leading={
         <IconBox tone="soft">

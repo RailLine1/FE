@@ -11,7 +11,7 @@ import { Screen } from '@/components/Screen';
 import { Fonts } from '@/styles/font';
 import { Palette } from '@/styles/palette';
 
-import { FileRow } from '../components/FileRow';
+import { FileRow, getFileTitle } from '../components/FileRow';
 import { CourseFile } from '../courseTypes';
 import { useCourseDetail } from '../hooks/useCourseDetail';
 import { useCourseFolders } from '../hooks/useCourseFolders';
@@ -101,7 +101,7 @@ export default function FolderPage() {
       )}
       <BottomSheet
         visible={Boolean(deleting)}
-        title={`${deleting?.title}를 삭제할까요?`}
+        title={deleting ? `${getFileTitle(deleting)}를 삭제할까요?` : undefined}
         description="삭제한 자료는 되돌릴 수 없어요."
         onClose={() => setDeleting(null)}>
         <View style={styles.sheetActions}>
