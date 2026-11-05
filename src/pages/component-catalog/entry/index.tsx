@@ -17,6 +17,7 @@ import { ListRow } from '@/components/ListRow';
 import { QuizChoice } from '@/components/QuizChoice';
 import { SegmentedControl } from '@/components/SegmentedControl';
 import { TabBar } from '@/components/TabBar';
+import { Tile } from '@/components/Tile';
 import { TabItem } from '@/components/TabItem';
 import { Toggle } from '@/components/Toggle';
 import { Palette } from '@/styles/palette';
@@ -168,6 +169,11 @@ export default function ComponentCatalog() {
         <Item id="tabbar-bit" width={390}><TabBar selected="bit" /></Item>
         <Item id="tabbar-search" width={390}><TabBar selected="explore" /></Item>
         <Item id="tabbar-profile" width={390}><TabBar selected="profile" /></Item>
+      </Section>
+
+      <Section title="Tile · 2">
+        <Item id="tile-active" width={175}><Tile name="운영체제" intro="3-2 전공필수 · 수요일 1교시" icon="cpu" /></Item>
+        <Item id="tile-muted" width={175}><Tile name="선형대수" intro="2026년 1학기" icon="calculator" muted /></Item>
       </Section>
 
       <Section title="AppBar · 3">
