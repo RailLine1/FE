@@ -24,7 +24,12 @@ const icons = {
   'profile-22': { source: require('@/assets/icons/profile-22.png'), size: 22 },
   'profile-purple-22': { source: require('@/assets/icons/profile-purple-22.png'), size: 22 },
   'github-20': { source: require('@/assets/icons/github-20.png'), size: 20 },
+  'github-26': { source: require('@/assets/icons/github-26.png'), size: 26 },
   'settings-22': { source: require('@/assets/icons/settings-22.png'), size: 22 },
+  'bell-white-48': { source: require('@/assets/icons/bell-white-48.png'), size: 48 },
+  'folder-purple-18': { source: require('@/assets/icons/folder-purple-18.png'), size: 18 },
+  'check-purple-18': { source: require('@/assets/icons/check-purple-18.png'), size: 18 },
+  'flame-orange-18': { source: require('@/assets/icons/flame-orange-18.png'), size: 18 },
 };
 
 export type IconName = keyof typeof icons;

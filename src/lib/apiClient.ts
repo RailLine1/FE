@@ -9,8 +9,7 @@ export { ApiError };
 export const apiFetch = createApiFetch({
   baseUrl: process.env.EXPO_PUBLIC_API_URL ?? '',
   storage: tokenStorage,
-  // ponytail: 로그인 화면이 아직 없어 첫 화면으로 보낸다. `login` 화면이 생기면 경로만 바꾼다.
-  onSessionExpired: () => router.replace('/'),
+  onSessionExpired: () => router.replace('/login'),
 });
 
 // Orval이 ErrorType<응답 타입> 형태로 쓴다. 실제 오류는 항상 ApiError다.

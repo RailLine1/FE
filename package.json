@@ -41,7 +41,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "lint": "expo lint",
-    "test": "node --test src/lib/createApiFetch.test.mjs",
+    "test": "node --test \"src/**/*.test.mjs\"",
     "api:generate": "orval"
   },
   "private": true

@@ -11,4 +11,5 @@ export const Fonts = {
   semiBold: { fontFamily: family('Nunito_600SemiBold'), fontWeight: '600' },
   bold: { fontFamily: family('Nunito_700Bold'), fontWeight: '700' },
   extraBold: { fontFamily: family('Nunito_800ExtraBold'), fontWeight: '800' },
+  black: { fontFamily: family('Nunito_900Black'), fontWeight: '900' },
 } as const;
