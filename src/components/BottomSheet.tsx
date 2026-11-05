@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
+import { KeyboardAvoidingView, Modal, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Fonts } from '@/styles/font';
@@ -24,7 +24,7 @@ export function BottomSheet({ visible, onClose, title, description, children }: 
       animationType="fade"
       visible={visible}
       onRequestClose={onClose}>
-      <View style={styles.scrim}>
+      <KeyboardAvoidingView behavior="padding" style={styles.scrim}>
         <Pressable accessibilityLabel="닫기" onPress={onClose} style={styles.dismiss} />
         <View style={[styles.sheet, { paddingBottom: 28 + bottom }]}>
           <View style={styles.handle} />
@@ -32,7 +32,7 @@ export function BottomSheet({ visible, onClose, title, description, children }: 
           {description && <Text style={styles.description}>{description}</Text>}
           {children}
         </View>
-      </View>
+      </KeyboardAvoidingView>
     </Modal>
   );
 }
