@@ -13,9 +13,9 @@ export type ExploreCourse = {
 };
 
 export type ExploreCourseDetail = ExploreCourse & {
-  term: string;
+  term: string | null;
   visibility: 'public' | 'private';
-  intro: string;
+  intro: string | null;
 };
 
 export type ExploreCoursePage = {
