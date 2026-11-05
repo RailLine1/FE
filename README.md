@@ -26,6 +26,16 @@ Daybit의 앱(Expo, 안드로이드 · 웹)입니다. 작업 규칙(코드 구�
 - 401 `UNAUTHORIZED`를 받으면 `POST /auth/refresh`로 토큰을 갱신하고 원래 요청을 다시 보냅니다. 리프레시 토큰은 1회용이므로 동시에 여러 갱신 요청을 보내지 않습니다.
 - API가 문서와 다르게 동작하면 BE 저장소에 이슈를 남겨 주세요.
 
+### API 호출
+
+처음 받은 뒤 `.env.example`을 `.env.local`로 복사합니다. 페이지에서는 `src/api/`에 생성된 훅을 그대로 씁니다. 토큰 첨부와 갱신은 `src/lib/apiClient.ts`가 맡으므로 페이지에서 따로 처리하지 않습니다.
+
+- `src/api/`는 자동 생성 파일이라 직접 고치지 않습니다. 변경 예정인 AI 작업 공간 API는 생성에서 제외했습니다.
+- BE API가 바뀌면 `npm run api:generate`로 다시 생성합니다. 충돌을 막기 위해 재생성 결과는 다른 작업과 섞지 말고 별도 PR로 올립니다.
+- 오류는 `ApiError`의 `code`로 분기합니다.
+- 토큰은 앱에서 `expo-secure-store`, 웹에서 `localStorage`에 저장합니다.
+- `npm test`로 토큰 갱신 로직을 확인합니다.
+
 ## 브랜치와 배포
 
 BE와 같은 방식을 권장합니다. 기능 브랜치에서 작업해 `main`에 병합하고, 개발 기간에는 `main`을 EAS Hosting 미리보기로 배포합니다. 시연 직전에 `main`에서 `release` 브랜치를 만들어 정식 배포(제출 URL)합니다. 전체 배포 구성은 [Docs `08_배포.md`](https://github.com/RailLine1/Docs/blob/main/08_배포.md)에 있습니다.

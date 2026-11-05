@@ -6,13 +6,14 @@ import { Nunito_500Medium } from '@expo-google-fonts/nunito/500Medium';
 import { Nunito_600SemiBold } from '@expo-google-fonts/nunito/600SemiBold';
 import { Nunito_700Bold } from '@expo-google-fonts/nunito/700Bold';
 import { Nunito_800ExtraBold } from '@expo-google-fonts/nunito/800ExtraBold';
+import { QueryClientProvider } from '@tanstack/react-query';
 import { useFonts } from 'expo-font';
-import { DarkTheme, DefaultTheme, Stack, ThemeProvider } from 'expo-router';
+import { DefaultTheme, Stack, ThemeProvider } from 'expo-router';
 import Head from 'expo-router/head';
-import { useColorScheme } from 'react-native';
+
+import { queryClient } from '@/lib/queryClient';
 
 export default function App() {
-  const colorScheme = useColorScheme();
   const [fontsLoaded] = useFonts({
     Nunito_400Regular,
     Nunito_500Medium,
@@ -23,14 +24,17 @@ export default function App() {
   if (!fontsLoaded) return null;
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Head>
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400..800&display=swap"
-        />
-      </Head>
-      <Stack screenOptions={{ headerShown: false }} />
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      {/* ponytail: 디자인이 라이트뿐이라 고정한다. 다크 모드를 만들 때 서버 렌더링과 맞춰 추가한다. */}
+      <ThemeProvider value={DefaultTheme}>
+        <Head>
+          <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400..800&display=swap"
+          />
+        </Head>
+        <Stack screenOptions={{ headerShown: false }} />
+      </ThemeProvider>
+    </QueryClientProvider>
   );
 }
