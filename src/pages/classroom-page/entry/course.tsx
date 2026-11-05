@@ -1,4 +1,5 @@
-import { useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { AppBar } from '@/components/AppBar';
@@ -14,12 +15,16 @@ import { Palette } from '@/styles/palette';
 import { AiSection } from '../components/AiSection';
 import { CourseSummary } from '../components/CourseSummary';
 import { GroupSection } from '../components/GroupSection';
+import { LeaveSheet } from '../components/LeaveSheet';
 import { MaterialSection } from '../components/MaterialSection';
 import { useCourseDetail } from '../hooks/useCourseDetail';
 import { useCourseFolders } from '../hooks/useCourseFolders';
 import { useGoBackToClassroom } from '../hooks/useGoBackToClassroom';
+import { useLeaveCourse } from '../hooks/useLeaveCourse';
+import { useNextAdmin } from '../hooks/useNextAdmin';
 
 export default function CoursePage() {
+  const router = useRouter();
   const goBack = useGoBackToClassroom();
   const params = useLocalSearchParams<{ courseId: string }>();
   const courseId = Number(params.courseId);
@@ -28,6 +33,16 @@ export default function CoursePage() {
   // 원본 열람이 꺼지면 멤버에게 학습자료를 숨긴다(P-MAT-05).
   const canViewMaterials = canManage || course?.rawAllowed === true;
   const { data: folders } = useCourseFolders(courseId, canViewMaterials);
+  const { nextAdmin, isLoading: isNextAdminLoading } = useNextAdmin(courseId, course?.role);
+  const { leave, isPending } = useLeaveCourse(courseId);
+  const [leaveVisible, setLeaveVisible] = useState(false);
+
+  const handleLeave = () => {
+    leave(() => {
+      setLeaveVisible(false);
+      router.replace('/classroom');
+    });
+  };
 
   return (
     <Screen>
@@ -55,10 +70,24 @@ export default function CoursePage() {
           </GroupSection>
           <AiSection />
           <View style={styles.spacer} />
-          <Pressable accessibilityRole="button" style={styles.leave}>
+          <Pressable
+            accessibilityRole="button"
+            onPress={() => setLeaveVisible(true)}
+            style={styles.leave}>
             <Text style={styles.leaveLabel}>탈퇴하기</Text>
           </Pressable>
         </ScrollView>
+      )}
+      {course && (
+        <LeaveSheet
+          visible={leaveVisible}
+          name={course.name}
+          role={course.role}
+          nextAdmin={nextAdmin}
+          disabled={isPending || isNextAdminLoading}
+          onClose={() => setLeaveVisible(false)}
+          onLeave={handleLeave}
+        />
       )}
     </Screen>
   );
