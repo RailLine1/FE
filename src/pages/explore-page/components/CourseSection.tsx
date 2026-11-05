@@ -1,13 +1,13 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { ListGroup } from '@/components/ListGroup';
+import { QueryStatus } from '@/components/QueryStatus';
+import { SectionLabel } from '@/components/SectionLabel';
 import { Fonts } from '@/styles/font';
 import { Palette } from '@/styles/palette';
 
 import { ExploreCourse } from '../courseTypes';
 import { CourseRow } from './CourseRow';
-import { QueryStatus } from './QueryStatus';
-import { SectionLabel } from './SectionLabel';
 
 type CourseSectionProps = {
   title: string;

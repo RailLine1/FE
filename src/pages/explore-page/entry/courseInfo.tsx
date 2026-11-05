@@ -7,13 +7,13 @@ import { Badge, BadgeVariant } from '@/components/Badge';
 import { CourseIcon } from '@/components/CourseIcon';
 import { ListGroup } from '@/components/ListGroup';
 import { ListRow } from '@/components/ListRow';
+import { QueryStatus } from '@/components/QueryStatus';
 import { Screen } from '@/components/Screen';
+import { SectionLabel } from '@/components/SectionLabel';
 import { Fonts } from '@/styles/font';
 import { Palette } from '@/styles/palette';
 
 import { CourseAction } from '../components/CourseAction';
-import { QueryStatus } from '../components/QueryStatus';
-import { SectionLabel } from '../components/SectionLabel';
 import { Toast } from '../components/Toast';
 import { useCourseInfo } from '../hooks/useCourseInfo';
 import { useGoBackToExplore } from '../hooks/useGoBackToExplore';
