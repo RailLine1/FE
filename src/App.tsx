@@ -6,12 +6,14 @@ import { Nunito_500Medium } from '@expo-google-fonts/nunito/500Medium';
 import { Nunito_600SemiBold } from '@expo-google-fonts/nunito/600SemiBold';
 import { Nunito_700Bold } from '@expo-google-fonts/nunito/700Bold';
 import { Nunito_800ExtraBold } from '@expo-google-fonts/nunito/800ExtraBold';
+import { Nunito_900Black } from '@expo-google-fonts/nunito/900Black';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { useFonts } from 'expo-font';
 import { DefaultTheme, Stack, ThemeProvider } from 'expo-router';
 import Head from 'expo-router/head';
 
 import { queryClient } from '@/lib/queryClient';
+import { useAuthGate } from '@/lib/useAuthGate';
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -20,7 +22,9 @@ export default function App() {
     Nunito_600SemiBold,
     Nunito_700Bold,
     Nunito_800ExtraBold,
+    Nunito_900Black,
   });
+  useAuthGate(fontsLoaded);
   if (!fontsLoaded) return null;
 
   return (
@@ -30,7 +34,7 @@ export default function App() {
         <Head>
           <link
             rel="stylesheet"
-            href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400..800&display=swap"
+            href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400..900&display=swap"
           />
         </Head>
         <Stack screenOptions={{ headerShown: false }} />
