@@ -1,9 +1,15 @@
-import { CourseRole, CourseSettings, JoinRequest, UpdateCourseInput } from '../courseTypes';
+import { CourseRole, CourseSettings, UpdateCourseInput } from '../courseTypes';
 import { dummyDetailStore, updateDummyDetail } from './courseDetails';
 import { updateDummyCourse } from './courses';
 
 // API 연동 후 이 폴더는 삭제한다.
-const codes: Record<number, string> = { 1: 'OS4X9P', 2: 'NW3T8R', 3: 'DB7K2Q', 4: 'AG4S7T' };
+const codes: Record<number, string> = {
+  1: 'OS4X9P',
+  2: 'NW3T8R',
+  3: 'DB7K2Q',
+  4: 'AG4S7T',
+  5: 'DS77KQ',
+};
 
 const memberFields = (role: CourseRole, code: string, notify: boolean): CourseSettings => ({
   code,
@@ -94,10 +100,3 @@ export function updateDummyNotify(courseId: number, notify: boolean) {
   stored = { ...stored, [courseId]: { ...storedOf(courseId), notify } };
   notifyAll();
 }
-
-export const dummyJoinRequests: Record<number, JoinRequest[]> = {
-  3: [
-    { requestId: 21, nickname: '새벽코딩', requestedAt: '2026-11-05T21:00:00+09:00' },
-    { requestId: 22, nickname: '커피한잔', requestedAt: '2026-11-05T09:30:00+09:00' },
-  ],
-};

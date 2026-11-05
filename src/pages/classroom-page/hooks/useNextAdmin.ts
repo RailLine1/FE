@@ -1,5 +1,7 @@
+import { useSyncExternalStore } from 'react';
+
 import { CourseMember, CourseRole } from '../courseTypes';
-import { dummyMembers } from '../dummy/courseDetails';
+import { dummyMemberStore, getDummyMembers } from '../dummy/members';
 
 // import { useMembers } from '@/api/5-멤버-가입-요청/5-멤버-가입-요청';
 
@@ -7,9 +9,14 @@ import { dummyMembers } from '../dummy/courseDetails';
 export function useNextAdmin(courseId: number, role?: CourseRole) {
   const enabled = role === 'admin';
 
-  // API 연동 시 아래 두 줄을 교체
+  // API 연동 시 더미 코드를 아래 한 줄로 교체
   // const { data: members, isLoading } = useMembers<CourseMember[]>(courseId, { query: { enabled } });
-  const members: CourseMember[] | undefined = enabled ? dummyMembers[courseId] : undefined;
+  const state = useSyncExternalStore(
+    dummyMemberStore.subscribe,
+    dummyMemberStore.getMembers,
+    dummyMemberStore.getMembers,
+  );
+  const members: CourseMember[] | undefined = enabled ? getDummyMembers(state, courseId) : undefined;
   const isLoading = false;
 
   // 응답은 관리자, 공동 관리자(된 날짜순), 멤버 순이다(P-ROLE-02).
