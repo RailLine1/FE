@@ -7,17 +7,28 @@ const variants = {
   success: { background: Palette.greenTint, text: Palette.green },
   pending: { background: Palette.blueTint, text: Palette.blue },
   subscribed: { background: Palette.purpleTint, text: Palette.purpleStrong },
+  danger: { background: Palette.redTint, text: Palette.red },
+  admin: { background: Palette.goldenTint, text: Palette.goldenInk },
+  member: { background: Palette.surfaceMuted, text: Palette.textSub, border: Palette.line },
 };
+
+export type BadgeVariant = keyof typeof variants;
 
 type BadgeProps = {
   label: string;
-  variant: keyof typeof variants;
+  variant: BadgeVariant;
 };
 
 export function Badge({ label, variant }: BadgeProps) {
-  const { background, text } = variants[variant];
+  const { background, text, border }: { background: string; text: string; border?: string } =
+    variants[variant];
   return (
-    <View style={[styles.badge, { backgroundColor: background }]}>
+    <View
+      style={[
+        styles.badge,
+        { backgroundColor: background },
+        border && { boxShadow: `inset 0 0 0 1px ${border}` },
+      ]}>
       <Text style={[styles.label, { color: text }]}>{label}</Text>
     </View>
   );

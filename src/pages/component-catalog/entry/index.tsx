@@ -1,15 +1,21 @@
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
+import { AppBar } from '@/components/AppBar';
 import { Avatar } from '@/components/Avatar';
 import { Badge } from '@/components/Badge';
+import { BottomSheet } from '@/components/BottomSheet';
 import { Button } from '@/components/Button';
 import { Checkbox } from '@/components/Checkbox';
+import { FormField } from '@/components/FormField';
 import { Icon, IconName } from '@/components/Icon';
+import { IconBox } from '@/components/IconBox';
 import { IconButton } from '@/components/IconButton';
 import { Input } from '@/components/Input';
+import { ListGroup } from '@/components/ListGroup';
 import { ListRow } from '@/components/ListRow';
 import { QuizChoice } from '@/components/QuizChoice';
+import { SegmentedControl } from '@/components/SegmentedControl';
 import { TabBar } from '@/components/TabBar';
 import { TabItem } from '@/components/TabItem';
 import { Toggle } from '@/components/Toggle';
@@ -63,6 +69,9 @@ function Section({ title, children }: { title: string; children: ReactNode }) {
 
 // ponytail: Figma 비교와 개발 중 확인용 화면이라 배포본에서는 렌더링하지 않는다.
 export default function ComponentCatalog() {
+  const [day, setDay] = useState<'today' | 'yesterday'>('today');
+  const [sheetVisible, setSheetVisible] = useState(false);
+
   if (!__DEV__) return null;
 
   return (
@@ -102,10 +111,13 @@ export default function ComponentCatalog() {
         <Item id="avatar-orange"><Avatar label="O" color="orange" /></Item>
       </Section>
 
-      <Section title="Badge · 3">
+      <Section title="Badge · 6">
         <Item id="badge-success"><Badge label="정답" variant="success" /></Item>
         <Item id="badge-pending"><Badge label="처리 중" variant="pending" /></Item>
         <Item id="badge-subscribed"><Badge label="구독 중" variant="subscribed" /></Item>
+        <Item id="badge-danger"><Badge label="2건 대기" variant="danger" /></Item>
+        <Item id="badge-admin"><Badge label="관리자" variant="admin" /></Item>
+        <Item id="badge-member"><Badge label="멤버" variant="member" /></Item>
       </Section>
 
       <Section title="ListRow · 3">
@@ -158,6 +170,75 @@ export default function ComponentCatalog() {
         <Item id="tabbar-profile" width={390}><TabBar selected="profile" /></Item>
       </Section>
 
+      <Section title="AppBar · 3">
+        <Item id="appbar-back" width={390}><AppBar title="멤버 관리" leading={{ icon: 'back', accessibilityLabel: '뒤로' }} /></Item>
+        <Item id="appbar-trailing" width={390}><AppBar title="운영체제" leading={{ icon: 'back', accessibilityLabel: '뒤로' }} trailing={<IconButton icon="settings" accessibilityLabel="환경설정" />} /></Item>
+        <Item id="appbar-large" width={390}><AppBar title="내 정보" large /></Item>
+      </Section>
+
+      <Section title="ListGroup · 2">
+        <Item id="listgroup-course" width={358}>
+          <ListGroup>
+            <ListRow title="final" subtitle="자료 3개" leading={<IconBox tone="soft"><Icon name="file-20" /></IconBox>} chevron onPress={() => {}} />
+            <ListRow title="참고자료" subtitle="자료 2개" leading={<IconBox tone="outline"><Icon name="file-20" /></IconBox>} chevron onPress={() => {}} />
+            <ListRow title="＋ 커넥터 등록" titleTone="accent" onPress={() => {}} />
+          </ListGroup>
+        </Item>
+        <Item id="listgroup-badges" width={358}>
+          <ListGroup>
+            <ListRow title="나" subtitle="관리자" badge="관리자" badgeVariant="admin" highlighted />
+            <ListRow title="OS마스터" badge="멤버" badgeVariant="member" />
+            <ListRow title="가입 요청" badge="2건 대기" badgeVariant="danger" chevron onPress={() => {}} />
+            <ListRow title="로그아웃" titleTone="danger" onPress={() => {}} />
+          </ListGroup>
+        </Item>
+      </Section>
+
+      <Section title="SegmentedControl · 1">
+        <Item id="segment-day" width={358}>
+          <SegmentedControl
+            options={[
+              { value: 'today', label: '오늘' },
+              { value: 'yesterday', label: '어제' },
+            ]}
+            value={day}
+            onChange={setDay}
+          />
+        </Item>
+      </Section>
+
+      <Section title="FormField · 3">
+        <Item id="field-hint" width={358}><FormField label="닉네임" placeholder="2~12자, 한글·영문·숫자" hint="다른 사람에게는 아이디 대신 닉네임이 보여요." /></Item>
+        <Item id="field-error" width={358}><FormField label="닉네임" value="나" error="이미 쓰는 닉네임이에요." /></Item>
+        <Item id="field-children" width={358}>
+          <FormField label="공개 여부">
+            <SegmentedControl options={[{ value: 'private', label: '비공개' }, { value: 'public', label: '공개' }]} value="private" />
+          </FormField>
+        </Item>
+      </Section>
+
+      <Section title="IconBox · 5">
+        <Item id="iconbox-main"><IconBox><Icon name="file-20" color={Palette.white} /></IconBox></Item>
+        <Item id="iconbox-soft"><IconBox tone="soft"><Icon name="file-20" /></IconBox></Item>
+        <Item id="iconbox-golden"><IconBox tone="golden" size={56}><Icon name="file-20" color={Palette.goldenInk} /></IconBox></Item>
+        <Item id="iconbox-outline"><IconBox tone="outline"><Icon name="file-20" /></IconBox></Item>
+        <Item id="iconbox-raised"><IconBox size={64} raised><Icon name="file-20" color={Palette.white} /></IconBox></Item>
+      </Section>
+
+      <Section title="BottomSheet · 1">
+        <Item id="sheet-open"><Button label="시트 열기" size="small" onPress={() => setSheetVisible(true)} /></Item>
+        <BottomSheet
+          visible={sheetVisible}
+          onClose={() => setSheetVisible(false)}
+          title="로그아웃할까요?"
+          description="다시 로그인하면 기록을 그대로 볼 수 있어요.">
+          <View style={styles.sheetActions}>
+            <Button label="로그아웃" variant="danger" onPress={() => setSheetVisible(false)} />
+            <Button label="취소" variant="text" onPress={() => setSheetVisible(false)} />
+          </View>
+        </BottomSheet>
+      </Section>
+
       <Section title="Icon · 13">
         {figmaIcons.map((name) => (
           <Item key={name} id={`icon-${name}`} dark={name === 'check-white-16'}><Icon name={name} /></Item>
@@ -194,5 +275,8 @@ const styles = StyleSheet.create({
   },
   fill: {
     alignSelf: 'stretch',
+  },
+  sheetActions: {
+    gap: 12,
   },
 });

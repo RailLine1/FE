@@ -7,10 +7,11 @@ import { Palette } from '@/styles/palette';
 
 type InputProps = Omit<TextInputProps, 'style'> & {
   search?: boolean;
+  error?: boolean;
   style?: StyleProp<ViewStyle>;
 };
 
-export function Input({ search, readOnly, value, style, onFocus, onBlur, ...props }: InputProps) {
+export function Input({ search, error, readOnly, value, style, onFocus, onBlur, ...props }: InputProps) {
   // autoFocus는 이벤트 연결 전에 포커스가 잡혀 onFocus가 오지 않는다.
   const [focused, setFocused] = useState(Boolean(props.autoFocus));
 
@@ -20,6 +21,7 @@ export function Input({ search, readOnly, value, style, onFocus, onBlur, ...prop
         styles.box,
         readOnly && styles.readOnly,
         focused && !readOnly && styles.focused,
+        error && styles.error,
         style,
       ]}>
       {search && <Icon name="search-gray-20" />}
@@ -60,6 +62,9 @@ const styles = StyleSheet.create({
   },
   focused: {
     borderColor: Palette.blue,
+  },
+  error: {
+    borderColor: Palette.red,
   },
   readOnly: {
     backgroundColor: Palette.surfaceMuted,
