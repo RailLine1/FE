@@ -9,9 +9,17 @@ const icons: Record<string, IconName> = {
   add: 'plus-22',
   more: 'more-22',
   settings: 'settings-22',
+  trash: 'trash-22',
 };
 
-export type IconButtonIcon = 'back' | 'close' | 'closeInverse' | 'add' | 'more' | 'settings';
+export type IconButtonIcon =
+  | 'back'
+  | 'close'
+  | 'closeInverse'
+  | 'add'
+  | 'more'
+  | 'settings'
+  | 'trash';
 
 type IconButtonProps = {
   icon: IconButtonIcon;
