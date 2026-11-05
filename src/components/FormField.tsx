@@ -32,13 +32,11 @@ const styles = StyleSheet.create({
   label: {
     ...Fonts.bold,
     fontSize: 13,
-    lineHeight: 20,
     color: Palette.text,
   },
   hint: {
     ...Fonts.semiBold,
     fontSize: 12,
-    lineHeight: 18,
     color: Palette.textSub,
   },
   error: {

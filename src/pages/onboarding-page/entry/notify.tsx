@@ -1,12 +1,11 @@
 import { useRouter } from 'expo-router';
-import { StyleSheet, Text, View } from 'react-native';
+import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '@/components/Button';
-import { Icon } from '@/components/Icon';
+import { Screen } from '@/components/Screen';
 import { Fonts } from '@/styles/font';
 import { Palette } from '@/styles/palette';
 
-import { AuthScreen } from '../components/AuthScreen';
 import { requestNotificationPermission } from '../notificationPermission';
 import { HOME_ROUTE } from '../session';
 
@@ -21,37 +20,45 @@ export default function NotifyPage() {
   };
 
   return (
-    <AuthScreen contentStyle={styles.content}>
-      <View style={styles.main}>
-        <View style={styles.bell}>
-          <Icon name="bell-white-48" />
-        </View>
-        <Text accessibilityRole="header" style={styles.title}>
-          {'필요한 알림만\n과목별로 받아요'}
-        </Text>
-        <Text style={styles.subtitle}>과목마다 켜고 끌 수 있어요.</Text>
+    <Screen>
+      <ScrollView style={styles.flex} contentContainerStyle={styles.content}>
+        <View style={styles.main}>
+          <View style={styles.bell}>
+            <Image source={require('@/assets/icons/bell-white-48.png')} style={styles.bellIcon} />
+          </View>
+          <Text accessibilityRole="header" style={styles.title}>
+            {'필요한 알림만\n과목별로 받아요'}
+          </Text>
+          <Text style={styles.subtitle}>과목마다 켜고 끌 수 있어요.</Text>
 
-        <View style={styles.preview}>
-          <View style={styles.previewIcon}>
-            <Text style={styles.previewLetter}>D</Text>
+          <View style={styles.preview}>
+            <View style={styles.previewIcon}>
+              <Text style={styles.previewLetter}>D</Text>
+            </View>
+            <View style={styles.previewText}>
+              <Text style={styles.previewTitle}>Daybit</Text>
+              <Text style={styles.previewBody}>운영체제 · 오늘의 한 조각이 준비됐어요</Text>
+            </View>
+            <Text style={styles.previewTime}>지금</Text>
           </View>
-          <View style={styles.previewText}>
-            <Text style={styles.previewTitle}>Daybit</Text>
-            <Text style={styles.previewBody}>운영체제 · 오늘의 한 조각이 준비됐어요</Text>
-          </View>
-          <Text style={styles.previewTime}>지금</Text>
         </View>
-      </View>
-      <View style={styles.actions}>
-        <Button label="알림 받기" onPress={allow} />
-        <Button label="나중에" variant="text" onPress={enter} />
-      </View>
-    </AuthScreen>
+        <View style={styles.actions}>
+          <Button label="알림 받기" onPress={allow} />
+          <Button label="나중에" variant="text" onPress={enter} />
+        </View>
+      </ScrollView>
+    </Screen>
   );
 }
 
 const styles = StyleSheet.create({
+  flex: {
+    flex: 1,
+  },
   content: {
+    flexGrow: 1,
+    paddingHorizontal: 16,
+    paddingBottom: 32,
     paddingTop: 56,
   },
   main: {
@@ -67,6 +74,10 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     backgroundColor: Palette.purple,
     boxShadow: `0 5px 0 ${Palette.purpleShadow}`,
+  },
+  bellIcon: {
+    width: 48,
+    height: 48,
   },
   title: {
     ...Fonts.black,

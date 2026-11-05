@@ -1,18 +1,26 @@
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import {
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 
 import { useUpdate } from '@/api/2-내-정보/2-내-정보';
+import { AppBar } from '@/components/AppBar';
 import { Badge } from '@/components/Badge';
 import { Button } from '@/components/Button';
 import { FormField } from '@/components/FormField';
 import { Icon } from '@/components/Icon';
+import { Screen } from '@/components/Screen';
 import { tokenStorage } from '@/lib/tokenStorage';
 import { Fonts } from '@/styles/font';
 import { Palette } from '@/styles/palette';
 
 import { FormErrors, toFormErrors, validateNickname } from '../authForm';
-import { AuthScreen } from '../components/AuthScreen';
 
 // P-ACC-04. GitHub 첫 로그인
 export default function NicknamePage() {
@@ -41,39 +49,58 @@ export default function NicknamePage() {
   };
 
   return (
-    <AuthScreen contentStyle={styles.content} onBack={cancel}>
-      <View style={styles.heading}>
-        <Text accessibilityRole="header" style={styles.title}>
-          닉네임 설정
-        </Text>
-        <Text style={styles.subtitle}>Daybit에서 쓸 닉네임을 정해 주세요.</Text>
-      </View>
-      <View style={styles.github}>
-        <Icon name="github-20" />
-        <Text style={styles.githubLabel}>GitHub 계정으로 로그인했어요</Text>
-        <View>
-          <Badge label="연결됨" variant="success" />
-        </View>
-      </View>
-      <FormField
-        autoFocus
-        label="닉네임"
-        placeholder="2~12자, 한글·영문·숫자"
-        hint="이미 쓰는 닉네임이면 저장되지 않아요."
-        value={nickname}
-        error={errors.nickname}
-        onChangeText={setNickname}
-        onSubmitEditing={submit}
+    <Screen>
+      <AppBar
+        borderless
+        leading={{ icon: 'back', accessibilityLabel: '뒤로', onPress: cancel }}
       />
-      <View style={styles.spacer} />
-      {errors.form && <Text style={styles.formError}>{errors.form}</Text>}
-      <Button label="다음" disabled={update.isPending} onPress={submit} />
-    </AuthScreen>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.flex}>
+        <ScrollView
+          keyboardShouldPersistTaps="handled"
+          style={styles.flex}
+          contentContainerStyle={styles.content}>
+          <View style={styles.heading}>
+            <Text accessibilityRole="header" style={styles.title}>
+              닉네임 설정
+            </Text>
+            <Text style={styles.subtitle}>Daybit에서 쓸 닉네임을 정해 주세요.</Text>
+          </View>
+          <View style={styles.github}>
+            <Icon name="github-20" />
+            <Text style={styles.githubLabel}>GitHub 계정으로 로그인했어요</Text>
+            <View>
+              <Badge label="연결됨" variant="success" />
+            </View>
+          </View>
+          <FormField
+            autoFocus
+            label="닉네임"
+            placeholder="2~12자, 한글·영문·숫자"
+            hint="이미 쓰는 닉네임이면 저장되지 않아요."
+            value={nickname}
+            error={errors.nickname}
+            onChangeText={setNickname}
+            onSubmitEditing={submit}
+          />
+          <View style={styles.spacer} />
+          {errors.form && <Text style={styles.formError}>{errors.form}</Text>}
+          <Button label="다음" disabled={update.isPending} onPress={submit} />
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </Screen>
   );
 }
 
 const styles = StyleSheet.create({
+  flex: {
+    flex: 1,
+  },
   content: {
+    flexGrow: 1,
+    paddingHorizontal: 16,
+    paddingBottom: 32,
     gap: 14,
     paddingTop: 8,
   },

@@ -12,8 +12,8 @@ import { useFonts } from 'expo-font';
 import { DefaultTheme, Stack, ThemeProvider } from 'expo-router';
 import Head from 'expo-router/head';
 
-import { AuthGate } from '@/lib/AuthGate';
 import { queryClient } from '@/lib/queryClient';
+import { useAuthGate } from '@/lib/useAuthGate';
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -24,6 +24,7 @@ export default function App() {
     Nunito_800ExtraBold,
     Nunito_900Black,
   });
+  useAuthGate(fontsLoaded);
   if (!fontsLoaded) return null;
 
   return (
@@ -37,7 +38,6 @@ export default function App() {
           />
         </Head>
         <Stack screenOptions={{ headerShown: false }} />
-        <AuthGate />
       </ThemeProvider>
     </QueryClientProvider>
   );
