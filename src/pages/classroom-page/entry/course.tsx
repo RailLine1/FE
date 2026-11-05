@@ -55,7 +55,7 @@ export default function CoursePage() {
       {course && (
         <ScrollView style={styles.scroll} contentContainerStyle={styles.content}>
           <CourseSummary course={course} />
-          {folders && <MaterialSection folders={folders} canManage={canManage} />}
+          {folders && <MaterialSection courseId={courseId} folders={folders} canManage={canManage} />}
           <GroupSection title="아카이브">
             <ListRow
               title="기록"
