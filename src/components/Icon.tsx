@@ -27,6 +27,7 @@ const icons = {
   'document-20': { source: require('@/assets/icons/document-20.png'), size: 20 },
   'trash-22': { source: require('@/assets/icons/trash-22.png'), size: 22 },
   'upload-26': { source: require('@/assets/icons/upload-26.png'), size: 26 },
+  'memo-18': { source: require('@/assets/icons/memo-18.png'), size: 18 },
   'folder-20': { source: require('@/assets/icons/folder-20.png'), size: 20 },
   'archive-20': { source: require('@/assets/icons/archive-20.png'), size: 20 },
   'sparkle-20': { source: require('@/assets/icons/sparkle-20.png'), size: 20 },

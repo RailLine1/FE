@@ -66,6 +66,12 @@ export default function CoursePage() {
                 </IconBox>
               }
               chevron
+              onPress={() =>
+                router.push({
+                  pathname: '/classroom/[courseId]/archive',
+                  params: { courseId: String(courseId) },
+                })
+              }
             />
           </GroupSection>
           <AiSection />
