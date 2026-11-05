@@ -7,7 +7,7 @@ import { Fonts } from '@/styles/font';
 import { Palette } from '@/styles/palette';
 
 type ListRowProps = {
-  title: string;
+  title: ReactNode;
   subtitle?: string;
   rank?: number;
   value?: string;
@@ -57,7 +57,11 @@ export function ListRow({
         {subtitle && <Text style={styles.subtitle}>{subtitle}</Text>}
       </View>
       {value && <Text style={styles.value}>{value}</Text>}
-      {badge && <Badge label={badge} variant={badgeVariant} />}
+      {badge && (
+        <View>
+          <Badge label={badge} variant={badgeVariant} />
+        </View>
+      )}
       {trailing}
       {chevron && <Icon name="chevron-right-20" />}
     </>

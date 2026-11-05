@@ -14,6 +14,7 @@ export const Palette = {
   redShadow: '#cc3c3c',
   redTint: '#ff4b4b1f',
   orange: '#ff9600',
+  golden: '#ffc800',
   goldenInk: '#b8920f',
   goldenTint: '#ffc80026',
   navy: '#100f3e',
