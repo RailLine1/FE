@@ -104,6 +104,15 @@ export default function RecordsPage() {
                     key={person.userId}
                     title={<Text style={styles.personName}>{person.nickname}</Text>}
                     highlighted={person.me}
+                    onPress={
+                      person.me
+                        ? undefined
+                        : () =>
+                            router.push({
+                              pathname: '/users/[userId]',
+                              params: { userId: String(person.userId) },
+                            })
+                    }
                     trailing={
                       <View style={styles.personResult}>
                         <Text style={styles.personTime}>{formatSeconds(person.elapsedSec)}</Text>

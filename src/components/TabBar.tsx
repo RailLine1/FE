@@ -7,11 +7,11 @@ import { Palette } from '@/styles/palette';
 
 const tabNames: TabName[] = ['classroom', 'bit', 'explore', 'profile'];
 
-// 내 정보 화면이 만들어지면 경로를 추가한다.
 const tabRoutes: Partial<Record<TabName, Href>> = {
   classroom: '/classroom',
   bit: '/bit',
   explore: '/explore',
+  profile: '/profile',
 };
 
 type TabBarProps = {
