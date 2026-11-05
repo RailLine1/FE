@@ -93,3 +93,21 @@ export type Memo = {
   body: string;
   mine: boolean;
 };
+
+// POST /courses
+export type CourseVisibility = 'public' | 'private';
+
+export type CreateCourseInput = {
+  name: string;
+  icon: string;
+  intro: string | null;
+  term: string;
+  visibility: CourseVisibility;
+  midExamDate: string | null;
+  finalExamDate: string | null;
+};
+
+export type CreatedCourse = {
+  id: number;
+  code: string;
+};

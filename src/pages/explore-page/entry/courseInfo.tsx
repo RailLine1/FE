@@ -10,11 +10,11 @@ import { ListRow } from '@/components/ListRow';
 import { QueryStatus } from '@/components/QueryStatus';
 import { Screen } from '@/components/Screen';
 import { SectionLabel } from '@/components/SectionLabel';
+import { Toast } from '@/components/Toast';
 import { Fonts } from '@/styles/font';
 import { Palette } from '@/styles/palette';
 
 import { CourseAction } from '../components/CourseAction';
-import { Toast } from '../components/Toast';
 import { useCourseInfo } from '../hooks/useCourseInfo';
 import { useGoBackToExplore } from '../hooks/useGoBackToExplore';
 import { useSubscribeCourse } from '../hooks/useSubscribeCourse';
