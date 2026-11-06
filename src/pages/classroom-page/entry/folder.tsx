@@ -29,7 +29,7 @@ export default function FolderPage() {
   const canManage = course?.role === 'admin' || course?.role === 'co';
   // 원본 열람이 꺼지면 멤버는 자료를 볼 수 없다(P-MAT-05).
   const canView = canManage || course?.rawAllowed === true;
-  const { data: folders } = useCourseFolders(courseId, canView);
+  const { data: folders, isLoading: isFoldersLoading } = useCourseFolders(courseId, canView);
   const folder = folders?.find((item) => item.folderId === folderId);
   const {
     data: files,
@@ -67,8 +67,8 @@ export default function FolderPage() {
         }
       />
       <QueryStatus
-        isLoading={isCourseLoading || isFilesLoading}
-        isError={isError || (Boolean(course) && !folder)}
+        isLoading={isCourseLoading || isFoldersLoading || isFilesLoading}
+        isError={isError || (!isCourseLoading && !isFoldersLoading && !folder)}
         errorMessage="폴더를 찾을 수 없어요."
       />
       {course && files && folder && (

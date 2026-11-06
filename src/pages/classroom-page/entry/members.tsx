@@ -30,7 +30,7 @@ export default function MembersPage() {
   const router = useRouter();
   const params = useLocalSearchParams<{ courseId: string }>();
   const courseId = Number(params.courseId);
-  const { data: course } = useCourseDetail(courseId);
+  const { data: course, isLoading: isCourseLoading, isError: isCourseError } = useCourseDetail(courseId);
   const { data: settings } = useCourseSettings(courseId);
   const { data: members, isLoading, isError } = useCourseMembers(courseId);
   const { changeRole, kick, isPending } = useMemberActions(courseId);
@@ -78,8 +78,8 @@ export default function MembersPage() {
         leading={{ icon: 'back', accessibilityLabel: '뒤로', onPress: goBack }}
       />
       <QueryStatus
-        isLoading={isLoading}
-        isError={isError || !course || denied}
+        isLoading={isCourseLoading || (!denied && isLoading)}
+        isError={isCourseError || denied || isError}
         errorMessage={denied ? '관리자만 볼 수 있어요.' : undefined}
       />
       {course && !denied && members && (
