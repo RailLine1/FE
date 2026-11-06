@@ -12,6 +12,7 @@ import { useFonts } from 'expo-font';
 import { DefaultTheme, Stack, ThemeProvider } from 'expo-router';
 import Head from 'expo-router/head';
 
+import { ErrorToast } from '@/components/ErrorToast';
 import { queryClient } from '@/lib/queryClient';
 // import { useAuthGate } from '@/lib/useAuthGate';
 
@@ -39,6 +40,7 @@ export default function App() {
           />
         </Head>
         <Stack screenOptions={{ headerShown: false }} />
+        <ErrorToast />
       </ThemeProvider>
     </QueryClientProvider>
   );
