@@ -30,10 +30,10 @@ export default function UploadPage() {
   const courseId = Number(params.courseId);
   const folderId = Number(params.folderId);
 
-  const { data: course } = useCourseDetail(courseId);
+  const { data: course, isLoading: isCourseLoading } = useCourseDetail(courseId);
   // 업로드는 관리자와 공동 관리자만 할 수 있다(권한표).
   const canUpload = course?.role === 'admin' || course?.role === 'co';
-  const { data: folders } = useCourseFolders(courseId, canUpload);
+  const { data: folders, isLoading: isFoldersLoading } = useCourseFolders(courseId, canUpload);
   const folder = folders?.find((item) => item.folderId === folderId);
   const { uploadFiles, isPending } = useUploadFiles(folderId);
 
@@ -101,8 +101,8 @@ export default function UploadPage() {
         leading={{ icon: 'back', accessibilityLabel: '뒤로', onPress: goBack }}
       />
       <QueryStatus
-        isLoading={false}
-        isError={Boolean(course) && !folder}
+        isLoading={isCourseLoading || isFoldersLoading}
+        isError={!isCourseLoading && !isFoldersLoading && !folder}
         errorMessage="자료를 올릴 수 없는 폴더예요."
       />
       {folder && (

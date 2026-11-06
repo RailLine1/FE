@@ -1,32 +1,22 @@
-import { changeDummyRole, kickDummyMember } from '../dummy/members';
+import { useQueryClient } from '@tanstack/react-query';
 
-// import { useQueryClient } from '@tanstack/react-query';
-// import { useChangeRole, useKick } from '@/api/5-멤버-가입-요청/5-멤버-가입-요청';
+import { useChangeRole, useKick } from '@/api/5-멤버-가입-요청/5-멤버-가입-요청';
+import { showErrorMeta } from '@/lib/errorToast';
 
-// PATCH·DELETE /courses/{courseId}/members/{userId}
+// PATCH·DELETE /courses/{courseId}/members/{memberId}. memberId에는 목록의 userId를 넣는다.
 export function useMemberActions(courseId: number) {
-  // API 연동 시 아래 return으로 교체
-  // const queryClient = useQueryClient();
-  // const options = { mutation: { onSuccess: () => queryClient.invalidateQueries() } };
-  // const { mutate: change, isPending: isChanging } = useChangeRole(options);
-  // const { mutate: remove, isPending: isKicking } = useKick(options);
-  // return {
-  //   changeRole: (userId: number, role: 'co' | 'member', onSuccess: () => void) =>
-  //     change({ courseId, memberId: userId, data: { role } }, { onSuccess }),
-  //   kick: (userId: number, onSuccess: () => void) =>
-  //     remove({ courseId, memberId: userId }, { onSuccess }),
-  //   isPending: isChanging || isKicking,
-  // };
+  const queryClient = useQueryClient();
+  const options = {
+    mutation: { meta: showErrorMeta, onSuccess: () => queryClient.invalidateQueries() },
+  };
+  const { mutate: change, isPending: isChanging } = useChangeRole(options);
+  const { mutate: remove, isPending: isKicking } = useKick(options);
 
   return {
-    changeRole: (userId: number, role: 'co' | 'member', onSuccess: () => void) => {
-      changeDummyRole(courseId, userId, role);
-      onSuccess();
-    },
-    kick: (userId: number, onSuccess: () => void) => {
-      kickDummyMember(courseId, userId);
-      onSuccess();
-    },
-    isPending: false,
+    changeRole: (userId: number, role: 'co' | 'member', onSuccess: () => void) =>
+      change({ courseId, memberId: userId, data: { role } }, { onSuccess }),
+    kick: (userId: number, onSuccess: () => void) =>
+      remove({ courseId, memberId: userId }, { onSuccess }),
+    isPending: isChanging || isKicking,
   };
 }

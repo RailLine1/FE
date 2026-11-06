@@ -1,11 +1,8 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 
+import { useUpload } from '@/api/6-학습자료/6-학습자료';
 import { ApiError } from '@/lib/createApiFetch';
-
-import { uploadDummyFile } from '../dummy/materials';
-
-// import { useQueryClient } from '@tanstack/react-query';
-// import { useUpload } from '@/api/6-학습자료/6-학습자료';
 
 export const MAX_FILE_SIZE = 50 * 1024 * 1024;
 export const FILE_TOO_LARGE_MESSAGE = '50MB가 넘어서 올릴 수 없어요.';
@@ -43,30 +40,23 @@ function getUploadErrorMessage(error: unknown) {
 export function useUploadFiles(folderId: number) {
   const [isPending, setIsPending] = useState(false);
 
-  // API 연동 시 아래 uploadOne으로 교체. 앱에서는 uri, name, type을 담은 객체를 FormData에 넣는다.
-  // const queryClient = useQueryClient();
-  // const { mutateAsync } = useUpload();
-  // const uploadOne = ({ title, picked }: UploadInput) => {
-  //   const file =
-  //     picked.file ??
-  //     ({
-  //       uri: picked.uri,
-  //       name: picked.name,
-  //       type: picked.mimeType ?? 'application/pdf',
-  //     } as unknown as Blob);
-  //   return mutateAsync({
-  //     folderId,
-  //     params: { title: title || undefined, consent: true },
-  //     data: { file },
-  //   });
-  // };
+  const queryClient = useQueryClient();
+  const { mutateAsync } = useUpload();
 
-  const uploadOne = async ({ title, picked }: UploadInput) => {
-    // 이름에 '실패'가 있으면 서버가 거절한 경우를 확인할 수 있다.
-    if (picked.name.includes('실패')) {
-      throw new ApiError(400, 'VALIDATION_FAILED', 'file: PDF 파일이 아니에요.');
-    }
-    uploadDummyFile(folderId, title || picked.name.replace(/\.pdf$/i, '').slice(0, 80));
+  const uploadOne = ({ title, picked }: UploadInput) => {
+    // 앱에서는 uri, name, type을 담은 객체를 FormData에 넣는다.
+    const file =
+      picked.file ??
+      ({
+        uri: picked.uri,
+        name: picked.name,
+        type: picked.mimeType ?? 'application/pdf',
+      } as unknown as Blob);
+    return mutateAsync({
+      folderId,
+      params: { title: title || undefined, consent: true },
+      data: { file },
+    });
   };
 
   // 실패한 파일만 돌려준다.
@@ -80,8 +70,7 @@ export function useUploadFiles(folderId: number) {
         failures.push({ id: input.id, message: getUploadErrorMessage(error) });
       }
     }
-    // API 연동 시 주석 해제
-    // await queryClient.invalidateQueries();
+    await queryClient.invalidateQueries();
     setIsPending(false);
     return failures;
   };

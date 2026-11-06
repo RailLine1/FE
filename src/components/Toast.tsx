@@ -4,11 +4,11 @@ import { Icon } from '@/components/Icon';
 import { Fonts } from '@/styles/font';
 import { Palette } from '@/styles/palette';
 
-export function Toast({ message }: { message: string }) {
+export function Toast({ message, icon = true }: { message: string; icon?: boolean }) {
   return (
     <View accessibilityLiveRegion="polite" pointerEvents="none" style={styles.position}>
       <View style={styles.toast}>
-        <Icon name="check-white-16" color={Palette.golden} />
+        {icon && <Icon name="check-white-16" color={Palette.golden} />}
         <Text style={styles.message}>{message}</Text>
       </View>
     </View>

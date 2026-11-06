@@ -1,32 +1,24 @@
-import { removeDummyCourse } from '../dummy/courses';
+import { useQueryClient } from '@tanstack/react-query';
 
-// import { useQueryClient } from '@tanstack/react-query';
-// import { useLeave } from '@/api/3-과목/3-과목';
+import { useLeave } from '@/api/3-과목/3-과목';
+import { showErrorMeta } from '@/lib/errorToast';
 
 // POST /courses/{courseId}/leave
 export function useLeaveCourse(courseId: number) {
-  // API 연동 시 아래 return으로 교체
-  // const queryClient = useQueryClient();
-  // const { mutate, isPending } = useLeave();
-  // return {
-  //   leave: (onSuccess: () => void) =>
-  //     mutate(
-  //       { courseId },
-  //       {
-  //         onSuccess: () => {
-  //           queryClient.invalidateQueries();
-  //           onSuccess();
-  //         },
-  //       },
-  //     ),
-  //   isPending,
-  // };
+  const queryClient = useQueryClient();
+  const { mutate, isPending } = useLeave({ mutation: { meta: showErrorMeta } });
 
   return {
-    leave: (onSuccess: () => void) => {
-      removeDummyCourse(courseId);
-      onSuccess();
-    },
-    isPending: false,
+    leave: (onSuccess: () => void) =>
+      mutate(
+        { courseId },
+        {
+          onSuccess: () => {
+            queryClient.invalidateQueries();
+            onSuccess();
+          },
+        },
+      ),
+    isPending,
   };
 }

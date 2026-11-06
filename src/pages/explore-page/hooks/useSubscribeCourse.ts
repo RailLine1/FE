@@ -1,30 +1,24 @@
-import { subscribeDummyCourse } from '../dummy/courses';
-import { MyStatus } from '../courseTypes';
+import { useQueryClient } from '@tanstack/react-query';
 
-// import { useQueryClient } from '@tanstack/react-query';
-// import { useSubscribe } from '@/api/4-탐색-구독/4-탐색-구독';
+import { useSubscribe } from '@/api/4-탐색-구독/4-탐색-구독';
+import { showErrorMeta } from '@/lib/errorToast';
+
+import { MyStatus } from '../courseTypes';
 
 // POST /explore/courses/{code}/subscribe
 export function useSubscribeCourse(code: string) {
-  // API 연동 시 아래 return으로 교체. 성공하면 탐색 쿼리를 무효화하고, 409 COURSE_ENDED를 처리한다.
-  // const queryClient = useQueryClient();
-  // const { mutate, isPending } = useSubscribe();
-  // return {
-  //   subscribe: (onSuccess: (status: MyStatus) => void) =>
-  //     mutate(
-  //       { code },
-  //       {
-  //         onSuccess: ({ result }) => {
-  //           queryClient.invalidateQueries();
-  //           onSuccess(result as MyStatus);
-  //         },
-  //       },
-  //     ),
-  //   isPending,
-  // };
+  const queryClient = useQueryClient();
+  const { mutate, isPending } = useSubscribe({
+    mutation: {
+      meta: showErrorMeta,
+      // 409 COURSE_ENDED면 다시 조회해 구독 불가 상태를 보여준다.
+      onSettled: () => queryClient.invalidateQueries(),
+    },
+  });
 
   return {
-    subscribe: (onSuccess: (status: MyStatus) => void) => onSuccess(subscribeDummyCourse(code)),
-    isPending: false,
+    subscribe: (onSuccess: (status: MyStatus) => void) =>
+      mutate({ code }, { onSuccess: ({ result }) => onSuccess(result as MyStatus) }),
+    isPending,
   };
 }
