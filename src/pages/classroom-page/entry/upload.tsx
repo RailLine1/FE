@@ -10,15 +10,19 @@ import { FormField } from '@/components/FormField';
 import { Input } from '@/components/Input';
 import { QueryStatus } from '@/components/QueryStatus';
 import { Screen } from '@/components/Screen';
+import { Toast } from '@/components/Toast';
 import { Fonts } from '@/styles/font';
 import { Palette } from '@/styles/palette';
 
 import { FilePicker, PickedItem } from '../components/FilePicker';
 import { useCourseDetail } from '../hooks/useCourseDetail';
 import { useCourseFolders } from '../hooks/useCourseFolders';
-import { useUploadFiles } from '../hooks/useUploadFiles';
+import { useTimedToast } from '../hooks/useTimedToast';
+import { FILE_TOO_LARGE_MESSAGE, MAX_FILE_SIZE, useUploadFiles } from '../hooks/useUploadFiles';
 
 const TITLE_MAX_LENGTH = 80;
+
+const isTooLarge = ({ size }: { size?: number }) => (size ?? 0) > MAX_FILE_SIZE;
 
 export default function UploadPage() {
   const router = useRouter();
@@ -35,6 +39,7 @@ export default function UploadPage() {
 
   const [title, setTitle] = useState('');
   const [items, setItems] = useState<PickedItem[]>([]);
+  const { message, showToast } = useTimedToast();
   const [consent, setConsent] = useState(false);
 
   const goBack = () => {
@@ -58,7 +63,11 @@ export default function UploadPage() {
       !items.some(({ id }) => id === `${asset.name}-${asset.size}`);
     const added = result.assets
       .filter(isNew)
-      .map((picked) => ({ id: `${picked.name}-${picked.size}`, picked }));
+      .map((picked) => ({
+        id: `${picked.name}-${picked.size}`,
+        picked,
+        error: isTooLarge(picked) ? FILE_TOO_LARGE_MESSAGE : undefined,
+      }));
     setItems([...items, ...added]);
   };
 
@@ -66,10 +75,23 @@ export default function UploadPage() {
   const isMultiple = items.length > 1;
 
   const submit = async () => {
-    await uploadFiles(
+    const failures = await uploadFiles(
       items.map(({ id, picked }) => ({ id, picked, title: isMultiple ? '' : title.trim() })),
     );
-    goBack();
+    if (failures.length === 0) {
+      goBack();
+      return;
+    }
+
+    // 성공한 파일은 빼고, 실패한 파일만 이유와 함께 남겨 다시 올릴 수 있게 한다.
+    setItems(
+      failures.flatMap(({ id, message: error }) => {
+        const failed = items.find((item) => item.id === id);
+        return failed ? [{ ...failed, error }] : [];
+      }),
+    );
+    const uploaded = items.length - failures.length;
+    if (uploaded > 0) showToast(`${uploaded}개를 올렸어요`);
   };
 
   return (
@@ -117,11 +139,17 @@ export default function UploadPage() {
           <View style={styles.spacer} />
           <Button
             label="업로드"
-            disabled={items.length === 0 || !consent || isPending}
+            disabled={
+              items.length === 0 ||
+              items.some(({ picked }) => isTooLarge(picked)) ||
+              !consent ||
+              isPending
+            }
             onPress={submit}
           />
         </ScrollView>
       )}
+      {message && <Toast message={message} />}
     </Screen>
   );
 }

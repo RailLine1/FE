@@ -17,6 +17,7 @@ function formatSize(size?: number) {
 export type PickedItem = {
   id: string;
   picked: PickedFile;
+  error?: string;
 };
 
 type FilePickerProps = {
@@ -30,8 +31,8 @@ export function FilePicker({ items, disabled, onPick, onRemove }: FilePickerProp
   if (items.length > 0) {
     return (
       <View style={styles.list}>
-        {items.map(({ id, picked }) => (
-          <View key={id} style={styles.picked}>
+        {items.map(({ id, picked, error }) => (
+          <View key={id} style={[styles.picked, error ? styles.pickedError : undefined]}>
             <IconBox>
               <Icon name="document-20" color={Palette.white} />
             </IconBox>
@@ -39,7 +40,11 @@ export function FilePicker({ items, disabled, onPick, onRemove }: FilePickerProp
               <Text numberOfLines={1} style={styles.fileName}>
                 {picked.name}
               </Text>
-              <Text style={styles.fileSize}>{formatSize(picked.size)}</Text>
+              {error ? (
+                <Text style={styles.errorMessage}>{error}</Text>
+              ) : (
+                <Text style={styles.fileSize}>{formatSize(picked.size)}</Text>
+              )}
             </View>
             <IconButton
               compact
@@ -118,6 +123,10 @@ const styles = StyleSheet.create({
     borderColor: Palette.purple,
     backgroundColor: Palette.purpleTint,
   },
+  pickedError: {
+    borderColor: Palette.red,
+    backgroundColor: Palette.redTint,
+  },
   pickedText: {
     flex: 1,
     minWidth: 0,
@@ -126,6 +135,11 @@ const styles = StyleSheet.create({
     ...Fonts.bold,
     fontSize: 15,
     color: Palette.text,
+  },
+  errorMessage: {
+    ...Fonts.semiBold,
+    fontSize: 12,
+    color: Palette.red,
   },
   fileSize: {
     ...Fonts.regular,
