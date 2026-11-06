@@ -21,7 +21,7 @@ import { useMyUserId } from '../hooks/useMyUserId';
 import { useTimedToast } from '../hooks/useTimedToast';
 
 // 관리자는 본인과 관리자를 뺀 모두를, 공동 관리자는 멤버만 처리할 수 있다(P-ROLE-02).
-const canManage = (myRole: CourseRole, member: CourseMember, isMe: boolean) => {
+const canChangeMember = (myRole: CourseRole, member: CourseMember, isMe: boolean) => {
   if (isMe || member.role === 'admin') return false;
   return myRole === 'admin' || member.role === 'member';
 };
@@ -32,7 +32,9 @@ export default function MembersPage() {
   const courseId = Number(params.courseId);
   const { data: course, isLoading: isCourseLoading, isError: isCourseError } = useCourseDetail(courseId);
   const { data: settings } = useCourseSettings(courseId);
-  const { data: members, isLoading, isError } = useCourseMembers(courseId);
+  // 멤버는 권한이 없어 요청하지 않는다.
+  const canManage = course?.role === 'admin' || course?.role === 'co';
+  const { data: members, isLoading, isError } = useCourseMembers(courseId, canManage);
   const { changeRole, kick, isPending } = useMemberActions(courseId);
   const myUserId = useMyUserId();
   const { message, showToast } = useTimedToast();
@@ -96,7 +98,7 @@ export default function MembersPage() {
                   member={member}
                   isMe={isMe}
                   onPressRole={
-                    canManage(course.role, member, isMe) ? () => setTarget(member) : undefined
+                    canChangeMember(course.role, member, isMe) ? () => setTarget(member) : undefined
                   }
                 />
               );

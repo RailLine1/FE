@@ -21,7 +21,9 @@ export default function RequestsPage() {
   const params = useLocalSearchParams<{ courseId: string }>();
   const courseId = Number(params.courseId);
   const { data: course, isLoading: isCourseLoading, isError: isCourseError } = useCourseDetail(courseId);
-  const { data: requests, isLoading, isError } = useCourseJoinRequests(courseId);
+  // 멤버는 권한이 없어 요청하지 않는다.
+  const canManage = course?.role === 'admin' || course?.role === 'co';
+  const { data: requests, isLoading, isError } = useCourseJoinRequests(courseId, canManage);
   const { approve, reject, approveAll, isPending } = useJoinRequestActions(courseId);
   const { message, showToast } = useTimedToast();
 
