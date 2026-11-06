@@ -9,6 +9,7 @@ import { IconButton } from '@/components/IconButton';
 import { ListRow } from '@/components/ListRow';
 import { QueryStatus } from '@/components/QueryStatus';
 import { Screen } from '@/components/Screen';
+import { Toast } from '@/components/Toast';
 import { Fonts } from '@/styles/font';
 import { Palette } from '@/styles/palette';
 
@@ -22,6 +23,7 @@ import { useCourseFolders } from '../hooks/useCourseFolders';
 import { useGoBackToClassroom } from '../hooks/useGoBackToClassroom';
 import { useLeaveCourse } from '../hooks/useLeaveCourse';
 import { useNextAdmin } from '../hooks/useNextAdmin';
+import { useTimedToast } from '../hooks/useTimedToast';
 
 export default function CoursePage() {
   const router = useRouter();
@@ -36,6 +38,7 @@ export default function CoursePage() {
   const { nextAdmin, isLoading: isNextAdminLoading } = useNextAdmin(courseId, course?.role);
   const { leave, isPending } = useLeaveCourse(courseId);
   const [leaveVisible, setLeaveVisible] = useState(false);
+  const { message, showToast } = useTimedToast();
 
   const handleLeave = () => {
     leave(() => {
@@ -87,7 +90,7 @@ export default function CoursePage() {
               }
             />
           </GroupSection>
-          <AiSection />
+          <AiSection courseName={course.name} onNotice={showToast} />
           <View style={styles.spacer} />
           <Pressable
             accessibilityRole="button"
@@ -108,6 +111,7 @@ export default function CoursePage() {
           onLeave={handleLeave}
         />
       )}
+      {message && <Toast message={message} />}
     </Screen>
   );
 }
