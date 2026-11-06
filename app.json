@@ -1,7 +1,8 @@
 {
   "expo": {
-    "name": "RailLine1-FE",
-    "slug": "RailLine1-FE",
+    "name": "Daybit",
+    "slug": "daybit",
+    "owner": "daybit",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./src/assets/images/icon.png",
@@ -11,6 +12,7 @@
       "icon": "./src/assets/expo.icon"
     },
     "android": {
+      "package": "app.daybit",
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./src/assets/images/android-icon-foreground.png",
@@ -18,7 +20,9 @@
         "monochromeImage": "./src/assets/images/android-icon-monochrome.png"
       },
       "predictiveBackGestureEnabled": false,
-      "permissions": ["android.permission.POST_NOTIFICATIONS"]
+      "permissions": [
+        "android.permission.POST_NOTIFICATIONS"
+      ]
     },
     "web": {
       "output": "server",
@@ -39,6 +43,11 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "5115c471-2c15-49d4-8d29-ea35ef0ad4ef"
+      }
     }
   }
 }
