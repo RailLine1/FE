@@ -6,7 +6,7 @@ import { IconButton } from '@/components/IconButton';
 import { Fonts } from '@/styles/font';
 import { Palette } from '@/styles/palette';
 
-import { PickedFile } from '../hooks/useUploadFile';
+import { PickedFile } from '../hooks/useUploadFiles';
 
 function formatSize(size?: number) {
   if (!size) return '';
@@ -14,26 +14,48 @@ function formatSize(size?: number) {
   return megabytes >= 1 ? `${megabytes.toFixed(1)}MB` : `${Math.max(1, Math.round(size / 1024))}KB`;
 }
 
-type FilePickerProps = {
-  picked: PickedFile | null;
-  onPick: () => void;
-  onRemove: () => void;
+export type PickedItem = {
+  id: string;
+  picked: PickedFile;
 };
 
-export function FilePicker({ picked, onPick, onRemove }: FilePickerProps) {
-  if (picked) {
+type FilePickerProps = {
+  items: PickedItem[];
+  disabled?: boolean;
+  onPick: () => void;
+  onRemove: (id: string) => void;
+};
+
+export function FilePicker({ items, disabled, onPick, onRemove }: FilePickerProps) {
+  if (items.length > 0) {
     return (
-      <View style={styles.picked}>
-        <IconBox>
-          <Icon name="document-20" color={Palette.white} />
-        </IconBox>
-        <View style={styles.pickedText}>
-          <Text numberOfLines={1} style={styles.fileName}>
-            {picked.name}
-          </Text>
-          <Text style={styles.fileSize}>{formatSize(picked.size)}</Text>
-        </View>
-        <IconButton compact icon="close" accessibilityLabel="파일 빼기" onPress={onRemove} />
+      <View style={styles.list}>
+        {items.map(({ id, picked }) => (
+          <View key={id} style={styles.picked}>
+            <IconBox>
+              <Icon name="document-20" color={Palette.white} />
+            </IconBox>
+            <View style={styles.pickedText}>
+              <Text numberOfLines={1} style={styles.fileName}>
+                {picked.name}
+              </Text>
+              <Text style={styles.fileSize}>{formatSize(picked.size)}</Text>
+            </View>
+            <IconButton
+              compact
+              icon="close"
+              accessibilityLabel={`${picked.name} 빼기`}
+              onPress={() => onRemove(id)}
+            />
+          </View>
+        ))}
+        <Pressable
+          accessibilityRole="button"
+          disabled={disabled}
+          onPress={onPick}
+          style={styles.add}>
+          <Text style={styles.addLabel}>PDF 파일 추가</Text>
+        </Pressable>
       </View>
     );
   }
@@ -69,6 +91,22 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: Palette.textSub,
     textAlign: 'center',
+  },
+  list: {
+    gap: 8,
+  },
+  add: {
+    alignItems: 'center',
+    padding: 14,
+    borderWidth: 2,
+    borderStyle: 'dashed',
+    borderRadius: 16,
+    borderColor: Palette.line,
+  },
+  addLabel: {
+    ...Fonts.bold,
+    fontSize: 14,
+    color: Palette.purpleStrong,
   },
   picked: {
     flexDirection: 'row',
