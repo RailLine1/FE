@@ -10,15 +10,19 @@ import { FormField } from '@/components/FormField';
 import { Input } from '@/components/Input';
 import { QueryStatus } from '@/components/QueryStatus';
 import { Screen } from '@/components/Screen';
+import { Toast } from '@/components/Toast';
 import { Fonts } from '@/styles/font';
 import { Palette } from '@/styles/palette';
 
-import { FilePicker } from '../components/FilePicker';
+import { FilePicker, PickedItem } from '../components/FilePicker';
 import { useCourseDetail } from '../hooks/useCourseDetail';
 import { useCourseFolders } from '../hooks/useCourseFolders';
-import { PickedFile, useUploadFile } from '../hooks/useUploadFile';
+import { useTimedToast } from '../hooks/useTimedToast';
+import { FILE_TOO_LARGE_MESSAGE, MAX_FILE_SIZE, useUploadFiles } from '../hooks/useUploadFiles';
 
 const TITLE_MAX_LENGTH = 80;
+
+const isTooLarge = ({ size }: { size?: number }) => (size ?? 0) > MAX_FILE_SIZE;
 
 export default function UploadPage() {
   const router = useRouter();
@@ -31,10 +35,11 @@ export default function UploadPage() {
   const canUpload = course?.role === 'admin' || course?.role === 'co';
   const { data: folders } = useCourseFolders(courseId, canUpload);
   const folder = folders?.find((item) => item.folderId === folderId);
-  const { upload, isPending } = useUploadFile(folderId);
+  const { uploadFiles, isPending } = useUploadFiles(folderId);
 
   const [title, setTitle] = useState('');
-  const [picked, setPicked] = useState<PickedFile | null>(null);
+  const [items, setItems] = useState<PickedItem[]>([]);
+  const { message, showToast } = useTimedToast();
   const [consent, setConsent] = useState(false);
 
   const goBack = () => {
@@ -47,8 +52,46 @@ export default function UploadPage() {
   };
 
   const pickFile = async () => {
-    const result = await DocumentPicker.getDocumentAsync({ type: 'application/pdf' });
-    if (!result.canceled) setPicked(result.assets[0]);
+    const result = await DocumentPicker.getDocumentAsync({
+      type: 'application/pdf',
+      multiple: true,
+    });
+    if (result.canceled) return;
+
+    // 같은 파일을 다시 골라도 한 번만 올린다.
+    const isNew = (asset: DocumentPicker.DocumentPickerAsset) =>
+      !items.some(({ id }) => id === `${asset.name}-${asset.size}`);
+    const added = result.assets
+      .filter(isNew)
+      .map((picked) => ({
+        id: `${picked.name}-${picked.size}`,
+        picked,
+        error: isTooLarge(picked) ? FILE_TOO_LARGE_MESSAGE : undefined,
+      }));
+    setItems([...items, ...added]);
+  };
+
+  // 자료 이름은 파일이 1개일 때만 정할 수 있다. 여러 개면 파일 이름으로 저장한다.
+  const isMultiple = items.length > 1;
+
+  const submit = async () => {
+    const failures = await uploadFiles(
+      items.map(({ id, picked }) => ({ id, picked, title: isMultiple ? '' : title.trim() })),
+    );
+    if (failures.length === 0) {
+      goBack();
+      return;
+    }
+
+    // 성공한 파일은 빼고, 실패한 파일만 이유와 함께 남겨 다시 올릴 수 있게 한다.
+    setItems(
+      failures.flatMap(({ id, message: error }) => {
+        const failed = items.find((item) => item.id === id);
+        return failed ? [{ ...failed, error }] : [];
+      }),
+    );
+    const uploaded = items.length - failures.length;
+    if (uploaded > 0) showToast(`${uploaded}개를 올렸어요`);
   };
 
   return (
@@ -70,29 +113,43 @@ export default function UploadPage() {
           <FormField label="폴더">
             <Input readOnly value={folder.name} accessibilityLabel="폴더" />
           </FormField>
-          <FormField
-            label="자료 이름"
-            value={title}
-            maxLength={TITLE_MAX_LENGTH}
-            onChangeText={setTitle}
+          {!isMultiple && (
+            <FormField
+              label="자료 이름"
+              value={title}
+              maxLength={TITLE_MAX_LENGTH}
+              onChangeText={setTitle}
+            />
+          )}
+          <FilePicker
+            items={items}
+            disabled={isPending}
+            onPick={pickFile}
+            onRemove={(id) => setItems(items.filter((item) => item.id !== id))}
           />
-          <FilePicker picked={picked} onPick={pickFile} onRemove={() => setPicked(null)} />
           <Checkbox
             label="본인이 수강 중인 과목 자료이며, 수강생끼리만 사용하는 데 동의해요."
             checked={consent}
             onValueChange={setConsent}
           />
-          <Text style={styles.note}>처리가 끝나면 구독자의 AI가 참고 가능해요.</Text>
+          <Text style={styles.note}>
+            {isMultiple && '여러 파일은 파일 이름으로 저장돼요. '}처리가 끝나면 구독자의 AI가 참고
+            가능해요.
+          </Text>
           <View style={styles.spacer} />
           <Button
             label="업로드"
-            disabled={!picked || !consent || isPending}
-            onPress={() => {
-              if (picked) upload({ title: title.trim(), picked }, goBack);
-            }}
+            disabled={
+              items.length === 0 ||
+              items.some(({ picked }) => isTooLarge(picked)) ||
+              !consent ||
+              isPending
+            }
+            onPress={submit}
           />
         </ScrollView>
       )}
+      {message && <Toast message={message} />}
     </Screen>
   );
 }
