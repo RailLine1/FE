@@ -14,7 +14,7 @@ import Head from 'expo-router/head';
 
 import { ErrorToast } from '@/components/ErrorToast';
 import { queryClient } from '@/lib/queryClient';
-// import { useAuthGate } from '@/lib/useAuthGate';
+import { useAuthGate } from '@/lib/useAuthGate';
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -25,8 +25,7 @@ export default function App() {
     Nunito_800ExtraBold,
     Nunito_900Black,
   });
-  // TODO: 더미 데이터 화면 확인이 끝나면 되돌린다. 제출 전에 반드시 복구한다.
-  // useAuthGate(fontsLoaded);
+  useAuthGate(fontsLoaded);
   if (!fontsLoaded) return null;
 
   return (
