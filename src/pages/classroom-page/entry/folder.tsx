@@ -37,7 +37,7 @@ export default function FolderPage() {
     isError,
   } = useFolderFiles(folderId, canView && Boolean(folder));
   const openFile = useOpenFile();
-  const deleteFile = useDeleteCourseFile(folderId);
+  const deleteFile = useDeleteCourseFile();
   const [deleting, setDeleting] = useState<CourseFile | null>(null);
 
   const goBack = () => {
