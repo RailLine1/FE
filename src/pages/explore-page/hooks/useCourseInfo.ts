@@ -1,16 +1,8 @@
-import { useSyncExternalStore } from 'react';
+import { useInfo } from '@/api/4-탐색-구독/4-탐색-구독';
 
-import { dummyStore } from '../dummy/courses';
 import { ExploreCourseDetail } from '../courseTypes';
 
-// import { useInfo } from '@/api/4-탐색-구독/4-탐색-구독';
-
-// GET /explore/courses/{code}
+// GET /explore/courses/{code}. 없는 과목과 권한 없는 비공개 과목은 404로 온다.
 export function useCourseInfo(code: string) {
-  // API 연동 시 아래 return으로 교체. 없는 과목과 권한 없는 비공개 과목은 404로 온다.
-  // return useInfo<ExploreCourseDetail>(code);
-
-  const courses = useSyncExternalStore(dummyStore.subscribe, dummyStore.getCourses, dummyStore.getCourses);
-  const data: ExploreCourseDetail | undefined = courses.find((course) => course.code === code);
-  return { data, isLoading: false, isError: !data };
+  return useInfo<ExploreCourseDetail>(code);
 }
