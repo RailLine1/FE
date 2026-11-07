@@ -16,6 +16,7 @@ import { ListRow } from '@/components/ListRow';
 import { QueryStatus } from '@/components/QueryStatus';
 import { Screen } from '@/components/Screen';
 import { TabBar } from '@/components/TabBar';
+import { unregisterPushToken } from '@/lib/pushNotifications';
 import { queryClient } from '@/lib/queryClient';
 import { tokenStorage } from '@/lib/tokenStorage';
 import { Fonts } from '@/styles/font';
@@ -44,6 +45,8 @@ export default function ProfilePage() {
     const tokens = await tokenStorage.get();
     // 서버 요청이 실패해도 이 기기에서는 로그아웃한다.
     if (tokens) {
+      // 인증이 필요해서 토큰을 지우기 전에 기기 알림 토큰부터 지운다.
+      await unregisterPushToken();
       await logout
         .mutateAsync({ data: { refreshToken: tokens.refreshToken } })
         .catch(() => undefined);
