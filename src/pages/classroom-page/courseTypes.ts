@@ -123,6 +123,17 @@ export type CourseSettings = {
   midExamDate: string | null;
   finalExamDate: string | null;
   rawAllowed: boolean | null;
+  quizSource: QuizSource | null;
+};
+
+// Bit 문제를 만드는 AI. 기본은 Gemini Flash, 아니면 관리자가 등록한 내 AI 출제(P-AI-09, 10)
+export type MyAiName = 'claude' | 'chatgpt';
+export type QuizSource = { type: 'default'; ai?: null } | { type: 'myai'; ai: MyAiName };
+
+// GET /me/myai. 예약 실행이 한 번이라도 들어온 AI만 고를 수 있다.
+export type MyAiStatus = {
+  ai: MyAiName;
+  registered: boolean;
 };
 
 // PATCH /courses/{courseId}. 바꾼 항목만 보낸다.
@@ -133,6 +144,7 @@ export type UpdateCourseInput = {
   midExamDate?: string | null;
   finalExamDate?: string | null;
   rawAllowed?: boolean;
+  quizSource?: QuizSource;
 };
 
 // GET /courses/{courseId}/join-requests

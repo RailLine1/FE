@@ -13,11 +13,12 @@ import { Toggle } from '@/components/Toggle';
 import { Fonts } from '@/styles/font';
 import { Palette } from '@/styles/palette';
 
-import { CourseSettings, CourseVisibility, UpdateCourseInput } from '../courseTypes';
+import { CourseSettings, CourseVisibility, QuizSource, UpdateCourseInput } from '../courseTypes';
 import { useCourseNotify } from '../hooks/useCourseNotify';
 import { useMemberSummary } from '../hooks/useMemberSummary';
 import { useUpdateCourse } from '../hooks/useUpdateCourse';
 import { GroupSection } from './GroupSection';
+import { isSameQuizSource, QuizSourceSection } from './QuizSourceSection';
 import { SettingsSummary } from './SettingsSummary';
 
 const INTRO_MAX_LENGTH = 30;
@@ -47,6 +48,8 @@ export function ManagerSettings({ courseId, settings, onSaved }: ManagerSettings
   const [midExamDate, setMidExamDate] = useState(settings.midExamDate);
   const [finalExamDate, setFinalExamDate] = useState(settings.finalExamDate);
   const [rawAllowed, setRawAllowed] = useState(settings.rawAllowed ?? true);
+  const savedQuizSource: QuizSource = settings.quizSource ?? { type: 'default' };
+  const [quizSource, setQuizSource] = useState<QuizSource>(savedQuizSource);
 
   const save = () => {
     const next: UpdateCourseInput = {
@@ -60,6 +63,9 @@ export function ManagerSettings({ courseId, settings, onSaved }: ManagerSettings
     const changes = Object.fromEntries(
       Object.entries(next).filter(([key, value]) => value !== settings[key as keyof CourseSettings]),
     );
+
+    // 객체라 따로 비교한다. 내가 등록하지 않은 AI면 400 QUIZ_SOURCE_UNAVAILABLE이 온다.
+    if (!isSameQuizSource(quizSource, savedQuizSource)) changes.quizSource = quizSource;
 
     if (Object.keys(changes).length === 0) onSaved();
     else updateCourse(changes, onSaved);
@@ -131,6 +137,7 @@ export function ManagerSettings({ courseId, settings, onSaved }: ManagerSettings
           }
         />
       </GroupSection>
+      <QuizSourceSection value={quizSource} onChange={setQuizSource} />
       <GroupSection title="자료 · 알림">
         <Toggle
           divider
