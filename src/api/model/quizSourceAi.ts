@@ -13,6 +13,6 @@ export type QuizSourceAi = typeof QuizSourceAi[keyof typeof QuizSourceAi] | null
 
 
 export const QuizSourceAi = {
-  claudecode: 'claudecode',
-  codex: 'codex',
+  claude: 'claude',
+  chatgpt: 'chatgpt',
 } as const;

@@ -9,7 +9,7 @@ import type { QuizSource } from './quizSource';
 import type { UpdateCourseRequestVisibility } from './updateCourseRequestVisibility';
 
 /**
- * 바꿀 항목만 보내요
+ * 바꿀 항목만 보내요. intro · midExamDate · finalExamDate 는 null 을 보내면 지워요. 다른 항목의 null 은 변경 없음이에요
  */
 export interface UpdateCourseRequest {
   /**
