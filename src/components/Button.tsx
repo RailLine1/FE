@@ -38,18 +38,21 @@ export function Button({
   const colors: { background?: string; border?: string; shadow?: string; text: string } =
     variants[variant];
   const large = size === 'large';
+  const depth = large ? 4 : 3;
 
   return (
     <Pressable
       accessibilityRole="button"
       disabled={disabled}
       onPress={onPress}
-      style={[
+      // 누르면 그림자 높이만큼 내려가 눌린 것처럼 보인다(Claude Design db-btn:active).
+      style={({ pressed }) => [
         styles.base,
         large ? styles.large : styles.small,
         colors.background && { backgroundColor: colors.background },
         colors.border && { borderWidth: 2, borderColor: colors.border },
-        colors.shadow && { boxShadow: `0 ${large ? 4 : 3}px 0 ${colors.shadow}` },
+        colors.shadow && { boxShadow: `0 ${depth}px 0 ${colors.shadow}` },
+        pressed && colors.shadow && { boxShadow: 'none', transform: [{ translateY: depth }] },
         disabled && styles.disabled,
         style,
       ]}>
