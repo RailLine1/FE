@@ -7,8 +7,8 @@ import type { Tokens } from '@/lib/createApiFetch';
 import { queryClient } from '@/lib/queryClient';
 import { tokenStorage } from '@/lib/tokenStorage';
 
-// 로그인을 마친 뒤 도착하는 화면. 강의실 화면이 합쳐지면 이 경로만 바꾼다.
-export const HOME_ROUTE = '/';
+// 로그인을 마친 뒤 도착하는 화면. 첫 탭인 강의실로 간다.
+export const HOME_ROUTE = '/classroom';
 
 export async function startSession(tokens: TokenPair | undefined) {
   await tokenStorage.set(tokens as Tokens);
