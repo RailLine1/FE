@@ -11,5 +11,5 @@ export type QuizSourceType = typeof QuizSourceType[keyof typeof QuizSourceType];
 
 export const QuizSourceType = {
   default: 'default',
-  workspace: 'workspace',
+  myai: 'myai',
 } as const;

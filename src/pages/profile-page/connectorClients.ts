@@ -73,15 +73,15 @@ export function connectedSummary(clients: ClientStatus[] = []) {
   return connected.length > 1 ? `${name} 외 ${connected.length - 1}개` : `${name} 연결됨`;
 }
 
-export function lastUsedText(iso: string, now = new Date()) {
+export function lastUsedText(iso: string, now = new Date(), label = '마지막 사용') {
   const date = new Date(iso);
   const time = `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
   const startOfDay = (value: Date) =>
     new Date(value.getFullYear(), value.getMonth(), value.getDate()).getTime();
   const days = Math.round((startOfDay(now) - startOfDay(date)) / 86_400_000);
-  if (days === 0) return `마지막 사용 오늘 ${time}`;
-  if (days === 1) return `마지막 사용 어제 ${time}`;
-  return `마지막 사용 ${date.getMonth() + 1}월 ${date.getDate()}일`;
+  if (days === 0) return `${label} 오늘 ${time}`;
+  if (days === 1) return `${label} 어제 ${time}`;
+  return `${label} ${date.getMonth() + 1}월 ${date.getDate()}일`;
 }
 
 const STREAK_LEVELS = ['#e5e5e5', '#b18cff1f', '#b18cff', '#9e70ff', '#8952ff'];

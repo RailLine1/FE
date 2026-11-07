@@ -9,7 +9,7 @@ import type { QuizSourceAi } from './quizSourceAi';
 import type { QuizSourceType } from './quizSourceType';
 
 /**
- * `{type:"default"}` 또는 `{type:"workspace", ai:"claudecode"}` (본인 작업 공간 AI만, P-AI-09)
+ * `{type:"default"}`(Gemini Flash) 또는 `{type:"myai", ai:"claude"|"chatgpt"}`(내 AI 출제에 등록한 본인 AI만, P-AI-09 · 10)
  */
 export interface QuizSource {
   type?: QuizSourceType;

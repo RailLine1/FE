@@ -135,7 +135,8 @@ export const useCompleteOnboarding = <TError = ErrorType<unknown>,
 }
 
 /**
- * 받은 url 을 외부 브라우저로 열어요. 연결이 끝나면 redirect 로 `?code=` 가 붙어 돌아오고, exchange 로 바꾼 토큰은 같은 계정이에요. 다른 계정에 연결된 GitHub 면 `?error=GITHUB_ALREADY_LINKED`
+ * **쓰는 화면 없음** · 내 AI 출제가 GitHub 연결 없이 바뀌면서 P-ACC-06 이 삭제됐어요. 받은 url 을 외부 브라우저로 열어요. 연결이 끝나면 redirect 로 `?code=` 가 붙어 돌아오고, exchange 로 바꾼 토큰은 같은 계정이에요. 다른 계정에 연결된 GitHub 면 `?error=GITHUB_ALREADY_LINKED`
+ * @deprecated
  * @summary GitHub 계정 연결 주소 (P-ACC-06)
  */
 export const link = async (githubLinkRequest: GithubLinkRequest, options?: RequestInit): Promise<GithubLinkResponse> => {
@@ -202,6 +203,7 @@ const {mutation: mutationOptions} = options ?
     export type LinkMutationVariables = {data: BodyType<GithubLinkRequest>}
 
     /**
+ * @deprecated
  * @summary GitHub 계정 연결 주소 (P-ACC-06)
  */
 export const useLink = <TError = ErrorType<unknown>,
