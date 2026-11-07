@@ -14,6 +14,7 @@ import Head from 'expo-router/head';
 
 import { ErrorToast } from '@/components/ErrorToast';
 import { queryClient } from '@/lib/queryClient';
+import { usePushNotifications } from '@/lib/pushNotifications';
 import { useAuthGate } from '@/lib/useAuthGate';
 
 export default function App() {
@@ -26,6 +27,7 @@ export default function App() {
     Nunito_900Black,
   });
   useAuthGate(fontsLoaded);
+  usePushNotifications(fontsLoaded);
   if (!fontsLoaded) return null;
 
   return (

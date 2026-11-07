@@ -1,12 +1,14 @@
 import { PermissionsAndroid, Platform } from 'react-native';
 
+import { registerPushToken } from '@/lib/pushNotifications';
+
 // P-NOTI-01. 거절하거나 실패해도 다음 화면으로 넘어간다.
-// ponytail: 권한 요청까지만 한다. Firebase 설정이 들어오면 expo-notifications로 FCM 토큰을 받아
-// POST /push/tokens로 등록한다. Expo Go 안드로이드는 푸시를 지원하지 않아 지금은 넣지 않는다.
+// 허용하면 기기 토큰을 POST /push/tokens로 등록한다. 기다리지 않고 다음 화면으로 간다.
 export async function requestNotificationPermission() {
   try {
     if (Platform.OS === 'android') {
       await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS);
+      registerPushToken();
     } else if (Platform.OS === 'web' && typeof Notification !== 'undefined') {
       await Notification.requestPermission();
     }
