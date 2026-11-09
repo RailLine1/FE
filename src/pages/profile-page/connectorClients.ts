@@ -1,6 +1,8 @@
-// P-AI-01. 지원하는 AI 4개와 등록 가이드.
-// 시안에는 Claude 2단계 문구만 있어 나머지 단계와 명령은 실제 화면을 확인한 뒤 다듬는다.
-const ISSUE_STEP = { text: '아래 [새로 발급]으로 내 개인 주소를 받아 복사해요.' };
+// P-AI-01, P-AI-06. 지원하는 AI(Claude, ChatGPT)와 등록 단계. 메뉴 이름은 각 앱의 실제 화면 기준이다.
+// copy: 'url'이면 내 주소, 그 밖의 문자열은 {url}을 내 주소로 바꾼 명령을 단계 안에 복사 상자로 보여 준다.
+export type GuideStep = { text: string; copy?: string };
+
+export const ADDRESS_PLACEHOLDER = '<내 개인 주소>';
 
 export const CONNECTOR_CLIENTS = {
   claude: {
@@ -8,10 +10,11 @@ export const CONNECTOR_CLIENTS = {
     description: '웹 · 데스크톱 · 모바일 앱',
     shortcut: 'https://claude.ai',
     steps: [
-      ISSUE_STEP,
-      { text: "Claude 웹에서 설정 › 커넥터 › '커스텀 커넥터 추가'를 눌러요." },
-      { text: '복사한 주소를 붙여 넣고 추가를 눌러요.' },
-      { text: '새 대화에서 Daybit 커넥터를 켜고 과목 자료를 물어봐요.' },
+      { text: "Claude 왼쪽 사이드바에서 '사용자 지정'을 선택해요." },
+      { text: "'커넥터'를 선택하고, 오른쪽 위 '추가' › '커스텀 커넥터 추가'를 눌러요." },
+      { text: "이름은 Daybit, 서버 URL은 아래 주소를 붙여넣고 '추가'를 눌러요.", copy: 'url' },
+      { text: "Daybit 커넥터의 도구 권한에서 읽기 전용 도구를 '항상 허용'으로 바꿔요. 자료를 읽을 때마다 묻지 않아요." },
+      { text: '새 대화에서 과목 자료를 물어보면 연결이 확인돼요.' },
     ],
   },
   chatgpt: {
@@ -19,56 +22,37 @@ export const CONNECTOR_CLIENTS = {
     description: '웹 · 데스크톱 · 모바일 앱',
     shortcut: 'https://chatgpt.com',
     steps: [
-      ISSUE_STEP,
-      { text: 'ChatGPT 웹에서 설정 › 커넥터로 들어가요.' },
-      { text: '복사한 주소를 붙여 넣고 추가를 눌러요.' },
-      { text: '새 대화에서 Daybit 커넥터를 켜고 과목 자료를 물어봐요.' },
-    ],
-  },
-  claudecode: {
-    name: 'Claude Code',
-    description: '터미널',
-    steps: [
-      ISSUE_STEP,
       {
-        text: '터미널에서 아래 명령을 실행해요.',
-        command: 'claude mcp add --transport http daybit <내 개인 주소>',
+        text: "ChatGPT 왼쪽 메뉴에서 '플러그인'에 들어가 검색창 옆 '+'를 눌러요. '+'가 안 보이면 설정 › 플러그인 맨 아래에서 '개발자 모드'를 켜요. 일부 요금제에서는 연결이 제한될 수 있어요.",
       },
-      { text: 'Claude Code에서 /mcp를 입력해 daybit 연결을 확인해요.' },
-    ],
-  },
-  codex: {
-    name: 'Codex',
-    description: '터미널',
-    steps: [
-      ISSUE_STEP,
-      {
-        text: '터미널에서 아래 명령을 실행해요.',
-        command: 'codex mcp add daybit --url <내 개인 주소>',
-      },
-      { text: 'Codex에서 /mcp를 입력해 daybit 연결을 확인해요.' },
+      { text: "이름은 Daybit, 인증은 '없음'을 고르고 아래 주소를 붙여넣어요.", copy: 'url' },
+      { text: '새 대화에서 Daybit를 켜고 과목 자료를 물어보면 연결이 확인돼요.' },
     ],
   },
 } as const satisfies Record<
   string,
-  {
-    name: string;
-    description: string;
-    shortcut?: string;
-    steps: readonly { text: string; command?: string }[];
-  }
+  { name: string; description: string; shortcut?: string; steps: readonly GuideStep[] }
 >;
+
+// 복사 상자에 보여 줄 값. 주소가 없으면(발급 전 · 화면을 나갔다 온 뒤) 자리표시를 넣는다.
+export function copyText(copy: string, url?: string) {
+  const address = url ?? ADDRESS_PLACEHOLDER;
+  return copy === 'url' ? address : copy.replace('{url}', address);
+}
 
 export type ConnectorClient = keyof typeof CONNECTOR_CLIENTS;
 export const CONNECTOR_CLIENT_KEYS = Object.keys(CONNECTOR_CLIENTS) as ConnectorClient[];
 
-type ClientStatus = { client?: ConnectorClient; lastCalledAt?: string | null };
+type ClientStatus = { client?: string; lastCalledAt?: string | null };
+
+export const isConnectorClient = (client?: string): client is ConnectorClient =>
+  Boolean(client && client in CONNECTOR_CLIENTS);
 
 // P-AI-04. 호출 기록이 있으면 등록된 것으로 본다.
 export function connectedSummary(clients: ClientStatus[] = []) {
-  const connected = clients.filter(({ client, lastCalledAt }) => client && lastCalledAt);
+  const connected = clients.filter(({ client, lastCalledAt }) => isConnectorClient(client) && lastCalledAt);
   const [first] = connected;
-  if (!first?.client) return '미등록';
+  if (!first || !isConnectorClient(first.client)) return '미등록';
   const name = CONNECTOR_CLIENTS[first.client].name;
   return connected.length > 1 ? `${name} 외 ${connected.length - 1}개` : `${name} 연결됨`;
 }

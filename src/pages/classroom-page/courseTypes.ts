@@ -30,7 +30,7 @@ export type CourseFolder = {
 
 // GET /me/connector
 export type ConnectorClient = {
-  client: 'claude' | 'chatgpt' | 'claudecode' | 'codex';
+  client: 'claude' | 'chatgpt';
   lastCalledAt: string | null;
 };
 

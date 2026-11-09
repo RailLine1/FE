@@ -1,5 +1,5 @@
 import { useRouter } from 'expo-router';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { useGet2 } from '@/api/10-커넥터/10-커넥터';
 import { AppBar } from '@/components/AppBar';
@@ -11,6 +11,7 @@ import { Fonts } from '@/styles/font';
 import { Palette } from '@/styles/palette';
 
 import { CONNECTOR_CLIENT_KEYS, CONNECTOR_CLIENTS, lastUsedText } from '../connectorClients';
+import { CONNECTOR_LOGOS } from '../connectorLogos';
 
 // P-AI-01, P-AI-04
 export default function ConnectorPage() {
@@ -46,7 +47,7 @@ export default function ConnectorPage() {
               }
               style={styles.row}>
               <View style={styles.mark}>
-                <Text style={styles.markLetter}>{name.slice(0, 1)}</Text>
+                <Image source={CONNECTOR_LOGOS[client]} style={styles.logo} />
               </View>
               <View style={styles.rowText}>
                 <Text style={styles.name}>{name}</Text>
@@ -105,14 +106,12 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 12,
     borderColor: Palette.line,
-    backgroundColor: Palette.surfaceMuted,
+    backgroundColor: Palette.white,
     boxShadow: `0 3px 0 ${Palette.line}`,
   },
-  markLetter: {
-    ...Fonts.black,
-    fontSize: 18,
-    lineHeight: 27,
-    color: Palette.text,
+  logo: {
+    width: 24,
+    height: 24,
   },
   rowText: {
     flex: 1,
