@@ -28,13 +28,19 @@ export const CONNECTOR_CLIENTS = {
   chatgpt: {
     name: 'ChatGPT',
     description: '웹 · 데스크톱 · 모바일 앱',
-    shortcut: 'https://chatgpt.com',
+    shortcut: 'https://chatgpt.com/plugins',
     steps: [
+      { text: "[바로가기]로 ChatGPT '플러그인'을 열고 '+'를 눌러요." },
       {
-        text: "ChatGPT 왼쪽 메뉴에서 '플러그인'에 들어가 검색창 옆 '+'를 눌러요. '+'가 안 보이면 설정 › 플러그인 맨 아래에서 '개발자 모드'를 켜요. 일부 요금제에서는 연결이 제한될 수 있어요.",
+        text: "이름은 Daybit, 연결은 '서버 URL'에 아래 주소를 붙여넣어요. 인증은 'OAuth 또는 인증 없음' 그대로 둬요.",
+        copy: 'url',
       },
-      { text: "이름은 Daybit, 인증은 '없음'을 고르고 아래 주소를 붙여넣어요.", copy: 'url' },
-      { text: '새 대화에서 Daybit를 켜고 과목 자료를 물어보면 연결이 확인돼요.' },
+      {
+        text: "위험 안내의 '이해했으며 계속 진행하겠습니다'를 체크하고 '플러그인으로 생성'을 눌러요.",
+      },
+      {
+        text: '새 대화에서 과목 자료를 물어보면 ChatGPT가 Daybit를 알아서 써요. 그때 연결이 확인돼요.',
+      },
     ],
   },
 } as const satisfies Record<
