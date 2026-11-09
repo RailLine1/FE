@@ -2,41 +2,44 @@ import { useQueryClient } from '@tanstack/react-query';
 import * as Clipboard from 'expo-clipboard';
 import * as Linking from 'expo-linking';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ReactNode, useState } from 'react';
+import { Image, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { getGet2QueryKey, useGet2, useReissue } from '@/api/10-커넥터/10-커넥터';
 import { AppBar } from '@/components/AppBar';
 import { BottomSheet } from '@/components/BottomSheet';
 import { Button } from '@/components/Button';
-import { Icon } from '@/components/Icon';
 import { Screen } from '@/components/Screen';
-import { SectionLabel } from '@/components/SectionLabel';
 import { Fonts } from '@/styles/font';
 import { Palette } from '@/styles/palette';
 
-import { CONNECTOR_CLIENTS, ConnectorClient, lastUsedText } from '../connectorClients';
-import { ISSUED_URL_KEY } from './connectorIssued';
+import {
+  CONNECTOR_CLIENTS,
+  ConnectorClient,
+  GuideStep,
+  copyText,
+  lastUsedText,
+} from '../connectorClients';
+import { CONNECTOR_LOGOS } from '../connectorLogos';
 
-// P-AI-02, P-AI-06
+// P-AI-02, P-AI-04, P-AI-06. 단계를 한 화면에 모두 보여 주고, 복사할 주소 · 명령은 그 단계 안에 둔다.
 export default function ConnectorGuidePage() {
   const router = useRouter();
   const queryClient = useQueryClient();
   const params = useLocalSearchParams<{ client: string }>();
   const client = (params.client in CONNECTOR_CLIENTS ? params.client : 'claude') as ConnectorClient;
-  const info: {
-    name: string;
-    shortcut?: string;
-    steps: readonly { text: string; command?: string }[];
-  } = CONNECTOR_CLIENTS[client];
+  const info: { name: string; description: string; shortcut?: string; steps: readonly GuideStep[] } =
+    CONNECTOR_CLIENTS[client];
 
   const { data } = useGet2();
   const reissue = useReissue();
-  const [step, setStep] = useState(0);
-  const [copied, setCopied] = useState(false);
+  // 전체 주소는 비밀값이라 저장하지 않고 이 화면에 있는 동안만 들고 있는다(P-AI-02).
+  const [issuedUrl, setIssuedUrl] = useState<string>();
+  // 처음 열면 서버가 주소를 만들어 전체 주소를 한 번 내려준다(fullUrlShown).
+  const url = issuedUrl ?? (data?.fullUrlShown ? data.url : undefined);
+  const [copied, setCopied] = useState<number>();
   const [confirmIssue, setConfirmIssue] = useState(false);
 
-  const current = info.steps[step];
   const lastCalledAt = data?.clients?.find((item) => item.client === client)?.lastCalledAt;
 
   const back = () => {
@@ -47,24 +50,17 @@ export default function ConnectorGuidePage() {
   const issue = () => {
     setConfirmIssue(false);
     reissue.mutate(undefined, {
-      onSuccess: ({ url }) => {
-        // 주소에 비밀값이 있어 경로 값으로 넘기지 않는다.
-        queryClient.setQueryData(ISSUED_URL_KEY, url);
+      onSuccess: ({ url: issued }) => {
+        setIssuedUrl(issued);
+        setCopied(undefined);
         queryClient.invalidateQueries({ queryKey: getGet2QueryKey() });
-        router.push('/profile/connector/issued');
       },
     });
   };
 
-  const copyCommand = async () => {
-    if (!current.command) return;
-    await Clipboard.setStringAsync(current.command);
-    setCopied(true);
-  };
-
-  const move = (next: number) => {
-    setStep(next);
-    setCopied(false);
+  const copy = async (index: number, text: string) => {
+    await Clipboard.setStringAsync(text);
+    setCopied(index);
   };
 
   return (
@@ -76,121 +72,105 @@ export default function ConnectorGuidePage() {
       <ScrollView style={styles.scroll} contentContainerStyle={styles.content}>
         <View style={styles.header}>
           <View style={styles.mark}>
-            <Text style={styles.markLetter}>{info.name.slice(0, 1)}</Text>
+            <Image source={CONNECTOR_LOGOS[client]} style={styles.logo} />
           </View>
-          <Text accessibilityRole="header" numberOfLines={1} style={styles.name}>
-            {info.name}
-          </Text>
+          <View style={styles.headerText}>
+            <Text accessibilityRole="header" numberOfLines={1} style={styles.name}>
+              {info.name}
+            </Text>
+            <Text style={styles.description}>{info.description}</Text>
+          </View>
           {info.shortcut && (
             <Button
               label="바로가기"
               variant="secondary"
               size="small"
               onPress={() => Linking.openURL(info.shortcut as string)}
-              style={styles.shortcut}
             />
           )}
         </View>
 
         <View style={styles.card}>
-          <View style={styles.step}>
-            <View style={styles.stepNumber}>
-              <Text style={styles.stepNumberLabel}>{step + 1}</Text>
-            </View>
-            <Text style={styles.stepText}>{current.text}</Text>
-          </View>
+          <Text style={styles.cardTitle}>연결 방법</Text>
 
-          {/* ponytail: 실제 캡처가 없어 시안의 자리표시를 그대로 둔다. 이미지가 나오면 교체한다. */}
-          <View style={styles.capture}>
-            {current.command ? (
-              <Text selectable style={styles.command}>
-                {current.command}
-              </Text>
+          <Step number={1} text={url ? '내 개인 주소가 준비됐어요. 전체 주소는 지금 한 번만 보여요.' : '내 개인 주소는 처음 한 번만 보여요. 잃어버렸다면 새로 발급하세요. 이전 주소는 바로 동작하지 않아요.'}>
+            {url ? (
+              <Text style={styles.issued}>아래 단계에서 복사해 쓰세요.</Text>
             ) : (
-              <Text style={styles.captureLabel}>
-                {`[${info.name} 화면 캡처 ${step + 1} / ${info.steps.length}]`}
-              </Text>
+              <Button
+                label="새로 발급"
+                variant="secondary"
+                size="small"
+                disabled={reissue.isPending}
+                onPress={() => setConfirmIssue(true)}
+                style={styles.issueButton}
+              />
             )}
-            <Pressable
-              accessibilityRole="button"
-              accessibilityLabel="이전 단계"
-              disabled={step === 0}
-              onPress={() => move(step - 1)}
-              style={[styles.arrow, styles.previous, step === 0 && styles.arrowDisabled]}>
-              <Icon name="chevron-left-22" />
-            </Pressable>
-            <Pressable
-              accessibilityRole="button"
-              accessibilityLabel="다음 단계"
-              disabled={step === info.steps.length - 1}
-              onPress={() => move(step + 1)}
-              style={[
-                styles.arrow,
-                styles.next,
-                step === info.steps.length - 1 && styles.arrowDisabled,
-              ]}>
-              <Icon name="chevron-right-20" color={Palette.text} />
-            </Pressable>
-          </View>
+            {reissue.isError && (
+              <Text style={styles.error}>발급하지 못했어요. 잠시 후 다시 시도해 주세요.</Text>
+            )}
+          </Step>
 
-          {current.command && (
-            <Button
-              label={copied ? '복사했어요' : '명령 복사'}
-              variant="secondary"
-              size="small"
-              onPress={copyCommand}
-              style={styles.wideButton}
-            />
-          )}
-
-          <View style={styles.dots}>
-            {info.steps.map((item, index) => (
-              <View key={item.text} style={[styles.dot, index === step && styles.activeDot]} />
-            ))}
-          </View>
+          {info.steps.map((step, index) => (
+            <Step key={step.text} number={index + 2} text={step.text}>
+              {step.copy && (
+                <View style={styles.copyBox}>
+                  <Text selectable style={[styles.copyText, !url && styles.copyPlaceholder]}>
+                    {copyText(step.copy, url)}
+                  </Text>
+                  <Button
+                    label={copied === index ? '복사됨' : '복사'}
+                    variant="secondary"
+                    size="small"
+                    disabled={!url}
+                    onPress={() => copy(index, copyText(step.copy as string, url))}
+                  />
+                </View>
+              )}
+            </Step>
+          ))}
         </View>
 
-        <View style={styles.card}>
-          <SectionLabel>내 개인 주소</SectionLabel>
-          <Button
-            label="새로 발급"
-            variant="secondary"
-            size="small"
-            disabled={reissue.isPending}
-            onPress={() => setConfirmIssue(true)}
-            style={styles.wideButton}
-          />
-          {reissue.isError && (
-            <Text style={styles.error}>발급하지 못했어요. 잠시 후 다시 시도해 주세요.</Text>
-          )}
-          <Text style={styles.addressNotice}>
-            전체 주소는 발급 직후 한 번만 보여요. 잃어버렸다면 새로 발급하세요. 이전 주소는 바로
-            동작하지 않아요.
-          </Text>
-        </View>
-
-        {lastCalledAt && (
+        {lastCalledAt ? (
           <View style={styles.connected}>
             <View style={styles.connectedBadge}>
               <Text style={styles.connectedLabel}>연결 확인됨</Text>
             </View>
             <Text style={styles.connectedText}>{lastUsedText(lastCalledAt)}</Text>
           </View>
+        ) : (
+          <Text style={styles.notice}>
+            AI가 Daybit 자료를 처음 읽으면 여기에 연결 확인이 표시돼요.
+          </Text>
         )}
       </ScrollView>
 
-      {/* 시안에는 없지만 이전 주소가 바로 무효가 되어 한 번 확인한다. */}
+      {/* 이전 주소가 바로 무효가 되어 한 번 확인한다. */}
       <BottomSheet
         visible={confirmIssue}
         onClose={() => setConfirmIssue(false)}
         title="새 주소를 발급할까요?"
-        description="지금 쓰는 주소는 바로 동작하지 않아요. AI 설정에 새 주소를 다시 넣어야 해요.">
+        description="지금 쓰는 주소는 바로 동작하지 않아요. 등록한 AI에 새 주소를 다시 넣어야 해요.">
         <View style={styles.sheetActions}>
           <Button label="새로 발급" variant="danger" onPress={issue} />
           <Button label="취소" variant="text" onPress={() => setConfirmIssue(false)} />
         </View>
       </BottomSheet>
     </Screen>
+  );
+}
+
+function Step({ number, text, children }: { number: number; text: string; children?: ReactNode }) {
+  return (
+    <View style={styles.step}>
+      <View style={styles.stepNumber}>
+        <Text style={styles.stepNumberLabel}>{number}</Text>
+      </View>
+      <View style={styles.stepBody}>
+        <Text style={styles.stepText}>{text}</Text>
+        {children}
+      </View>
+    </View>
   );
 }
 
@@ -207,7 +187,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 12,
-    height: 48,
     marginBottom: 4,
   },
   mark: {
@@ -218,117 +197,99 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 14,
     borderColor: Palette.line,
-    backgroundColor: Palette.surfaceMuted,
+    backgroundColor: Palette.white,
   },
-  markLetter: {
-    ...Fonts.black,
-    fontSize: 20,
-    lineHeight: 30,
-    color: Palette.text,
+  logo: {
+    width: 26,
+    height: 26,
+  },
+  headerText: {
+    flex: 1,
   },
   name: {
     ...Fonts.black,
-    flex: 1,
     fontSize: 22,
     lineHeight: 33,
     color: Palette.text,
   },
-  shortcut: {
-    alignSelf: 'center',
+  description: {
+    ...Fonts.regular,
+    fontSize: 13,
+    lineHeight: 19.5,
+    color: Palette.textSub,
   },
   card: {
-    gap: 12,
+    gap: 16,
     padding: 16,
     borderWidth: 2,
     borderRadius: 20,
     borderColor: Palette.line,
   },
+  cardTitle: {
+    ...Fonts.bold,
+    fontSize: 13,
+    lineHeight: 19.5,
+    color: Palette.textSub,
+  },
   step: {
     flexDirection: 'row',
     gap: 10,
-    minHeight: 45,
   },
   stepNumber: {
     alignItems: 'center',
     justifyContent: 'center',
-    width: 28,
-    height: 28,
-    borderRadius: 8,
-    backgroundColor: Palette.purple,
+    width: 24,
+    height: 24,
+    borderRadius: 7,
+    backgroundColor: Palette.surfaceMuted,
   },
   stepNumberLabel: {
-    ...Fonts.black,
-    fontSize: 14,
-    lineHeight: 21,
-    color: Palette.white,
+    ...Fonts.bold,
+    fontSize: 13,
+    lineHeight: 19.5,
+    color: Palette.textSub,
+  },
+  stepBody: {
+    flex: 1,
+    gap: 8,
   },
   stepText: {
     ...Fonts.regular,
-    flex: 1,
     fontSize: 15,
     lineHeight: 22.5,
     color: Palette.text,
   },
-  capture: {
+  issueButton: {
+    alignSelf: 'flex-start',
+  },
+  issued: {
+    ...Fonts.semiBold,
+    fontSize: 13,
+    lineHeight: 19.5,
+    color: Palette.green,
+  },
+  copyBox: {
+    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    height: 180,
-    paddingHorizontal: 56,
-    borderWidth: 2,
-    borderStyle: 'dashed',
-    borderRadius: 14,
+    gap: 8,
+    padding: 12,
+    borderWidth: 1,
+    borderRadius: 12,
     borderColor: Palette.line,
     backgroundColor: Palette.surfaceMuted,
   },
-  captureLabel: {
-    ...Fonts.semiBold,
-    fontSize: 13,
-    lineHeight: 19.5,
-    textAlign: 'center',
-    color: Palette.textSub,
-  },
-  command: {
-    ...Fonts.semiBold,
-    fontSize: 13,
-    lineHeight: 19.5,
+  copyText: {
+    flex: 1,
+    minWidth: 0,
+    // 주소 · 명령에는 띄어쓰기가 없어 웹에서 줄이 안 바뀌고 버튼을 밀어낸다.
+    ...(Platform.OS === 'web' ? ({ wordBreak: 'break-all' } as object) : null),
+    fontFamily: 'monospace',
+    fontSize: 12,
+    lineHeight: 18,
     color: Palette.text,
   },
-  arrow: {
-    position: 'absolute',
-    top: 68,
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: Palette.white,
-  },
-  previous: {
-    left: 6,
-  },
-  next: {
-    right: 6,
-  },
-  arrowDisabled: {
-    opacity: 0.4,
-  },
-  wideButton: {
-    alignSelf: 'stretch',
-  },
-  dots: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    gap: 6,
-  },
-  dot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: Palette.line,
-  },
-  activeDot: {
-    width: 24,
-    backgroundColor: Palette.purple,
+  copyPlaceholder: {
+    color: Palette.textSub,
   },
   error: {
     ...Fonts.semiBold,
@@ -336,11 +297,12 @@ const styles = StyleSheet.create({
     lineHeight: 18,
     color: Palette.red,
   },
-  addressNotice: {
+  notice: {
     ...Fonts.regular,
     fontSize: 12,
     lineHeight: 18,
     color: Palette.textSub,
+    paddingHorizontal: 4,
   },
   sheetActions: {
     gap: 12,
