@@ -2,13 +2,14 @@ import { useQueryClient } from '@tanstack/react-query';
 import * as Clipboard from 'expo-clipboard';
 import * as Linking from 'expo-linking';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { ReactNode, useState } from 'react';
-import { Image, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useState } from 'react';
+import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { getGet2QueryKey, useGet2, useReissue } from '@/api/10-커넥터/10-커넥터';
 import { AppBar } from '@/components/AppBar';
 import { BottomSheet } from '@/components/BottomSheet';
 import { Button } from '@/components/Button';
+import { CopyBox, GuideStep as Step } from '@/components/GuideStep';
 import { Screen } from '@/components/Screen';
 import { Fonts } from '@/styles/font';
 import { Palette } from '@/styles/palette';
@@ -28,8 +29,12 @@ export default function ConnectorGuidePage() {
   const queryClient = useQueryClient();
   const params = useLocalSearchParams<{ client: string }>();
   const client = (params.client in CONNECTOR_CLIENTS ? params.client : 'claude') as ConnectorClient;
-  const info: { name: string; description: string; shortcut?: string; steps: readonly GuideStep[] } =
-    CONNECTOR_CLIENTS[client];
+  const info: {
+    name: string;
+    description: string;
+    shortcut?: string;
+    steps: readonly GuideStep[];
+  } = CONNECTOR_CLIENTS[client];
 
   const { data } = useGet2();
   const reissue = useReissue();
@@ -65,10 +70,7 @@ export default function ConnectorGuidePage() {
 
   return (
     <Screen>
-      <AppBar
-        borderless
-        leading={{ icon: 'back', accessibilityLabel: '뒤로', onPress: back }}
-      />
+      <AppBar borderless leading={{ icon: 'back', accessibilityLabel: '뒤로', onPress: back }} />
       <ScrollView style={styles.scroll} contentContainerStyle={styles.content}>
         <View style={styles.header}>
           <View style={styles.mark}>
@@ -93,7 +95,13 @@ export default function ConnectorGuidePage() {
         <View style={styles.card}>
           <Text style={styles.cardTitle}>연결 방법</Text>
 
-          <Step number={1} text={url ? '내 개인 주소가 준비됐어요. 전체 주소는 지금 한 번만 보여요.' : '내 개인 주소는 처음 한 번만 보여요. 잃어버렸다면 새로 발급하세요. 이전 주소는 바로 동작하지 않아요.'}>
+          <Step
+            number={1}
+            text={
+              url
+                ? '내 개인 주소가 준비됐어요. 전체 주소는 지금 한 번만 보여요.'
+                : '내 개인 주소는 처음 한 번만 보여요. 잃어버렸다면 새로 발급하세요. 이전 주소는 바로 동작하지 않아요.'
+            }>
             {url ? (
               <Text style={styles.issued}>아래 단계에서 복사해 쓰세요.</Text>
             ) : (
@@ -114,18 +122,12 @@ export default function ConnectorGuidePage() {
           {info.steps.map((step, index) => (
             <Step key={step.text} number={index + 2} text={step.text}>
               {step.copy && (
-                <View style={styles.copyBox}>
-                  <Text selectable style={[styles.copyText, !url && styles.copyPlaceholder]}>
-                    {copyText(step.copy, url)}
-                  </Text>
-                  <Button
-                    label={copied === index ? '복사됨' : '복사'}
-                    variant="secondary"
-                    size="small"
-                    disabled={!url}
-                    onPress={() => copy(index, copyText(step.copy as string, url))}
-                  />
-                </View>
+                <CopyBox
+                  value={copyText(step.copy, url)}
+                  placeholder={!url}
+                  copied={copied === index}
+                  onCopy={() => copy(index, copyText(step.copy as string, url))}
+                />
               )}
             </Step>
           ))}
@@ -157,20 +159,6 @@ export default function ConnectorGuidePage() {
         </View>
       </BottomSheet>
     </Screen>
-  );
-}
-
-function Step({ number, text, children }: { number: number; text: string; children?: ReactNode }) {
-  return (
-    <View style={styles.step}>
-      <View style={styles.stepNumber}>
-        <Text style={styles.stepNumberLabel}>{number}</Text>
-      </View>
-      <View style={styles.stepBody}>
-        <Text style={styles.stepText}>{text}</Text>
-        {children}
-      </View>
-    </View>
   );
 }
 
@@ -231,34 +219,6 @@ const styles = StyleSheet.create({
     lineHeight: 19.5,
     color: Palette.textSub,
   },
-  step: {
-    flexDirection: 'row',
-    gap: 10,
-  },
-  stepNumber: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 24,
-    height: 24,
-    borderRadius: 7,
-    backgroundColor: Palette.surfaceMuted,
-  },
-  stepNumberLabel: {
-    ...Fonts.bold,
-    fontSize: 13,
-    lineHeight: 19.5,
-    color: Palette.textSub,
-  },
-  stepBody: {
-    flex: 1,
-    gap: 8,
-  },
-  stepText: {
-    ...Fonts.regular,
-    fontSize: 15,
-    lineHeight: 22.5,
-    color: Palette.text,
-  },
   issueButton: {
     alignSelf: 'flex-start',
   },
@@ -267,29 +227,6 @@ const styles = StyleSheet.create({
     fontSize: 13,
     lineHeight: 19.5,
     color: Palette.green,
-  },
-  copyBox: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    padding: 12,
-    borderWidth: 1,
-    borderRadius: 12,
-    borderColor: Palette.line,
-    backgroundColor: Palette.surfaceMuted,
-  },
-  copyText: {
-    flex: 1,
-    minWidth: 0,
-    // 주소 · 명령에는 띄어쓰기가 없어 웹에서 줄이 안 바뀌고 버튼을 밀어낸다.
-    ...(Platform.OS === 'web' ? ({ wordBreak: 'break-all' } as object) : null),
-    fontFamily: 'monospace',
-    fontSize: 12,
-    lineHeight: 18,
-    color: Palette.text,
-  },
-  copyPlaceholder: {
-    color: Palette.textSub,
   },
   error: {
     ...Fonts.semiBold,

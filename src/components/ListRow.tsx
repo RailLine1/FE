@@ -20,6 +20,7 @@ type ListRowProps = {
   chevron?: boolean;
   highlighted?: boolean;
   titleTone?: 'default' | 'accent' | 'danger';
+  subtitleTone?: 'default' | 'danger';
   onPress?: () => void;
 };
 
@@ -36,6 +37,7 @@ export function ListRow({
   chevron,
   highlighted,
   titleTone = 'default',
+  subtitleTone = 'default',
   onPress,
 }: ListRowProps) {
   const rowStyle = [
@@ -57,7 +59,11 @@ export function ListRow({
           ]}>
           {title}
         </Text>
-        {subtitle && <Text style={styles.subtitle}>{subtitle}</Text>}
+        {subtitle && (
+          <Text style={[styles.subtitle, subtitleTone === 'danger' && styles.danger]}>
+            {subtitle}
+          </Text>
+        )}
       </View>
       {value && <Text style={styles.value}>{value}</Text>}
       {meta && <Text style={styles.meta}>{meta}</Text>}

@@ -137,7 +137,7 @@ export function ManagerSettings({ courseId, settings, onSaved }: ManagerSettings
           }
         />
       </GroupSection>
-      <QuizSourceSection value={quizSource} onChange={setQuizSource} />
+      <QuizSourceSection courseId={courseId} value={quizSource} onChange={setQuizSource} />
       <GroupSection title="자료 · 알림">
         <Toggle
           divider
