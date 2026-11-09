@@ -39,7 +39,7 @@ export const MY_AI_GUIDES: Partial<Record<MyAi, MyAiGuide>> = {
     notice:
       'ChatGPT는 요금제에 따라 예약 작업에서 커넥터를 쓰지 못할 수 있어요. 안 되면 Gemini가 대신 만들어요.',
     steps: [
-      { text: "[바로가기]로 ChatGPT를 열고 새 대화의 입력창 '+'에서 Daybit를 켜요." },
+      { text: '[바로가기]로 ChatGPT 새 대화를 열어요. 연결한 Daybit는 따로 켜지 않아도 돼요.' },
       {
         text: '아래 작업 내용을 붙여넣고 보내요. ChatGPT가 매일 실행되는 예약 작업을 만들어요.',
         copy: true,
