@@ -5,7 +5,6 @@ import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useLogout } from '@/api/1-인증/1-인증';
 import { useGet2 } from '@/api/10-커넥터/10-커넥터';
 import { useGet } from '@/api/2-내-정보/2-내-정보';
-import { useGet1 } from '@/api/11-내-ai-출제/11-내-ai-출제';
 import { useMyStreak } from '@/api/7-bit/7-bit';
 import { AppBar } from '@/components/AppBar';
 import { BottomSheet } from '@/components/BottomSheet';
@@ -23,14 +22,12 @@ import { Fonts } from '@/styles/font';
 import { Palette } from '@/styles/palette';
 
 import { connectedSummary, streakColor } from '../connectorClients';
-import { myAiSummary } from '../myAi';
 
 export default function ProfilePage() {
   const router = useRouter();
   const me = useGet();
   const streak = useMyStreak({ weeks: 15 });
   const connector = useGet2();
-  const myAi = useGet1();
   const logout = useLogout();
   const [confirmLogout, setConfirmLogout] = useState(false);
 
@@ -110,16 +107,6 @@ export default function ProfilePage() {
               </View>
             }
             onPress={() => router.push('/profile/connector')}
-          />
-          <ListRow
-            title={<Text style={styles.menuTitle}>출제 AI 등록</Text>}
-            trailing={
-              <View style={styles.menuTrailing}>
-                <Text style={styles.menuValue}>{myAiSummary(myAi.data?.ais)}</Text>
-                <Icon name="chevron-right-20" />
-              </View>
-            }
-            onPress={() => router.push('/profile/myai')}
           />
           {/* P-NOTI-02. 시안에 이동할 화면이 없고, 알림은 과목별 화면에서 바꾼다. */}
           <ListRow

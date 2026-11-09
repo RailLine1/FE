@@ -8,12 +8,20 @@ export const CONNECTOR_CLIENTS = {
   claude: {
     name: 'Claude',
     description: '웹 · 데스크톱 · 모바일 앱',
-    shortcut: 'https://claude.ai',
+    shortcut: 'https://claude.ai/customize/connectors',
     steps: [
-      { text: "Claude 왼쪽 사이드바에서 '사용자 지정'을 선택해요." },
-      { text: "'커넥터'를 선택하고, 오른쪽 위 '추가' › '커스텀 커넥터 추가'를 눌러요." },
-      { text: "이름은 Daybit, 서버 URL은 아래 주소를 붙여넣고 '추가'를 눌러요.", copy: 'url' },
-      { text: "Daybit 커넥터의 도구 권한에서 읽기 전용 도구를 '항상 허용'으로 바꿔요. 자료를 읽을 때마다 묻지 않아요." },
+      {
+        text: "[바로가기]로 Claude 커넥터 화면을 열어요. 왼쪽 사이드바의 '사용자 지정' › '커넥터'와 같은 화면이에요.",
+      },
+      { text: "오른쪽 위 '추가' › '커스텀 커넥터 추가'를 눌러요." },
+      {
+        text: "이름은 Daybit, 서버 URL은 아래 주소를 붙여넣어요. 인증은 '로그인 없음'을 고르고, 나머지는 그대로 두고 '추가'를 눌러요.",
+        copy: 'url',
+      },
+      { text: "Daybit 화면에서 '연결'을 눌러요." },
+      {
+        text: "Daybit 커넥터의 도구 권한에서 읽기 전용 도구를 '항상 허용'으로 바꿔요. 자료를 읽을 때마다 묻지 않아요.",
+      },
       { text: '새 대화에서 과목 자료를 물어보면 연결이 확인돼요.' },
     ],
   },
@@ -50,7 +58,9 @@ export const isConnectorClient = (client?: string): client is ConnectorClient =>
 
 // P-AI-04. 호출 기록이 있으면 등록된 것으로 본다.
 export function connectedSummary(clients: ClientStatus[] = []) {
-  const connected = clients.filter(({ client, lastCalledAt }) => isConnectorClient(client) && lastCalledAt);
+  const connected = clients.filter(
+    ({ client, lastCalledAt }) => isConnectorClient(client) && lastCalledAt,
+  );
   const [first] = connected;
   if (!first || !isConnectorClient(first.client)) return '미등록';
   const name = CONNECTOR_CLIENTS[first.client].name;
