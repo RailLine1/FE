@@ -22,10 +22,10 @@ type FileRowProps = {
   file: CourseFile;
   canManage: boolean;
   onOpen: () => void;
-  onDelete: () => void;
+  onEdit: () => void;
 };
 
-export function FileRow({ file, canManage, onOpen, onDelete }: FileRowProps) {
+export function FileRow({ file, canManage, onOpen, onEdit }: FileRowProps) {
   const { status } = file;
 
   return (
@@ -41,7 +41,12 @@ export function FileRow({ file, canManage, onOpen, onDelete }: FileRowProps) {
       badgeVariant={status === 'failed' ? 'danger' : 'pending'}
       trailing={
         canManage && status !== 'processing' ? (
-          <IconButton compact icon="trash" accessibilityLabel="자료 삭제" onPress={onDelete} />
+          <IconButton
+            compact
+            icon="more"
+            accessibilityLabel="자료 이름 바꾸기 · 삭제"
+            onPress={onEdit}
+          />
         ) : undefined
       }
       onPress={status === 'ready' ? onOpen : undefined}

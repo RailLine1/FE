@@ -1,9 +1,8 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useState } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text } from 'react-native';
 
 import { AppBar } from '@/components/AppBar';
-import { BottomSheet } from '@/components/BottomSheet';
 import { Button } from '@/components/Button';
 import { ListGroup } from '@/components/ListGroup';
 import { QueryStatus } from '@/components/QueryStatus';
@@ -11,13 +10,15 @@ import { Screen } from '@/components/Screen';
 import { Fonts } from '@/styles/font';
 import { Palette } from '@/styles/palette';
 
-import { FileRow, getFileTitle } from '../components/FileRow';
+import { EditFileSheet } from '../components/EditFileSheet';
+import { FileRow } from '../components/FileRow';
 import { CourseFile } from '../courseTypes';
 import { useCourseDetail } from '../hooks/useCourseDetail';
 import { useCourseFolders } from '../hooks/useCourseFolders';
 import { useDeleteCourseFile } from '../hooks/useDeleteCourseFile';
 import { useFolderFiles } from '../hooks/useFolderFiles';
 import { useOpenFile } from '../hooks/useOpenFile';
+import { useRenameCourseFile } from '../hooks/useRenameCourseFile';
 
 export default function FolderPage() {
   const router = useRouter();
@@ -38,11 +39,13 @@ export default function FolderPage() {
   } = useFolderFiles(folderId, canView && Boolean(folder));
   const openFile = useOpenFile();
   const deleteFile = useDeleteCourseFile();
-  const [deleting, setDeleting] = useState<CourseFile | null>(null);
+  const renameFile = useRenameCourseFile();
+  const [editing, setEditing] = useState<CourseFile | null>(null);
 
   const goBack = () => {
     if (router.canGoBack()) router.back();
-    else router.replace({ pathname: '/classroom/[courseId]', params: { courseId: params.courseId } });
+    else
+      router.replace({ pathname: '/classroom/[courseId]', params: { courseId: params.courseId } });
   };
 
   return (
@@ -82,7 +85,7 @@ export default function FolderPage() {
                   file={file}
                   canManage={canManage}
                   onOpen={() => openFile(file.fileId)}
-                  onDelete={() => setDeleting(file)}
+                  onEdit={() => setEditing(file)}
                 />
               ))}
             </ListGroup>
@@ -91,7 +94,8 @@ export default function FolderPage() {
             {canManage
               ? [
                   '처리 중인 자료는 관리자에게만 보여요.',
-                  folder.kind !== 'custom' && 'mid · final은 기본 폴더라 이름을 바꾸거나 지울 수 없어요.',
+                  folder.kind !== 'custom' &&
+                    'mid · final은 기본 폴더라 이름을 바꾸거나 지울 수 없어요.',
                 ]
                   .filter(Boolean)
                   .join('\n')
@@ -99,23 +103,15 @@ export default function FolderPage() {
           </Text>
         </ScrollView>
       )}
-      <BottomSheet
-        visible={Boolean(deleting)}
-        title={deleting ? `${getFileTitle(deleting)}를 삭제할까요?` : undefined}
-        description="삭제한 자료는 되돌릴 수 없어요."
-        onClose={() => setDeleting(null)}>
-        <View style={styles.sheetActions}>
-          <Button
-            label="삭제"
-            variant="danger"
-            onPress={() => {
-              if (deleting) deleteFile(deleting.fileId);
-              setDeleting(null);
-            }}
-          />
-          <Button label="취소" variant="text" onPress={() => setDeleting(null)} />
-        </View>
-      </BottomSheet>
+      {editing && (
+        <EditFileSheet
+          key={editing.fileId}
+          file={editing}
+          onClose={() => setEditing(null)}
+          onRename={(title) => renameFile(editing.fileId, title)}
+          onDelete={() => deleteFile(editing.fileId)}
+        />
+      )}
     </Screen>
   );
 }
@@ -136,9 +132,6 @@ const styles = StyleSheet.create({
     ...Fonts.semiBold,
     fontSize: 12,
     color: Palette.textSub,
-  },
-  sheetActions: {
-    gap: 12,
   },
   note: {
     ...Fonts.semiBold,

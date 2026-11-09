@@ -20,8 +20,6 @@ import { useCourseFolders } from '../hooks/useCourseFolders';
 import { useTimedToast } from '../hooks/useTimedToast';
 import { FILE_TOO_LARGE_MESSAGE, MAX_FILE_SIZE, useUploadFiles } from '../hooks/useUploadFiles';
 
-const TITLE_MAX_LENGTH = 80;
-
 const isTooLarge = ({ size }: { size?: number }) => (size ?? 0) > MAX_FILE_SIZE;
 
 export default function UploadPage() {
@@ -37,7 +35,6 @@ export default function UploadPage() {
   const folder = folders?.find((item) => item.folderId === folderId);
   const { uploadFiles, isPending } = useUploadFiles(folderId);
 
-  const [title, setTitle] = useState('');
   const [items, setItems] = useState<PickedItem[]>([]);
   const { message, showToast } = useTimedToast();
   const [consent, setConsent] = useState(false);
@@ -61,22 +58,18 @@ export default function UploadPage() {
     // 같은 파일을 다시 골라도 한 번만 올린다.
     const isNew = (asset: DocumentPicker.DocumentPickerAsset) =>
       !items.some(({ id }) => id === `${asset.name}-${asset.size}`);
-    const added = result.assets
-      .filter(isNew)
-      .map((picked) => ({
-        id: `${picked.name}-${picked.size}`,
-        picked,
-        error: isTooLarge(picked) ? FILE_TOO_LARGE_MESSAGE : undefined,
-      }));
+    const added = result.assets.filter(isNew).map((picked) => ({
+      id: `${picked.name}-${picked.size}`,
+      picked,
+      error: isTooLarge(picked) ? FILE_TOO_LARGE_MESSAGE : undefined,
+    }));
     setItems([...items, ...added]);
   };
 
-  // 자료 이름은 파일이 1개일 때만 정할 수 있다. 여러 개면 파일 이름으로 저장한다.
-  const isMultiple = items.length > 1;
-
   const submit = async () => {
     const failures = await uploadFiles(
-      items.map(({ id, picked }) => ({ id, picked, title: isMultiple ? '' : title.trim() })),
+      // 자료 이름은 파일 이름으로 저장한다(서버가 확장자를 뗀다). 이름은 폴더에서 바꾼다.
+      items.map(({ id, picked }) => ({ id, picked, title: '' })),
     );
     if (failures.length === 0) {
       goBack();
@@ -113,14 +106,6 @@ export default function UploadPage() {
           <FormField label="폴더">
             <Input readOnly value={folder.name} accessibilityLabel="폴더" />
           </FormField>
-          {!isMultiple && (
-            <FormField
-              label="자료 이름"
-              value={title}
-              maxLength={TITLE_MAX_LENGTH}
-              onChangeText={setTitle}
-            />
-          )}
           <FilePicker
             items={items}
             disabled={isPending}
@@ -133,8 +118,8 @@ export default function UploadPage() {
             onValueChange={setConsent}
           />
           <Text style={styles.note}>
-            {isMultiple && '여러 파일은 파일 이름으로 저장돼요. '}처리가 끝나면 구독자의 AI가 참고
-            가능해요.
+            여러 파일을 한 번에 고를 수 있어요. 자료 이름은 파일 이름으로 저장되고, 폴더에서 바꿀 수
+            있어요. 처리가 끝나면 구독자의 AI가 참고할 수 있어요.
           </Text>
           <View style={styles.spacer} />
           <Button
