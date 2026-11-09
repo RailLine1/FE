@@ -11,6 +11,7 @@ export type ExploreItemMyStatus = typeof ExploreItemMyStatus[keyof typeof Explor
 
 export const ExploreItemMyStatus = {
   subscribed: 'subscribed',
+  managing: 'managing',
   pending: 'pending',
   none: 'none',
 } as const;

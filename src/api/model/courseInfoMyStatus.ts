@@ -11,6 +11,7 @@ export type CourseInfoMyStatus = typeof CourseInfoMyStatus[keyof typeof CourseIn
 
 export const CourseInfoMyStatus = {
   subscribed: 'subscribed',
+  managing: 'managing',
   pending: 'pending',
   none: 'none',
 } as const;

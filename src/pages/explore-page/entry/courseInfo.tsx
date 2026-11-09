@@ -28,6 +28,7 @@ function getStatusBadge({
   visibility,
 }: ExploreCourseDetail): { label: string; variant: BadgeVariant } {
   if (myStatus === 'subscribed') return { label: '구독 중', variant: 'success' };
+  if (myStatus === 'managing') return { label: '관리 중', variant: 'admin' };
   if (ended) return { label: '수강 종료', variant: 'member' };
   if (visibility === 'private') return { label: '비공개', variant: 'member' };
   return { label: '공개 과목', variant: 'pending' };
@@ -88,7 +89,7 @@ export default function CourseInfoPage() {
               <Badge label={badge.label} variant={badge.variant} />
             </View>
           </View>
-          {course.myStatus !== 'subscribed' && (
+          {course.myStatus !== 'subscribed' && course.myStatus !== 'managing' && (
             <ListGroup>
               <ListRow title="과목 코드" value={course.code} />
               {course.myStatus === 'pending' && (

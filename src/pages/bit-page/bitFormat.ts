@@ -10,10 +10,10 @@ export function circledNumber(index = 0) {
 }
 
 export function compareToAverage(elapsedSec = 0, averageSec = 0) {
+  // P-SOC-03 경쟁보다 꾸준함: 평균보다 빠를 때만 차이를 말하고, 아니면 오늘 푼 것 자체를 칭찬한다
   const gap = averageSec - elapsedSec;
   if (gap > 0) return `평균보다 ${gap}초 빨라요`;
-  if (gap < 0) return `평균보다 ${-gap}초 느려요`;
-  return '평균과 같아요';
+  return '오늘도 해냈어요';
 }
 
 export function evidenceText(evidence?: { file?: string; page?: number }) {

@@ -14,7 +14,7 @@ type Action = {
 
 function getAction({ myStatus, ended, visibility }: ExploreCourseDetail): Action {
   // 상태별 버튼(P-COURSE-06)
-  if (myStatus === 'subscribed') return { label: '강의실로 이동', action: 'classroom' };
+  if (myStatus === 'subscribed' || myStatus === 'managing') return { label: '강의실로 이동', action: 'classroom' };
   if (myStatus === 'pending') {
     return { label: '대기 중', note: '관리자가 승인하면 강의실에 나타나요.' };
   }

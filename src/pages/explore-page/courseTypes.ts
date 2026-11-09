@@ -1,5 +1,6 @@
 // API 명세 3. 탐색 · 구독 기준
-export type MyStatus = 'subscribed' | 'pending' | 'none';
+// managing: 내가 관리자 · 공동 관리자인 과목
+export type MyStatus = 'subscribed' | 'managing' | 'pending' | 'none';
 
 export type ExploreSort = 'subscribers' | 'newest';
 
