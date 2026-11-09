@@ -75,7 +75,7 @@ export default function CoursePage() {
           <GroupSection title="아카이브">
             <ListRow
               title="기록"
-              subtitle={`지난 퀴즈 ${course.archiveCount}개 · 메모`}
+              subtitle={`지난 Bit ${course.archiveCount}개 · 메모`}
               leading={
                 <IconBox tone="soft">
                   <Icon name="archive-20" color={Palette.purpleStrong} />

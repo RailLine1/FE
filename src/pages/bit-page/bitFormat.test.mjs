@@ -23,8 +23,8 @@ test('보기 번호를 원문자로 바꾼다', () => {
 
 test('평균과 비교한다', () => {
   assert.equal(compareToAverage(38, 80), '평균보다 42초 빨라요');
-  assert.equal(compareToAverage(90, 80), '평균보다 10초 느려요');
-  assert.equal(compareToAverage(80, 80), '평균과 같아요');
+  assert.equal(compareToAverage(90, 80), '오늘도 해냈어요');
+  assert.equal(compareToAverage(80, 80), '오늘도 해냈어요');
 });
 
 test('근거 자료 문구를 만든다', () => {

@@ -10,6 +10,7 @@ import { ExploreCourse } from '../courseTypes';
 
 function getBadge({ myStatus, ended }: ExploreCourse): { label: string; variant: BadgeVariant } | null {
   if (myStatus === 'subscribed') return { label: '구독 중', variant: 'subscribed' };
+  if (myStatus === 'managing') return { label: '관리 중', variant: 'admin' };
   if (myStatus === 'pending') return { label: '대기 중', variant: 'pending' };
   if (ended) return { label: '종료', variant: 'member' };
   return null;
