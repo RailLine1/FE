@@ -1,4 +1,6 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'expo-router';
+import { useEffect } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { AppBar } from '@/components/AppBar';
@@ -8,6 +10,7 @@ import { Screen } from '@/components/Screen';
 import { SectionLabel } from '@/components/SectionLabel';
 import { TabBar } from '@/components/TabBar';
 import { Fonts } from '@/styles/font';
+import { prefetchCourse, prefetchTabs } from '@/lib/prefetch';
 import { Palette } from '@/styles/palette';
 
 import { TileGrid } from '../components/TileGrid';
@@ -16,6 +19,15 @@ import { useMyCourses } from '../hooks/useMyCourses';
 export default function ClassroomPage() {
   const router = useRouter();
   const { data: courses, isLoading, isError } = useMyCourses('active');
+  const queryClient = useQueryClient();
+
+  // 첫 화면이 뜨면 다른 탭과 내 과목 상세를 미리 받아 두어 이동할 때 로딩이 없게 한다.
+  useEffect(() => {
+    prefetchTabs(queryClient);
+  }, [queryClient]);
+  useEffect(() => {
+    courses?.forEach(({ courseId }) => prefetchCourse(queryClient, courseId));
+  }, [courses, queryClient]);
 
   return (
     <Screen hasTabBar>
