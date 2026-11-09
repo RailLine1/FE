@@ -13,7 +13,13 @@ import { QueryStatus } from '@/components/QueryStatus';
 import { Screen } from '@/components/Screen';
 import { lastUsedText } from '@/pages/profile-page/connectorClients';
 import { CONNECTOR_LOGOS } from '@/pages/profile-page/connectorLogos';
-import { MY_AI_GUIDES, MY_AI_NAMES, isMyAi, isRunLate } from '@/pages/profile-page/myAi';
+import {
+  MY_AI_GUIDES,
+  MY_AI_NAMES,
+  isMyAi,
+  isRunLate,
+  scheduleCopy,
+} from '@/pages/profile-page/myAi';
 import { Fonts } from '@/styles/font';
 import { Palette } from '@/styles/palette';
 
@@ -32,6 +38,7 @@ export default function MyAiGuidePage() {
 
   const item = myAi.data?.ais?.find((status) => status.ai === ai);
   const late = isRunLate(item?.lastRunAt);
+  const copyValue = scheduleCopy(ai, item?.schedulePrompt);
   const connected = Boolean(connector.data?.clients?.find((c) => c.client === ai)?.lastCalledAt);
 
   const back = () => {
@@ -44,8 +51,8 @@ export default function MyAiGuidePage() {
   };
 
   const copyPrompt = async () => {
-    if (!item?.schedulePrompt) return;
-    await Clipboard.setStringAsync(item.schedulePrompt);
+    if (!copyValue) return;
+    await Clipboard.setStringAsync(copyValue);
     setCopied(true);
   };
 
@@ -101,12 +108,13 @@ export default function MyAiGuidePage() {
         {connected && (
           <View style={styles.card}>
             <Text style={styles.cardTitle}>예약 작업 만들기</Text>
+            {guide?.notice && <Text style={styles.notice}>{guide.notice}</Text>}
             {steps.map((step, index) => (
               <GuideStep key={step.text} number={index + 1} text={step.text}>
                 {step.copy && (
                   <CopyBox
-                    value={item?.schedulePrompt ?? ''}
-                    placeholder={!item?.schedulePrompt}
+                    value={copyValue}
+                    placeholder={!copyValue}
                     copied={copied}
                     onCopy={copyPrompt}
                   />
