@@ -22,7 +22,7 @@ export function ArchiveCard({ post, last, onOpen }: ArchiveCardProps) {
           <Text style={styles.avatarLabel}>D</Text>
         </View>
         <View style={styles.headerText}>
-          <Text style={styles.author}>Daybit 퀴즈 · 자동 게시</Text>
+          <Text style={styles.author}>Daybit Bit · 자동 게시</Text>
           <Text style={styles.meta}>{`#${post.no} · ${formatRelativeDate(post.archivedAt)}`}</Text>
         </View>
       </View>

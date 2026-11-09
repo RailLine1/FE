@@ -73,7 +73,7 @@ export default function RecordsPage() {
         <View style={styles.summary}>
           <View style={styles.summaryText}>
             <Text style={styles.summaryTitle}>
-              {`${ticket?.courseName ?? params.courseName} #${ticket?.no ?? ''}`}
+              {`${ticket?.courseName ?? params.courseName} #${ticket?.no ?? records?.bitNo ?? ''}`}
             </Text>
             {ticket && (
               <Text style={styles.summaryBody}>
