@@ -6,6 +6,7 @@ import { AppBar } from '@/components/AppBar';
 import { Badge } from '@/components/Badge';
 import { Icon } from '@/components/Icon';
 import { QueryStatus } from '@/components/QueryStatus';
+import { Byte } from '@/components/Byte';
 import { Screen } from '@/components/Screen';
 import { Fonts } from '@/styles/font';
 import { Palette } from '@/styles/palette';
@@ -30,9 +31,9 @@ export default function ConnectorPage() {
         leading={{ icon: 'back', accessibilityLabel: '뒤로', onPress: back }}
       />
       <ScrollView style={styles.scroll} contentContainerStyle={styles.content}>
-        <Text style={styles.description}>
-          평소 쓰는 AI에 Daybit를 한 번 등록하면, 구독한 과목 자료를 필요한 페이지만 찾아 읽어요.
-        </Text>
+        <View style={styles.byte}>
+          <Byte says="쓰던 AI에 Daybit를 한 번 등록하면, 구독한 과목 자료에서 필요한 페이지만 찾아 읽어요." />
+        </View>
         <QueryStatus isLoading={isLoading} isError={isError} />
 
         {CONNECTOR_CLIENT_KEYS.map((client) => {
@@ -80,12 +81,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingBottom: 32,
   },
-  description: {
-    ...Fonts.regular,
-    marginBottom: 4,
-    fontSize: 14,
-    lineHeight: 21.7,
-    color: Palette.textSub,
+  byte: {
+    marginBottom: 20,
   },
   row: {
     flexDirection: 'row',

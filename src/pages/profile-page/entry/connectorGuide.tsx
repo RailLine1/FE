@@ -10,6 +10,7 @@ import { AppBar } from '@/components/AppBar';
 import { BottomSheet } from '@/components/BottomSheet';
 import { Button } from '@/components/Button';
 import { CopyBox, GuideStep as Step } from '@/components/GuideStep';
+import { Byte } from '@/components/Byte';
 import { Screen } from '@/components/Screen';
 import { Fonts } from '@/styles/font';
 import { Palette } from '@/styles/palette';
@@ -92,6 +93,10 @@ export default function ConnectorGuidePage() {
           )}
         </View>
 
+        <View style={styles.byte}>
+          <Byte says="아래 순서대로 주소를 복사해 AI에 붙여 넣으면 끝이에요. 막히면 바로가기를 눌러 봐요!" />
+        </View>
+
         <View style={styles.card}>
           <Text style={styles.cardTitle}>연결 방법</Text>
 
@@ -141,9 +146,9 @@ export default function ConnectorGuidePage() {
             <Text style={styles.connectedText}>{lastUsedText(lastCalledAt)}</Text>
           </View>
         ) : (
-          <Text style={styles.notice}>
-            AI가 Daybit 자료를 처음 읽으면 여기에 연결 확인이 표시돼요.
-          </Text>
+          <View style={styles.byteBottom}>
+            <Byte pose="walk" size={32} says="AI가 Daybit 자료를 처음 읽으면 여기서 알려 줄게요." />
+          </View>
         )}
       </ScrollView>
 
@@ -234,12 +239,11 @@ const styles = StyleSheet.create({
     lineHeight: 18,
     color: Palette.red,
   },
-  notice: {
-    ...Fonts.regular,
-    fontSize: 12,
-    lineHeight: 18,
-    color: Palette.textSub,
-    paddingHorizontal: 4,
+  byte: {
+    marginBottom: 16,
+  },
+  byteBottom: {
+    marginTop: 16,
   },
   sheetActions: {
     gap: 12,

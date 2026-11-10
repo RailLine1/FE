@@ -54,6 +54,7 @@ export default function ClassroomPage() {
         {courses && courses.length > 0 && <TileGrid courses={courses} />}
         {courses?.length === 0 && (
           <ByteEmpty
+            pose="walk"
             title="아직 구독 중인 과목이 없어요"
             hint="탐색에서 과목 이름이나 코드로 찾아볼까요?"
           />
