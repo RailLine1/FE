@@ -31,6 +31,7 @@ function FolderRow({ folder, canManage, onPress, onManage }: FolderRowProps) {
           <Icon name="folder-20" color={custom ? Palette.textSub : Palette.purpleStrong} />
         </IconBox>
       }
+      trailingAction
       trailing={
         custom && canManage ? (
           <IconButton compact icon="more" accessibilityLabel="폴더 관리" onPress={onManage} />

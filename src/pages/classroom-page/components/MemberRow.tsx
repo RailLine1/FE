@@ -31,6 +31,7 @@ export function MemberRow({ member, isMe, onPressRole }: MemberRowProps) {
       title={isMe ? '나' : member.nickname}
       subtitle={member.role === 'co' && member.coSince ? formatCoSince(member.coSince) : undefined}
       leading={<MemberAvatar id={member.userId} nickname={member.nickname} isMe={isMe} />}
+      trailingAction
       trailing={
         onPressRole ? (
           <Pressable

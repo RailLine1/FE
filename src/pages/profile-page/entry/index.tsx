@@ -30,6 +30,7 @@ export default function ProfilePage() {
   const connector = useGet2();
   const logout = useLogout();
   const [confirmLogout, setConfirmLogout] = useState(false);
+  const [notifyInfo, setNotifyInfo] = useState(false);
 
   const nickname = me.data?.nickname ?? '';
   const stats = [
@@ -108,7 +109,7 @@ export default function ProfilePage() {
             }
             onPress={() => router.push('/profile/connector')}
           />
-          {/* P-NOTI-02. 시안에 이동할 화면이 없고, 알림은 과목별 화면에서 바꾼다. */}
+          {/* P-NOTI-02. 알림은 과목마다 켜고 끈다. 누르면 어디서 바꾸는지 알려 준다. */}
           <ListRow
             title={<Text style={styles.menuTitle}>알림 설정</Text>}
             trailing={
@@ -117,6 +118,7 @@ export default function ProfilePage() {
                 <Icon name="chevron-right-20" />
               </View>
             }
+            onPress={() => setNotifyInfo(true)}
           />
           <ListRow
             title={<Text style={styles.menuTitle}>로그아웃</Text>}
@@ -126,6 +128,23 @@ export default function ProfilePage() {
         </ListGroup>
       </ScrollView>
       <TabBar selected="profile" />
+
+      <BottomSheet
+        visible={notifyInfo}
+        onClose={() => setNotifyInfo(false)}
+        title="알림은 과목마다 켜고 꺼요"
+        description="강의실에서 과목을 열고 ⚙ 환경설정 › 이 과목 알림에서 바꿀 수 있어요. 켜 둔 과목은 매일 17:00에 오늘의 Bit가 열렸다고 알려 드려요.">
+        <View style={styles.sheetActions}>
+          <Button
+            label="강의실로 가기"
+            onPress={() => {
+              setNotifyInfo(false);
+              router.push('/classroom');
+            }}
+          />
+          <Button label="닫기" variant="text" onPress={() => setNotifyInfo(false)} />
+        </View>
+      </BottomSheet>
 
       <BottomSheet
         visible={confirmLogout}

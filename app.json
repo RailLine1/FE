@@ -40,6 +40,13 @@
       ],
       "expo-secure-store",
       [
+        "expo-media-library",
+        {
+          "savePhotosPermission": "결과 카드를 사진에 저장하려면 권한이 필요해요.",
+          "isAccessMediaLocationEnabled": false
+        }
+      ],
+      [
         "expo-notifications",
         {
           "defaultChannel": "default"

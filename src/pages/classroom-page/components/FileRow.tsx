@@ -39,6 +39,7 @@ export function FileRow({ file, canManage, onOpen, onEdit }: FileRowProps) {
       }
       badge={status === 'processing' ? '처리 중' : status === 'failed' ? '처리 실패' : undefined}
       badgeVariant={status === 'failed' ? 'danger' : 'pending'}
+      trailingAction
       trailing={
         canManage && status !== 'processing' ? (
           <IconButton

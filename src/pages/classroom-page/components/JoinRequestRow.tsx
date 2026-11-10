@@ -28,6 +28,7 @@ export function JoinRequestRow({ request, disabled, onReject, onApprove }: JoinR
       title={request.nickname}
       subtitle={formatRequestedAt(request.requestedAt)}
       leading={<MemberAvatar id={request.requestId} nickname={request.nickname} />}
+      trailingAction
       trailing={
         <View style={styles.actions}>
           <Button

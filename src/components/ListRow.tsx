@@ -17,6 +17,8 @@ type ListRowProps = {
   badgeVariant?: BadgeVariant;
   leading?: ReactNode;
   trailing?: ReactNode;
+  // 오른쪽에 따로 누르는 버튼(휴지통, 승인 · 거절, 권한 메뉴 등)이 있을 때만 true. 아니면 오른쪽까지 줄 전체가 눌린다.
+  trailingAction?: boolean;
   chevron?: boolean;
   highlighted?: boolean;
   titleTone?: 'default' | 'accent' | 'danger';
@@ -34,6 +36,7 @@ export function ListRow({
   badgeVariant = 'subscribed',
   leading,
   trailing,
+  trailingAction,
   chevron,
   highlighted,
   titleTone = 'default',
@@ -72,12 +75,13 @@ export function ListRow({
           <Badge label={badge} variant={badgeVariant} />
         </View>
       )}
+      {!trailingAction && trailing}
       {chevron && <Icon name="chevron-right-20" />}
     </>
   );
 
   // 줄을 누르는 동작과 오른쪽 버튼이 함께 있으면 버튼이 겹치지 않게 나란히 둔다.
-  if (onPress && trailing) {
+  if (onPress && trailing && trailingAction) {
     return (
       <View style={rowStyle}>
         <Pressable accessibilityRole="button" onPress={onPress} style={styles.pressable}>
@@ -98,7 +102,7 @@ export function ListRow({
   return (
     <View style={rowStyle}>
       {content}
-      {trailing}
+      {trailingAction && trailing}
     </View>
   );
 }
