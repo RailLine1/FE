@@ -9,7 +9,6 @@ const poses = {
   idle: require('@/assets/byte/byte-idle.png'),
   walk: require('@/assets/byte/byte-walk.png'),
   bite: require('@/assets/byte/byte-bite.png'),
-  sit: require('@/assets/byte/byte-sit.png'),
 };
 const blink = require('@/assets/byte/byte-blink.png');
 
@@ -113,7 +112,7 @@ const styles = StyleSheet.create({
 });
 
 // 빈 화면 안내: 가운데 바이트 + 제목 + 다음에 할 일 한 줄.
-export function ByteEmpty({ pose = 'sit', title, hint }: { pose?: BytePose; title: string; hint?: string }) {
+export function ByteEmpty({ pose = 'idle', title, hint }: { pose?: BytePose; title: string; hint?: string }) {
   return (
     <View style={emptyStyles.box}>
       <Byte pose={pose} size={64} />
