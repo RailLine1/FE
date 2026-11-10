@@ -6,7 +6,7 @@ import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { AppBar } from '@/components/AppBar';
 import { IconButton } from '@/components/IconButton';
 import { QueryStatus } from '@/components/QueryStatus';
-import { ByteEmpty } from '@/components/Byte';
+import { MascotEmpty } from '@/components/Mascot';
 import { Screen } from '@/components/Screen';
 import { SectionLabel } from '@/components/SectionLabel';
 import { TabBar } from '@/components/TabBar';
@@ -53,8 +53,8 @@ export default function ClassroomPage() {
         <QueryStatus isLoading={isLoading} isError={isError} />
         {courses && courses.length > 0 && <TileGrid courses={courses} />}
         {courses?.length === 0 && (
-          <ByteEmpty
-            pose="walk"
+          <MascotEmpty
+            pose="byte"
             title="아직 구독 중인 과목이 없어요"
             hint="탐색에서 과목 이름이나 코드로 찾아볼까요?"
           />

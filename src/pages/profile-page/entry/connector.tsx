@@ -6,7 +6,7 @@ import { AppBar } from '@/components/AppBar';
 import { Badge } from '@/components/Badge';
 import { Icon } from '@/components/Icon';
 import { QueryStatus } from '@/components/QueryStatus';
-import { Byte } from '@/components/Byte';
+import { Mascot } from '@/components/Mascot';
 import { Screen } from '@/components/Screen';
 import { Fonts } from '@/styles/font';
 import { Palette } from '@/styles/palette';
@@ -32,7 +32,7 @@ export default function ConnectorPage() {
       />
       <ScrollView style={styles.scroll} contentContainerStyle={styles.content}>
         <View style={styles.byte}>
-          <Byte pose="nibble" says="쓰던 AI에 Daybit를 한 번 등록하면, 구독한 과목 자료에서 필요한 페이지만 찾아 읽어요." />
+          <Mascot pose="byte" says="쓰던 AI에 Daybit를 한 번 등록하면, 구독한 과목 자료에서 필요한 페이지만 찾아 읽어요." />
         </View>
         <QueryStatus isLoading={isLoading} isError={isError} />
 

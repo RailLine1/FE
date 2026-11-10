@@ -14,7 +14,7 @@ import {
 import { useLogin } from '@/api/1-인증/1-인증';
 import { Button } from '@/components/Button';
 import { FormField } from '@/components/FormField';
-import { Byte } from '@/components/Byte';
+import { Mascot } from '@/components/Mascot';
 import { Screen } from '@/components/Screen';
 import { Fonts } from '@/styles/font';
 import { Palette } from '@/styles/palette';
@@ -23,11 +23,7 @@ import { pendingRoute } from '@/lib/pendingRoute';
 import { FormErrors, githubErrorMessage, toFormErrors, validateLogin } from '../authForm';
 import { openGithubLogin, startSession } from '../session';
 
-// 들어올 때마다 바이트 · 니블 · 킬로 중 하나가 맞아 준다.
-const GREETERS = ['idle', 'nibble', 'kilo'] as const;
-
 export default function LoginPage() {
-  const [greeter] = useState(() => GREETERS[Math.floor(Math.random() * GREETERS.length)]);
   const router = useRouter();
   const { error: githubError } = useLocalSearchParams<{ error?: string }>();
   const [loginId, setLoginId] = useState('');
@@ -64,7 +60,7 @@ export default function LoginPage() {
           style={styles.flex}
           contentContainerStyle={styles.content}>
           <View style={styles.byteMark}>
-            <Byte pose={greeter} size={64} />
+            <Mascot pose="byte" size={64} />
           </View>
           <Text accessibilityRole="header" style={styles.logo}>
             Daybit

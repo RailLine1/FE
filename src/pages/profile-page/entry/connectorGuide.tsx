@@ -10,7 +10,7 @@ import { AppBar } from '@/components/AppBar';
 import { BottomSheet } from '@/components/BottomSheet';
 import { Button } from '@/components/Button';
 import { CopyBox, GuideStep as Step } from '@/components/GuideStep';
-import { Byte } from '@/components/Byte';
+import { Mascot } from '@/components/Mascot';
 import { Screen } from '@/components/Screen';
 import { Fonts } from '@/styles/font';
 import { Palette } from '@/styles/palette';
@@ -94,7 +94,7 @@ export default function ConnectorGuidePage() {
         </View>
 
         <View style={styles.byte}>
-          <Byte pose="nibble" says="아래 순서대로 주소를 복사해 AI에 붙여 넣으면 끝이에요. 막히면 바로가기를 눌러 봐요!" />
+          <Mascot pose="byte" says="아래 순서대로 주소를 복사해 AI에 붙여 넣으면 끝이에요. 막히면 바로가기를 눌러 봐요!" />
         </View>
 
         <View style={styles.card}>
@@ -147,7 +147,7 @@ export default function ConnectorGuidePage() {
           </View>
         ) : (
           <View style={styles.byteBottom}>
-            <Byte pose="walk" size={32} says="AI가 Daybit 자료를 처음 읽으면 여기서 알려 줄게요." />
+            <Mascot pose="kilo" size={32} says="AI가 Daybit 자료를 처음 읽으면 여기서 알려 줄게요." />
           </View>
         )}
       </ScrollView>

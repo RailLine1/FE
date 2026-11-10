@@ -4,27 +4,28 @@ import { Animated, Easing, Image, StyleSheet, Text, View } from 'react-native';
 import { Fonts } from '@/styles/font';
 import { Palette } from '@/styles/palette';
 
-// 마스코트 바이트(도트 강아지)와 친구들. 16x16 도트를 8배(128px)로 키운 그림이라 32 · 64 · 128처럼 나눠 떨어지는 크기로 쓰면 또렷하다.
+// 마스코트(도트): 바이트(귀 쫑긋 강아지, 매일 문제를 물어 오는 bite) · 킬로(납작 외계인, 바이트보다 큰 친구).
+// 16x16 도트를 8배(128px)로 키운 그림이라 32 · 64 · 128처럼 나눠 떨어지는 크기로 쓰면 또렷하다.
 const poses = {
-  idle: require('@/assets/byte/byte-idle.png'),
-  walk: require('@/assets/byte/byte-walk.png'),
-  bite: require('@/assets/byte/byte-bite.png'),
-  // 친구들: 니블(귀 쫑긋 강아지, nibble = 4bit) · 킬로(납작 외계인)
-  nibble: require('@/assets/byte/byte-nibble.png'),
-  kilo: require('@/assets/byte/byte-kilo.png'),
+  byte: require('@/assets/mascot/byte.png'),
+  kilo: require('@/assets/mascot/kilo.png'),
 };
-const blink = require('@/assets/byte/byte-blink.png');
+const blinks = {
+  byte: require('@/assets/mascot/byte-blink.png'),
+  kilo: require('@/assets/mascot/kilo-blink.png'),
+};
+const names = { byte: '바이트', kilo: '킬로' };
 
-type BytePose = keyof typeof poses;
+type MascotPose = keyof typeof poses;
 
-type ByteProps = {
-  pose?: BytePose;
+type MascotProps = {
+  pose?: MascotPose;
   size?: 32 | 64 | 128;
-  // 말풍선 문구. 없으면 바이트만 보인다.
+  // 말풍선 문구. 없으면 캐릭터만 보인다.
   says?: string;
 };
 
-export function Byte({ pose = 'idle', size = 64, says }: ByteProps) {
+export function Mascot({ pose = 'byte', size = 64, says }: MascotProps) {
   const [hop] = useState(() => new Animated.Value(0));
   const [eyesClosed, setEyesClosed] = useState(false);
 
@@ -41,9 +42,8 @@ export function Byte({ pose = 'idle', size = 64, says }: ByteProps) {
     return () => loop.stop();
   }, [hop]);
 
-  // 깜빡: 정면(idle)일 때만 3.4초마다 0.15초 눈을 감는다.
+  // 깜빡: 3.4초마다 0.15초 눈을 감는다.
   useEffect(() => {
-    if (pose !== 'idle') return;
     let open: ReturnType<typeof setTimeout>;
     const timer = setInterval(() => {
       setEyesClosed(true);
@@ -53,16 +53,16 @@ export function Byte({ pose = 'idle', size = 64, says }: ByteProps) {
       clearInterval(timer);
       clearTimeout(open);
     };
-  }, [pose]);
+  }, []);
 
   const translateY = hop.interpolate({ inputRange: [0, 1], outputRange: [0, -size / 8] });
-  const source = pose === 'idle' && eyesClosed ? blink : poses[pose];
+  const source = eyesClosed ? blinks[pose] : poses[pose];
 
   return (
     <View style={styles.row}>
       <Animated.View style={{ transform: [{ translateY }] }}>
         <Image
-          accessibilityLabel={pose === 'nibble' ? '니블' : pose === 'kilo' ? '킬로' : '바이트'}
+          accessibilityLabel={names[pose]}
           source={source}
           style={{ width: size, height: size }}
         />
@@ -114,11 +114,11 @@ const styles = StyleSheet.create({
   },
 });
 
-// 빈 화면 안내: 가운데 바이트 + 제목 + 다음에 할 일 한 줄.
-export function ByteEmpty({ pose = 'idle', title, hint }: { pose?: BytePose; title: string; hint?: string }) {
+// 빈 화면 안내: 가운데 캐릭터 + 제목 + 다음에 할 일 한 줄.
+export function MascotEmpty({ pose = 'byte', title, hint }: { pose?: MascotPose; title: string; hint?: string }) {
   return (
     <View style={emptyStyles.box}>
-      <Byte pose={pose} size={64} />
+      <Mascot pose={pose} size={64} />
       <Text style={emptyStyles.title}>{title}</Text>
       {hint && <Text style={emptyStyles.hint}>{hint}</Text>}
     </View>

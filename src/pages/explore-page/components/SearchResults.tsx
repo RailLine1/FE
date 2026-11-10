@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
 
-import { ByteEmpty } from '@/components/Byte';
+import { MascotEmpty } from '@/components/Mascot';
 import { ListGroup } from '@/components/ListGroup';
 import { QueryStatus } from '@/components/QueryStatus';
 import { SectionLabel } from '@/components/SectionLabel';
@@ -24,7 +24,7 @@ export function SearchResults({ query, onPressCourse }: SearchResultsProps) {
 
   if (!data?.length) {
     return (
-      <ByteEmpty
+      <MascotEmpty
         pose="kilo"
         title="찾는 과목이 없어요"
         hint={'킬로가 우주까지 찾아봤어요.\n비공개 과목은 과목 코드 전체를 입력해 주세요.'}

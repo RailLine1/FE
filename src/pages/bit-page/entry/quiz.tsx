@@ -10,7 +10,7 @@ import { Button } from '@/components/Button';
 import { Icon } from '@/components/Icon';
 import { IconButton } from '@/components/IconButton';
 import { QuizChoice } from '@/components/QuizChoice';
-import { Byte } from '@/components/Byte';
+import { Mascot } from '@/components/Mascot';
 import { Screen } from '@/components/Screen';
 import { ApiError } from '@/lib/createApiFetch';
 import { Fonts } from '@/styles/font';
@@ -118,7 +118,7 @@ export default function QuizPage() {
         />
         <View style={styles.loader}>
           <View style={styles.byteMark}>
-            <Byte pose="walk" size={64} />
+            <Mascot pose="byte" size={64} />
           </View>
           <Text style={styles.logo}>Daybit</Text>
           <View style={styles.stage}>

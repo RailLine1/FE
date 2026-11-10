@@ -12,7 +12,7 @@ import { useWelcome } from '@/api/7-bit/7-bit';
 import { Button } from '@/components/Button';
 import { ListGroup } from '@/components/ListGroup';
 import { ListRow } from '@/components/ListRow';
-import { Byte } from '@/components/Byte';
+import { Mascot } from '@/components/Mascot';
 import { Screen } from '@/components/Screen';
 import { Fonts } from '@/styles/font';
 import { Palette } from '@/styles/palette';
@@ -66,7 +66,7 @@ export default function WelcomePage() {
     <Screen>
       <View style={styles.main}>
         <View style={styles.byteMark}>
-            <Byte pose="idle" size={128} />
+            <Mascot pose="kilo" size={128} />
           </View>
         <Text accessibilityRole="header" style={styles.title}>
           {data?.nickname ? `${data.nickname} 님,\n${greeting}` : greeting}
