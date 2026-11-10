@@ -6,6 +6,7 @@ import { useGithubExchange } from '@/api/1-인증/1-인증';
 import { ApiError } from '@/lib/createApiFetch';
 import { Screen } from '@/components/Screen';
 import { Palette } from '@/styles/palette';
+import { pendingRoute } from '@/lib/pendingRoute';
 
 import { startSession } from '../session';
 
@@ -31,7 +32,7 @@ export default function GithubCallbackPage() {
         onSuccess: async ({ tokens, needsNickname, isFirstLogin }) => {
           await startSession(tokens);
           if (needsNickname) router.replace('/nickname');
-          else router.replace(isFirstLogin ? '/onboarding' : '/welcome');
+          else router.replace(isFirstLogin ? '/onboarding' : (pendingRoute.take() ?? '/welcome'));
         },
         onError: (failure) =>
           router.replace({

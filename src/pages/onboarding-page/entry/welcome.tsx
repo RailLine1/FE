@@ -15,6 +15,7 @@ import { ListRow } from '@/components/ListRow';
 import { Screen } from '@/components/Screen';
 import { Fonts } from '@/styles/font';
 import { Palette } from '@/styles/palette';
+import { pendingRoute } from '@/lib/pendingRoute';
 
 import { HOME_ROUTE } from '../session';
 import { greetingFor, newMaterialsText } from '../welcomeContent';
@@ -88,7 +89,7 @@ export default function WelcomePage() {
         )}
         <Button
           label="시작하기"
-          onPress={() => router.replace(HOME_ROUTE)}
+          onPress={() => router.replace(pendingRoute.take() ?? HOME_ROUTE)}
           style={styles.start}
         />
       </View>

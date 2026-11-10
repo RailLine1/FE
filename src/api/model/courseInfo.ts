@@ -9,6 +9,8 @@ import type { CourseInfoMyStatus } from './courseInfoMyStatus';
 import type { CourseInfoVisibility } from './courseInfoVisibility';
 
 export interface CourseInfo {
+  /** 공유 링크에서 내 오늘의 Bit를 찾을 때 쓴다 */
+  courseId?: number;
   code?: string;
   name?: string;
   icon?: string;
