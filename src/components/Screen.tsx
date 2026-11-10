@@ -25,11 +25,24 @@ function skyPosition(pathname: string) {
 
 // 화면이 바뀌면 새 Screen이 마운트되므로, 직전 위치에서 출발하도록 모듈에 기억해 둔다.
 let lastPosition = 0;
+// 첫 접속에서 그림을 받는 동안은 어두운 바탕만 보이다가, 받아지면 부드럽게 떠오른다. 한 번 받은 뒤에는 바로 보인다.
+let skyLoaded = false;
 
 export function Screen({ children, background, hasTabBar }: ScreenProps) {
   const edges = hasTabBar ? (['top'] as const) : (['top', 'bottom'] as const);
   const target = skyPosition(usePathname());
   const [position] = useState(() => new Animated.Value(lastPosition));
+  const [skyOpacity] = useState(() => new Animated.Value(skyLoaded ? 1 : 0));
+  const showSky = () => {
+    if (skyLoaded) return skyOpacity.setValue(1);
+    skyLoaded = true;
+    Animated.timing(skyOpacity, {
+      toValue: 1,
+      duration: 500,
+      easing: Easing.out(Easing.quad),
+      useNativeDriver: false,
+    }).start();
+  };
 
   useEffect(() => {
     Animated.timing(position, {
@@ -54,7 +67,12 @@ export function Screen({ children, background, hasTabBar }: ScreenProps) {
 
   return (
     <View style={styles.frame}>
-      <Animated.Image source={sky} resizeMode="cover" style={[styles.sky, { left }]} />
+      <Animated.Image
+        source={sky}
+        resizeMode="cover"
+        onLoad={showSky}
+        style={[styles.sky, { left, opacity: skyOpacity }]}
+      />
       <View style={styles.veil} />
       <SafeAreaView edges={edges} style={styles.content}>
         {children}
