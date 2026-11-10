@@ -94,7 +94,7 @@ export default function ConnectorGuidePage() {
         </View>
 
         <View style={styles.byte}>
-          <Byte says="아래 순서대로 주소를 복사해 AI에 붙여 넣으면 끝이에요. 막히면 바로가기를 눌러 봐요!" />
+          <Byte pose="nibble" says="아래 순서대로 주소를 복사해 AI에 붙여 넣으면 끝이에요. 막히면 바로가기를 눌러 봐요!" />
         </View>
 
         <View style={styles.card}>

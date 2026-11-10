@@ -4,11 +4,14 @@ import { Animated, Easing, Image, StyleSheet, Text, View } from 'react-native';
 import { Fonts } from '@/styles/font';
 import { Palette } from '@/styles/palette';
 
-// 마스코트 바이트(도트 강아지). 16x16 도트를 8배(128px)로 키운 그림이라 32 · 64 · 128처럼 나눠 떨어지는 크기로 쓰면 또렷하다.
+// 마스코트 바이트(도트 강아지)와 친구들. 16x16 도트를 8배(128px)로 키운 그림이라 32 · 64 · 128처럼 나눠 떨어지는 크기로 쓰면 또렷하다.
 const poses = {
   idle: require('@/assets/byte/byte-idle.png'),
   walk: require('@/assets/byte/byte-walk.png'),
   bite: require('@/assets/byte/byte-bite.png'),
+  // 친구들: 니블(귀 쫑긋 강아지, nibble = 4bit) · 킬로(납작 외계인)
+  nibble: require('@/assets/byte/byte-nibble.png'),
+  kilo: require('@/assets/byte/byte-kilo.png'),
 };
 const blink = require('@/assets/byte/byte-blink.png');
 
@@ -59,7 +62,7 @@ export function Byte({ pose = 'idle', size = 64, says }: ByteProps) {
     <View style={styles.row}>
       <Animated.View style={{ transform: [{ translateY }] }}>
         <Image
-          accessibilityLabel="바이트"
+          accessibilityLabel={pose === 'nibble' ? '니블' : pose === 'kilo' ? '킬로' : '바이트'}
           source={source}
           style={{ width: size, height: size }}
         />

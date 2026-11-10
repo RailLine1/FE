@@ -32,7 +32,7 @@ export default function ConnectorPage() {
       />
       <ScrollView style={styles.scroll} contentContainerStyle={styles.content}>
         <View style={styles.byte}>
-          <Byte says="쓰던 AI에 Daybit를 한 번 등록하면, 구독한 과목 자료에서 필요한 페이지만 찾아 읽어요." />
+          <Byte pose="nibble" says="쓰던 AI에 Daybit를 한 번 등록하면, 구독한 과목 자료에서 필요한 페이지만 찾아 읽어요." />
         </View>
         <QueryStatus isLoading={isLoading} isError={isError} />
 
