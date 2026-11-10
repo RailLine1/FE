@@ -5,6 +5,7 @@ import { Button } from '@/components/Button';
 import { Screen } from '@/components/Screen';
 import { Fonts } from '@/styles/font';
 import { Palette } from '@/styles/palette';
+import { pendingRoute } from '@/lib/pendingRoute';
 
 import { requestNotificationPermission } from '../notificationPermission';
 import { HOME_ROUTE } from '../session';
@@ -12,7 +13,8 @@ import { HOME_ROUTE } from '../session';
 // P-NOTI-01
 export default function NotifyPage() {
   const router = useRouter();
-  const enter = () => router.replace(HOME_ROUTE);
+  // 공유 링크로 들어와 처음 가입 · 로그인했다면 온보딩 뒤 그 링크로 간다.
+  const enter = () => router.replace(pendingRoute.take() ?? HOME_ROUTE);
 
   const allow = async () => {
     await requestNotificationPermission();

@@ -12,6 +12,10 @@ import type { Evidence } from './evidence';
  */
 export interface ResultTicket {
   courseName?: string;
+  /** 공유 링크(/s/{코드})에 쓰는 과목 코드 */
+  courseCode?: string;
+  /** 문제가 다룬 개념 이름 */
+  concept?: string | null;
   no?: number;
   correct?: boolean;
   answer?: number;

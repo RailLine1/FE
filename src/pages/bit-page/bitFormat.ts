@@ -25,3 +25,29 @@ export function evidenceText(evidence?: { file?: string; page?: number }) {
 export function gridOpacity(count = 0) {
   return [0, 0.4, 0.6, 0.8, 1][Math.min(count, 4)];
 }
+
+type ShareTicket = {
+  courseName?: string;
+  no?: number;
+  concept?: string | null;
+  correct?: boolean;
+  elapsedSec?: number;
+  streak?: number;
+  week?: number[];
+};
+
+// 결과 공유 문구. 경쟁보다 오늘 배운 개념과 꾸준함을 보여 준다(P-SOC-03).
+export function shareMessage(ticket: ShareTicket, link: string) {
+  const time = formatSeconds(ticket.elapsedSec);
+  const topic = ticket.concept ? `「${ticket.concept}」 ` : '';
+  const result = ticket.correct ? `${time} 만에 정답` : '아쉽게 오답, 해설로 복습했어요';
+  const week = (ticket.week ?? []).map((solved) => (solved ? '●' : '○')).join('');
+  return [
+    `오늘의 한 조각 · ${ticket.courseName} #${ticket.no}`,
+    `${topic}${result}`,
+    `이번 주 ${week}  연속 ${ticket.streak ?? 0}일째`,
+    '',
+    '같은 강의 듣는다면, 같이 풀어볼래요?',
+    link,
+  ].join('\n');
+}

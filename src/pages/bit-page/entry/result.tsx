@@ -1,3 +1,4 @@
+import * as Clipboard from 'expo-clipboard';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { ComponentRef, useEffect, useRef, useState } from 'react';
 import {
@@ -20,11 +21,19 @@ import { Toast } from '@/components/Toast';
 import { Fonts } from '@/styles/font';
 import { Palette } from '@/styles/palette';
 
-import { circledNumber, compareToAverage, evidenceText, formatSeconds } from '../bitFormat';
+import {
+  circledNumber,
+  compareToAverage,
+  evidenceText,
+  formatSeconds,
+  shareMessage,
+} from '../bitFormat';
 import { CONFETTI_COLORS, CONFETTI_PIECES } from '../confettiPieces';
 import { saveTicketImage } from '../saveTicketImage';
 
 const useNativeDriver = Platform.OS !== 'web';
+// 앱에서 공유 링크의 주소. 웹은 지금 열린 주소를 쓴다.
+const WEB_URL = 'https://daybit-app.vercel.app';
 
 // 시간 숫자 아래 한 점에서 터진다. 이 지점까지 퍼졌을 때 조각 위치가 시안 프레임과 같다.
 const BURST_ORIGIN_Y = 185;
@@ -107,14 +116,23 @@ export default function ResultPage() {
 
   const close = () => router.dismissTo('/bit');
   const openRecords = () => router.push({ pathname: '/bit/[bitId]/records', params });
+  // 공유: 오늘 배운 개념 · 결과 · 이번 주 · 같이 풀자는 링크(/s/{과목 코드}).
+  // 웹에서 공유 창을 지원하지 않으면 문구를 복사해 둔다(눌렀는데 아무 일도 없지 않게).
   const share = async () => {
-    try {
-      await Share.share({
-        message: `Daybit ${ticket?.courseName} #${ticket?.no} ${formatSeconds(ticket?.elapsedSec)}`,
-      });
-    } catch {
-      // 공유를 지원하지 않는 브라우저이거나 사용자가 닫은 경우다.
+    if (!ticket) return;
+    const origin =
+      Platform.OS === 'web' ? window.location.origin : (process.env.EXPO_PUBLIC_WEB_URL ?? WEB_URL);
+    const message = shareMessage(ticket, `${origin}/s/${ticket.courseCode ?? ''}`);
+    if (Platform.OS !== 'web') {
+      await Share.share({ message }).catch(() => undefined);
+      return;
     }
+    if (typeof navigator.share === 'function') {
+      await navigator.share({ text: message }).catch(() => undefined);
+      return;
+    }
+    await Clipboard.setStringAsync(message);
+    setToast('공유 문구를 복사했어요. 붙여 넣어 보내 주세요');
   };
 
   if (!ticket) {
