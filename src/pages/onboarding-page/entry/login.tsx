@@ -14,6 +14,7 @@ import {
 import { useLogin } from '@/api/1-인증/1-인증';
 import { Button } from '@/components/Button';
 import { FormField } from '@/components/FormField';
+import { Byte } from '@/components/Byte';
 import { Screen } from '@/components/Screen';
 import { Fonts } from '@/styles/font';
 import { Palette } from '@/styles/palette';
@@ -58,8 +59,8 @@ export default function LoginPage() {
           keyboardShouldPersistTaps="handled"
           style={styles.flex}
           contentContainerStyle={styles.content}>
-          <View style={styles.mark}>
-            <Text style={styles.markLetter}>D</Text>
+          <View style={styles.byteMark}>
+            <Byte pose="idle" size={64} />
           </View>
           <Text accessibilityRole="header" style={styles.logo}>
             Daybit
@@ -130,21 +131,8 @@ const styles = StyleSheet.create({
     paddingBottom: 32,
     paddingTop: 102,
   },
-  mark: {
-    alignItems: 'center',
-    justifyContent: 'center',
+  byteMark: {
     alignSelf: 'center',
-    width: 64,
-    height: 64,
-    borderRadius: 16,
-    backgroundColor: Palette.purple,
-    boxShadow: `0 4px 0 ${Palette.purpleShadow}`,
-  },
-  markLetter: {
-    ...Fonts.black,
-    fontSize: 30,
-    lineHeight: 45,
-    color: Palette.white,
   },
   logo: {
     ...Fonts.black,

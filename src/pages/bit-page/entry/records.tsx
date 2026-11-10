@@ -12,6 +12,7 @@ import { Button } from '@/components/Button';
 import { ListGroup } from '@/components/ListGroup';
 import { ListRow } from '@/components/ListRow';
 import { QueryStatus } from '@/components/QueryStatus';
+import { ByteEmpty } from '@/components/Byte';
 import { Screen } from '@/components/Screen';
 import { SectionLabel } from '@/components/SectionLabel';
 import { SegmentedControl } from '@/components/SegmentedControl';
@@ -126,9 +127,7 @@ export default function RecordsPage() {
                 ))}
               </ListGroup>
             ) : (
-              <Text style={styles.empty}>
-                {day === 'today' ? '아직 기록이 없어요.' : '어제 기록이 없어요.'}
-              </Text>
+              <ByteEmpty title={day === 'today' ? '아직 기록이 없어요' : '어제 기록이 없어요'} />
             )}
 
             <SectionLabel>내 비트</SectionLabel>
@@ -241,13 +240,6 @@ const styles = StyleSheet.create({
     ...Fonts.bold,
     fontSize: 13,
     lineHeight: 19.5,
-    color: Palette.textSub,
-  },
-  empty: {
-    ...Fonts.semiBold,
-    paddingVertical: 16,
-    fontSize: 13,
-    textAlign: 'center',
     color: Palette.textSub,
   },
   myBit: {

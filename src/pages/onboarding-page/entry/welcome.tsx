@@ -12,6 +12,7 @@ import { useWelcome } from '@/api/7-bit/7-bit';
 import { Button } from '@/components/Button';
 import { ListGroup } from '@/components/ListGroup';
 import { ListRow } from '@/components/ListRow';
+import { Byte } from '@/components/Byte';
 import { Screen } from '@/components/Screen';
 import { Fonts } from '@/styles/font';
 import { Palette } from '@/styles/palette';
@@ -64,9 +65,9 @@ export default function WelcomePage() {
   return (
     <Screen>
       <View style={styles.main}>
-        <View style={styles.mark}>
-          <Text style={styles.markLetter}>D</Text>
-        </View>
+        <View style={styles.byteMark}>
+            <Byte pose="idle" size={128} />
+          </View>
         <Text accessibilityRole="header" style={styles.title}>
           {data?.nickname ? `${data.nickname} 님,\n${greeting}` : greeting}
         </Text>
@@ -109,21 +110,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingBottom: 56,
   },
-  mark: {
-    alignItems: 'center',
-    justifyContent: 'center',
+  byteMark: {
     alignSelf: 'center',
-    width: 64,
-    height: 64,
-    borderRadius: 16,
-    backgroundColor: Palette.purple,
-    boxShadow: `0 4px 0 ${Palette.purpleShadow}`,
-  },
-  markLetter: {
-    ...Fonts.black,
-    fontSize: 30,
-    lineHeight: 45,
-    color: Palette.white,
   },
   title: {
     ...Fonts.black,

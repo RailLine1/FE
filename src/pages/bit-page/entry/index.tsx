@@ -4,6 +4,7 @@ import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useToday } from '@/api/7-bit/7-bit';
 import type { BitTicket } from '@/api/model';
 import { Button } from '@/components/Button';
+import { Byte, ByteEmpty } from '@/components/Byte';
 import { CourseIcon } from '@/components/CourseIcon';
 import { Icon } from '@/components/Icon';
 import { QueryStatus } from '@/components/QueryStatus';
@@ -39,9 +40,23 @@ export default function BitPage() {
           Bit
         </Text>
         <Text style={styles.subtitle}>과목마다 하루 한 조각 · 매일 17:00</Text>
+        {tickets && tickets.length > 0 && (
+          <View style={styles.byte}>
+            {tickets.some((ticket) => ticket.status !== 'done') ? (
+              <Byte pose="bite" says="오늘의 조각을 물어 왔어요. 한 입에 풀어 봐요!" />
+            ) : (
+              <Byte pose="sit" says="오늘 조각은 다 풀었어요. 내일 17시에 또 물어 올게요!" />
+            )}
+          </View>
+        )}
 
         <QueryStatus isLoading={isLoading} isError={isError} />
-        {tickets?.length === 0 && <Text style={styles.empty}>오늘 열린 조각이 없어요.</Text>}
+        {tickets?.length === 0 && (
+          <ByteEmpty
+            title="오늘 열린 조각이 없어요"
+            hint="과목을 구독하면 매일 17시에 한 조각씩 물어 올게요"
+          />
+        )}
 
         <View style={styles.tickets}>
           {tickets?.map((ticket) => {
@@ -133,12 +148,8 @@ const styles = StyleSheet.create({
     lineHeight: 22.5,
     color: Palette.textSub,
   },
-  empty: {
-    ...Fonts.semiBold,
-    paddingVertical: 24,
-    fontSize: 13,
-    textAlign: 'center',
-    color: Palette.textSub,
+  byte: {
+    marginTop: 20,
   },
   tickets: {
     gap: 14,
