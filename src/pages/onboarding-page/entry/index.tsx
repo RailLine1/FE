@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 12,
     borderColor: Palette.line,
-    backgroundColor: Palette.white,
+    backgroundColor: Palette.surface,
   },
   paperBack: {
     left: 92,
@@ -231,7 +231,7 @@ const styles = StyleSheet.create({
     borderRadius: 18,
     borderBottomRightRadius: 4,
     borderColor: Palette.line,
-    backgroundColor: Palette.white,
+    backgroundColor: Palette.surface,
   },
   grid: {
     position: 'absolute',
@@ -259,19 +259,19 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderStyle: 'dashed',
     borderColor: Palette.purple,
-    backgroundColor: Palette.white,
+    backgroundColor: Palette.surface,
   },
   empty: {
     borderWidth: 2,
     borderColor: Palette.line,
-    backgroundColor: Palette.white,
+    backgroundColor: Palette.surface,
   },
   badge: {
     position: 'absolute',
     paddingVertical: 4,
     paddingHorizontal: 10,
     borderRadius: 20,
-    backgroundColor: Palette.white,
+    backgroundColor: Palette.surface,
   },
   sourceBadge: {
     left: 160,

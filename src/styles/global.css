@@ -16,3 +16,40 @@ textarea:focus-visible {
   max-width: 480px;
   margin: 0 auto;
 }
+
+/* 브라우저가 그리는 부분도 테마 색으로 (스크롤바 · 선택 · 커서) */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #ffffff2e transparent;
+}
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-thumb {
+  background: #ffffff2e;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::selection {
+  background: #8b6cf666;
+  color: #ffffff;
+}
+input,
+textarea {
+  caret-color: #b9a5ff;
+}
+html,
+body {
+  background: #0a0912;
+}
+
+/* 브라우저 자동 완성이 입력칸을 밝은 하늘색으로 칠하지 않게 테마 색으로 덮는다. */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-text-fill-color: #f7f7f8;
+  box-shadow: 0 0 0 1000px #1a1828 inset;
+  transition: background-color 9999s ease-out 0s;
+}

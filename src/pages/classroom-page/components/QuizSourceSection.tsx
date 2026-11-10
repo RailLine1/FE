@@ -5,7 +5,7 @@ import { useGet2 } from '@/api/10-커넥터/10-커넥터';
 import { useGet1 } from '@/api/11-내-ai-출제/11-내-ai-출제';
 import { Icon } from '@/components/Icon';
 import { ListRow } from '@/components/ListRow';
-import { CONNECTOR_LOGOS } from '@/pages/profile-page/connectorLogos';
+import { CONNECTOR_LOGO_TINT, CONNECTOR_LOGOS } from '@/pages/profile-page/connectorLogos';
 import { lastUsedText } from '@/pages/profile-page/connectorClients';
 import { MY_AI_KEYS, MY_AI_NAMES, isRunLate } from '@/pages/profile-page/myAi';
 
@@ -71,7 +71,7 @@ export function QuizSourceSection({ courseId, value, onChange }: QuizSourceSecti
           setup?.subtitle ?? (late ? '어제부터 실행이 없어요 · 예약 작업을 확인해 주세요' : runText)
         }
         subtitleTone={late ? 'danger' : undefined}
-        leading={<Image source={CONNECTOR_LOGOS[ai]} style={styles.logo} />}
+        leading={<Image source={CONNECTOR_LOGOS[ai]} style={[styles.logo, { tintColor: CONNECTOR_LOGO_TINT[ai] }]} />}
         trailing={selected ? <Icon name="check-purple-20" /> : undefined}
         chevron={selected || Boolean(setup)}
         onPress={setup?.open ?? (selected ? openGuide : () => onChange(option))}

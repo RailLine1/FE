@@ -21,6 +21,7 @@ import { Toast } from '@/components/Toast';
 import { Fonts } from '@/styles/font';
 import { Palette } from '@/styles/palette';
 
+import { NightSparkles } from '../components/NightSparkles';
 import {
   circledNumber,
   compareToAverage,
@@ -106,6 +107,8 @@ export default function ResultPage() {
 
   const saveImage = async () => {
     setSaving(true);
+    // 화면에서는 밤하늘이 비치게 투명하게 두고, 찍는 동안만 바탕색을 깐다.
+    await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
     const result = await saveTicketImage(cardRef, `daybit-${ticket?.courseName}-${ticket?.no}.png`);
     setSaving(false);
     if (result === 'saved')
@@ -137,7 +140,8 @@ export default function ResultPage() {
 
   if (!ticket) {
     return (
-      <Screen background={Palette.navy}>
+      <Screen background={Ticket.navy}>
+        <NightSparkles />
         <View style={styles.header}>
           <IconButton icon="closeInverse" accessibilityLabel="닫기" onPress={close} />
         </View>
@@ -160,14 +164,15 @@ export default function ResultPage() {
   const tiles = correct ? CORRECT_TILES : WRONG_TILES;
 
   return (
-    <Screen background={Palette.navy}>
+    <Screen background={Ticket.navy}>
+      <NightSparkles />
       <ScrollView style={styles.scroll} contentContainerStyle={styles.content}>
         <View style={styles.header}>
           <IconButton icon="closeInverse" accessibilityLabel="닫기" onPress={close} />
         </View>
         {/* 이미지 저장 범위: 위 문구 · 시간 · 과목과 평균 · 카드. 흰 글자라 남색 바탕까지 찍는다.
             안드로이드에서 찍히려면 collapsable={false}가 필요하다. */}
-        <View ref={cardRef} collapsable={false} style={styles.capture}>
+        <View ref={cardRef} collapsable={false} style={[styles.capture, saving && styles.captureBackground]}>
           <View style={styles.eyebrow}>
             <Text style={styles.eyebrowLabel}>
               {correct ? '한 번에 정답, 힌트 없이' : '아쉽게 오답'}
@@ -236,7 +241,6 @@ export default function ResultPage() {
 
         <View style={styles.spacer} />
         <View style={styles.actions}>
-          {/* ponytail: 카드를 이미지로 저장하려면 새 라이브러리가 필요해 비활성으로 둔다. */}
           <Button
             label={saving ? '저장 중' : '이미지 저장'}
             variant="surface"
@@ -315,12 +319,28 @@ export default function ResultPage() {
   );
 }
 
+// 결과 화면은 남색 바탕에 흰 티켓 카드라, 어두운 테마와 상관없이 배포 버전의 밝은 색을 쓴다.
+const Ticket = {
+  navy: '#100f3e',
+  surface: '#ffffff',
+  text: '#4b4b4b',
+  textSub: '#777777',
+  line: '#e5e5e5',
+  lineStrong: '#cfcfcf',
+  purple: '#b18cff',
+  purpleShadow: '#8952ff',
+  golden: '#ffc800',
+  goldenShadow: '#d9a900',
+} as const;
+
 const styles = StyleSheet.create({
   // 이미지 저장 범위. 화면과 같은 남색 바탕에 여백을 두어 찍힌 이미지만 봐도 결과를 알 수 있게 한다.
   capture: {
     alignSelf: 'stretch',
     alignItems: 'center',
     paddingVertical: 16,
+  },
+  captureBackground: {
     backgroundColor: Palette.navy,
   },
   scroll: {
@@ -392,13 +412,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingBottom: 21,
     borderRadius: 32,
-    backgroundColor: Palette.white,
+    backgroundColor: Ticket.surface,
   },
   correctCard: {
-    boxShadow: `0 6px 0 ${Palette.purpleShadow}`,
+    boxShadow: `0 6px 0 ${Ticket.purpleShadow}`,
   },
   wrongCard: {
-    boxShadow: `0 6px 0 ${Palette.lineStrong}`,
+    boxShadow: `0 6px 0 ${Ticket.lineStrong}`,
   },
   tiles: {
     flexDirection: 'row',
@@ -412,19 +432,19 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   solved: {
-    backgroundColor: Palette.purple,
-    boxShadow: `0 3px 0 ${Palette.purpleShadow}`,
+    backgroundColor: Ticket.purple,
+    boxShadow: `0 3px 0 ${Ticket.purpleShadow}`,
   },
   today: {
-    backgroundColor: Palette.golden,
-    boxShadow: `0 3px 0 ${Palette.goldenShadow}`,
+    backgroundColor: Ticket.golden,
+    boxShadow: `0 3px 0 ${Ticket.goldenShadow}`,
   },
   empty: {
-    backgroundColor: Palette.line,
+    backgroundColor: Ticket.line,
   },
   next: {
     borderWidth: 2,
-    borderColor: Palette.purple,
+    borderColor: Ticket.purple,
   },
   rank: {
     ...Fonts.bold,
@@ -432,7 +452,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
     lineHeight: 45,
     letterSpacing: -0.8,
-    color: Palette.text,
+    color: Ticket.text,
   },
   score: {
     ...Fonts.bold,
@@ -440,7 +460,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 24,
     textAlign: 'center',
-    color: Palette.textSub,
+    color: Ticket.textSub,
   },
   week: {
     flexDirection: 'row',
@@ -453,18 +473,18 @@ const styles = StyleSheet.create({
     borderRadius: 6,
   },
   solvedBit: {
-    backgroundColor: Palette.purple,
-    boxShadow: `0 2px 0 ${Palette.purpleShadow}`,
+    backgroundColor: Ticket.purple,
+    boxShadow: `0 2px 0 ${Ticket.purpleShadow}`,
   },
   emptyBit: {
-    backgroundColor: Palette.line,
+    backgroundColor: Ticket.line,
   },
   streak: {
     ...Fonts.bold,
     marginTop: 6,
     fontSize: 12,
     lineHeight: 18,
-    color: Palette.textSub,
+    color: Ticket.textSub,
   },
   retry: {
     ...Fonts.bold,
@@ -472,7 +492,7 @@ const styles = StyleSheet.create({
     fontSize: 26,
     lineHeight: 39,
     letterSpacing: -0.6,
-    color: Palette.text,
+    color: Ticket.text,
   },
   answer: {
     ...Fonts.bold,
@@ -480,7 +500,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     lineHeight: 22.5,
     textAlign: 'center',
-    color: Palette.textSub,
+    color: Ticket.textSub,
   },
   keepStreak: {
     ...Fonts.bold,
@@ -488,7 +508,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     lineHeight: 18,
     textAlign: 'center',
-    color: Palette.textSub,
+    color: Ticket.textSub,
   },
   logo: {
     ...Fonts.black,
@@ -496,7 +516,7 @@ const styles = StyleSheet.create({
     fontSize: 17,
     lineHeight: 25.5,
     letterSpacing: -0.5,
-    color: Palette.text,
+    color: Ticket.text,
   },
   spacer: {
     flex: 1,

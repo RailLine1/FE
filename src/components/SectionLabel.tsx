@@ -13,6 +13,6 @@ const styles = StyleSheet.create({
     ...Fonts.extraBold,
     fontSize: 11,
     letterSpacing: 2,
-    color: Palette.textMuted,
+    color: Palette.textSub,
   },
 });

@@ -8,7 +8,7 @@ const tones = {
   soft: { background: Palette.purpleTint },
   golden: { background: Palette.goldenTint },
   muted: { background: Palette.surfaceMuted },
-  outline: { background: Palette.white, border: Palette.line },
+  outline: { background: Palette.surface, border: Palette.line },
 };
 
 type IconBoxProps = {

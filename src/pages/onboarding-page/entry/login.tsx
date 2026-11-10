@@ -217,10 +217,13 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 28,
     borderColor: Palette.lineStrong,
+    backgroundColor: Palette.surface,
     boxShadow: `0 3px 0 ${Palette.lineStrong}`,
   },
+  // 검은 GitHub 마크를 어두운 테마 글자색으로 칠한다.
   githubIcon: {
     width: 26,
     height: 26,
+    tintColor: Palette.text,
   },
 });

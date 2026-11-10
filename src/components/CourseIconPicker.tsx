@@ -1,41 +1,43 @@
-import { Image, Pressable, StyleSheet, View } from 'react-native';
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { courseIconNames, getCourseIconSource } from '@/components/CourseIcon';
+import { getCourseIconSource } from '@/components/CourseIcon';
+import { COURSE_ICON_GROUPS, toCourseIcon } from '@/components/courseIcons';
+import { Fonts } from '@/styles/font';
 import { Palette } from '@/styles/palette';
-
-const COLUMNS = 6;
 
 type CourseIconPickerProps = {
   value: string;
   onChange: (icon: string) => void;
 };
 
+// 분야별 묶음, 한 줄에 6개. 모양은 원래 선택 창 그대로(고르면 보라 칸).
 export function CourseIconPicker({ value, onChange }: CourseIconPickerProps) {
-  const rows = Array.from({ length: Math.ceil(courseIconNames.length / COLUMNS) }, (_, index) =>
-    courseIconNames.slice(index * COLUMNS, (index + 1) * COLUMNS),
-  );
+  const current = toCourseIcon(value);
 
   return (
-    <View style={styles.grid}>
-      {rows.map((row) => (
-        <View key={row[0]} style={styles.row}>
-          {row.map((icon) => {
-            const selected = icon === value;
-            return (
-              <Pressable
-                key={icon}
-                accessibilityRole="radio"
-                accessibilityLabel={icon}
-                accessibilityState={{ selected }}
-                onPress={() => onChange(icon)}
-                style={[styles.item, selected && styles.selected]}>
-                <Image
-                  source={getCourseIconSource(icon)}
-                  style={[styles.icon, { tintColor: selected ? Palette.white : Palette.textSub }]}
-                />
-              </Pressable>
-            );
-          })}
+    <View style={styles.groups}>
+      {COURSE_ICON_GROUPS.map(({ label, keys }) => (
+        <View key={label} style={styles.group}>
+          <Text style={styles.label}>{label}</Text>
+          <View style={styles.row}>
+            {keys.map((icon) => {
+              const selected = icon === current;
+              return (
+                <Pressable
+                  key={icon}
+                  accessibilityRole="radio"
+                  accessibilityLabel={icon}
+                  accessibilityState={{ selected }}
+                  onPress={() => onChange(icon)}
+                  style={[styles.item, selected && styles.selected]}>
+                  <Image
+                    source={getCourseIconSource(icon)}
+                    style={[styles.icon, { tintColor: selected ? Palette.white : Palette.textSub }]}
+                  />
+                </Pressable>
+              );
+            })}
+          </View>
         </View>
       ))}
     </View>
@@ -43,9 +45,18 @@ export function CourseIconPicker({ value, onChange }: CourseIconPickerProps) {
 }
 
 const styles = StyleSheet.create({
-  grid: {
-    gap: 8,
+  groups: {
+    gap: 12,
     marginTop: 6,
+  },
+  group: {
+    gap: 6,
+  },
+  label: {
+    ...Fonts.bold,
+    fontSize: 12,
+    lineHeight: 18,
+    color: Palette.textSub,
   },
   row: {
     flexDirection: 'row',

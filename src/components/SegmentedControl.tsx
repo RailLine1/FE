@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   selected: {
-    backgroundColor: Palette.white,
+    backgroundColor: Palette.surface,
     boxShadow: `0 0 0 2px ${Palette.purple}`,
   },
   label: {

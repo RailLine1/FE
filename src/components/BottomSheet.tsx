@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     borderTopLeftRadius: 22,
     borderTopRightRadius: 22,
-    backgroundColor: Palette.white,
+    backgroundColor: Palette.sheet,
     boxShadow: '0 -8px 24px rgba(0, 0, 0, 0.12)',
   },
   handle: {

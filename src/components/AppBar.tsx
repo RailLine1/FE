@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     gap: 8,
     height: 56,
     paddingRight: 8,
-    backgroundColor: Palette.white,
+    backgroundColor: 'transparent',
   },
   border: {
     borderBottomWidth: 2,
