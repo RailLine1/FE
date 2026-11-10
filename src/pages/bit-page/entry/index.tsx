@@ -45,7 +45,7 @@ export default function BitPage() {
             {tickets.some((ticket) => ticket.status !== 'done') ? (
               <Mascot pose="byte" says="오늘의 조각을 물어 왔어요. 한 입에 풀어 봐요!" />
             ) : (
-              <Mascot pose="kilo" says="오늘 조각은 다 풀었어요. 내일 17시에 또 만나요!" />
+              <Mascot pose="byte" says="오늘 조각은 다 풀었어요. 내일 17시에 또 물어 올게요!" />
             )}
           </View>
         )}
