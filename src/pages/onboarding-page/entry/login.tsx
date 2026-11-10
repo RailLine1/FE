@@ -60,7 +60,7 @@ export default function LoginPage() {
           style={styles.flex}
           contentContainerStyle={styles.content}>
           <View style={styles.byteMark}>
-            <Byte pose="idle" size={64} />
+            <Byte pose="kilo" size={64} />
           </View>
           <Text accessibilityRole="header" style={styles.logo}>
             Daybit
