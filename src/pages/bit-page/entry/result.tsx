@@ -1,10 +1,9 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { ComponentRef, useEffect, useRef, useState } from 'react';
 import {
   Animated,
   Easing,
   Platform,
-  Pressable,
   ScrollView,
   Share,
   StyleSheet,
@@ -17,11 +16,13 @@ import { Button } from '@/components/Button';
 import { IconButton } from '@/components/IconButton';
 import { QueryStatus } from '@/components/QueryStatus';
 import { Screen } from '@/components/Screen';
+import { Toast } from '@/components/Toast';
 import { Fonts } from '@/styles/font';
 import { Palette } from '@/styles/palette';
 
 import { circledNumber, compareToAverage, evidenceText, formatSeconds } from '../bitFormat';
 import { CONFETTI_COLORS, CONFETTI_PIECES } from '../confettiPieces';
+import { saveTicketImage } from '../saveTicketImage';
 
 const useNativeDriver = Platform.OS !== 'web';
 
@@ -84,6 +85,26 @@ export default function ResultPage() {
     ).start();
   }, [confetti, correct, pop, shake]);
 
+  const cardRef = useRef<ComponentRef<typeof View>>(null);
+  const [saving, setSaving] = useState(false);
+  const [toast, setToast] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!toast) return;
+    const timer = setTimeout(() => setToast(null), 2500);
+    return () => clearTimeout(timer);
+  }, [toast]);
+
+  const saveImage = async () => {
+    setSaving(true);
+    const result = await saveTicketImage(cardRef, `daybit-${ticket?.courseName}-${ticket?.no}.png`);
+    setSaving(false);
+    if (result === 'saved')
+      setToast(Platform.OS === 'web' ? '이미지를 내려받았어요' : '사진에 저장했어요');
+    else if (result === 'denied') setToast('사진 저장 권한이 필요해요');
+    else setToast('저장하지 못했어요. 잠시 후 다시 시도해 주세요');
+  };
+
   const close = () => router.dismissTo('/bit');
   const openRecords = () => router.push({ pathname: '/bit/[bitId]/records', params });
   const share = async () => {
@@ -125,80 +146,86 @@ export default function ResultPage() {
       <ScrollView style={styles.scroll} contentContainerStyle={styles.content}>
         <View style={styles.header}>
           <IconButton icon="closeInverse" accessibilityLabel="닫기" onPress={close} />
-          {correct && (
-            <Pressable
-              accessibilityRole="button"
-              onPress={() => playBurst(confetti, pop)}
-              style={styles.replay}>
-              <Text style={styles.replayLabel}>다시 터뜨리기</Text>
-            </Pressable>
-          )}
         </View>
-        <View style={styles.eyebrow}>
-          <Text style={styles.eyebrowLabel}>
-            {correct ? '한 번에 정답, 힌트 없이' : '아쉽게 오답'}
-          </Text>
-        </View>
-        <Animated.Text
-          accessibilityRole="header"
-          style={[
-            styles.time,
-            {
-              opacity: pop.interpolate({ inputRange: [0, 1], outputRange: [0.3, 1], extrapolate: 'clamp' }),
-              transform: [
-                { scale: pop.interpolate({ inputRange: [0, 1], outputRange: [0.72, 1] }) },
-              ],
-            },
-          ]}>
-          {formatSeconds(ticket.elapsedSec)}
-        </Animated.Text>
-        <Text style={styles.summary}>
-          {`${ticket.courseName} #${ticket.no} · 오늘 평균 ${formatSeconds(ticket.averageSec)}`}
-        </Text>
-
-        <Animated.View
-          style={[
-            styles.card,
-            correct ? styles.correctCard : styles.wrongCard,
-            { transform: [{ translateX: shake }] },
-          ]}>
-          <View style={styles.tiles}>
-            {tiles.map((tile, index) => (
-              <View key={index} style={[styles.tile, styles[tile]]} />
-            ))}
+        {/* 이미지 저장 범위: 위 문구 · 시간 · 과목과 평균 · 카드. 흰 글자라 남색 바탕까지 찍는다.
+            안드로이드에서 찍히려면 collapsable={false}가 필요하다. */}
+        <View ref={cardRef} collapsable={false} style={styles.capture}>
+          <View style={styles.eyebrow}>
+            <Text style={styles.eyebrowLabel}>
+              {correct ? '한 번에 정답, 힌트 없이' : '아쉽게 오답'}
+            </Text>
           </View>
-          {correct ? (
-            <>
-              <Text style={styles.rank}>{`상위 ${ticket.topPercent}%`}</Text>
-              <Text style={styles.score}>
-                {`점수 ${ticket.score} · ${compareToAverage(ticket.elapsedSec, ticket.averageSec)}`}
-              </Text>
-              <View style={styles.week}>
-                {ticket.week?.map((solved, index) => (
-                  <View
-                    key={index}
-                    style={[styles.weekBit, solved ? styles.solvedBit : styles.emptyBit]}
-                  />
-                ))}
-              </View>
-              <Text style={styles.streak}>{`연속 ${ticket.streak}일째`}</Text>
-            </>
-          ) : (
-            <>
-              <Text style={styles.retry}>내일 다시 도전</Text>
-              <Text style={styles.answer}>{answerText}</Text>
-              <Text style={styles.keepStreak}>
-                {`푼 것만으로 연속 ${ticket.streak}일째가 이어져요`}
-              </Text>
-            </>
-          )}
-          <Text style={styles.logo}>Daybit</Text>
-        </Animated.View>
+          <Animated.Text
+            accessibilityRole="header"
+            style={[
+              styles.time,
+              {
+                opacity: pop.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [0.3, 1],
+                  extrapolate: 'clamp',
+                }),
+                transform: [
+                  { scale: pop.interpolate({ inputRange: [0, 1], outputRange: [0.72, 1] }) },
+                ],
+              },
+            ]}>
+            {formatSeconds(ticket.elapsedSec)}
+          </Animated.Text>
+          <Text style={styles.summary}>
+            {`${ticket.courseName} #${ticket.no} · 오늘 평균 ${formatSeconds(ticket.averageSec)}`}
+          </Text>
+
+          <Animated.View
+            style={[
+              styles.card,
+              correct ? styles.correctCard : styles.wrongCard,
+              { transform: [{ translateX: shake }] },
+            ]}>
+            <View style={styles.tiles}>
+              {tiles.map((tile, index) => (
+                <View key={index} style={[styles.tile, styles[tile]]} />
+              ))}
+            </View>
+            {correct ? (
+              <>
+                <Text style={styles.rank}>{`상위 ${ticket.topPercent}%`}</Text>
+                <Text style={styles.score}>
+                  {`점수 ${ticket.score} · ${compareToAverage(ticket.elapsedSec, ticket.averageSec)}`}
+                </Text>
+                <View style={styles.week}>
+                  {ticket.week?.map((solved, index) => (
+                    <View
+                      key={index}
+                      style={[styles.weekBit, solved ? styles.solvedBit : styles.emptyBit]}
+                    />
+                  ))}
+                </View>
+                <Text style={styles.streak}>{`연속 ${ticket.streak}일째`}</Text>
+              </>
+            ) : (
+              <>
+                <Text style={styles.retry}>내일 다시 도전</Text>
+                <Text style={styles.answer}>{answerText}</Text>
+                <Text style={styles.keepStreak}>
+                  {`푼 것만으로 연속 ${ticket.streak}일째가 이어져요`}
+                </Text>
+              </>
+            )}
+            <Text style={styles.logo}>Daybit</Text>
+          </Animated.View>
+        </View>
 
         <View style={styles.spacer} />
         <View style={styles.actions}>
           {/* ponytail: 카드를 이미지로 저장하려면 새 라이브러리가 필요해 비활성으로 둔다. */}
-          <Button label="이미지 저장" variant="surface" disabled style={styles.action} />
+          <Button
+            label={saving ? '저장 중' : '이미지 저장'}
+            variant="surface"
+            disabled={saving}
+            onPress={saveImage}
+            style={styles.action}
+          />
           <Button label="공유" variant="surface" onPress={share} style={styles.action} />
         </View>
         <Button
@@ -265,11 +292,19 @@ export default function ResultPage() {
           })}
         </View>
       )}
+      {toast && <Toast message={toast} />}
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
+  // 이미지 저장 범위. 화면과 같은 남색 바탕에 여백을 두어 찍힌 이미지만 봐도 결과를 알 수 있게 한다.
+  capture: {
+    alignSelf: 'stretch',
+    alignItems: 'center',
+    paddingVertical: 16,
+    backgroundColor: Palette.navy,
+  },
   scroll: {
     flex: 1,
   },
@@ -298,16 +333,6 @@ const styles = StyleSheet.create({
     height: 56,
     paddingLeft: 4,
     paddingRight: 4,
-  },
-  replay: {
-    paddingVertical: 12,
-    paddingHorizontal: 10,
-  },
-  replayLabel: {
-    ...Fonts.bold,
-    fontSize: 14,
-    lineHeight: 21,
-    color: '#ffffffb3',
   },
   eyebrow: {
     alignSelf: 'center',
