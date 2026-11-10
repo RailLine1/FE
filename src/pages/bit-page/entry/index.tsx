@@ -54,7 +54,7 @@ export default function BitPage() {
         {tickets?.length === 0 && (
           <ByteEmpty
             title="오늘 열린 조각이 없어요"
-            hint="과목을 구독하면 매일 17시에 한 조각씩 물어 올게요"
+            hint="구독한 과목에 문제가 준비되면 17시에 물어 올게요"
           />
         )}
 
