@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 999,
     borderColor: Palette.line,
-    backgroundColor: Palette.white,
+    backgroundColor: Palette.surface,
   },
   roleLabel: {
     ...Fonts.bold,

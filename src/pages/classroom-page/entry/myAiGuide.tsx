@@ -12,7 +12,7 @@ import { CopyBox, GuideStep } from '@/components/GuideStep';
 import { QueryStatus } from '@/components/QueryStatus';
 import { Screen } from '@/components/Screen';
 import { lastUsedText } from '@/pages/profile-page/connectorClients';
-import { CONNECTOR_LOGOS } from '@/pages/profile-page/connectorLogos';
+import { CONNECTOR_LOGO_TINT, CONNECTOR_LOGOS } from '@/pages/profile-page/connectorLogos';
 import {
   MY_AI_GUIDES,
   MY_AI_NAMES,
@@ -62,7 +62,7 @@ export default function MyAiGuidePage() {
       <ScrollView style={styles.scroll} contentContainerStyle={styles.content}>
         <View style={styles.header}>
           <View style={styles.mark}>
-            <Image source={CONNECTOR_LOGOS[ai]} style={styles.logo} />
+            <Image source={CONNECTOR_LOGOS[ai]} style={[styles.logo, { tintColor: CONNECTOR_LOGO_TINT[ai] }]} />
           </View>
           <View style={styles.headerText}>
             <Text accessibilityRole="header" style={styles.name}>
@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 14,
     borderColor: Palette.line,
-    backgroundColor: Palette.white,
+    backgroundColor: Palette.surface,
   },
   logo: {
     width: 26,
@@ -245,7 +245,7 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
     paddingHorizontal: 10,
     borderRadius: 20,
-    backgroundColor: Palette.white,
+    backgroundColor: Palette.surface,
   },
   registeredLabel: {
     ...Fonts.bold,

@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     borderWidth: 2,
     borderRadius: 20,
-    backgroundColor: Palette.white,
+    backgroundColor: Palette.surface,
   },
   openTicket: {
     borderColor: Palette.purple,

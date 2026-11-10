@@ -257,7 +257,7 @@ export default function ComponentCatalog() {
 const styles = StyleSheet.create({
   page: {
     flex: 1,
-    backgroundColor: Palette.white,
+    backgroundColor: Palette.surface,
   },
   content: {
     gap: 48,

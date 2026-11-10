@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 2.5,
     borderColor: Palette.checkboxLine,
-    backgroundColor: Palette.white,
+    backgroundColor: Palette.surface,
   },
   markChecked: {
     borderColor: Palette.purple,

@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     width: 22,
     height: 22,
     borderRadius: 11,
-    backgroundColor: Palette.white,
+    backgroundColor: Palette.surface,
     boxShadow: '0 1px 3px rgba(0, 0, 0, 0.2)',
   },
 });

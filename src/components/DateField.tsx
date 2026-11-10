@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 12,
     borderColor: Palette.line,
-    backgroundColor: Palette.white,
+    backgroundColor: Palette.surface,
   },
   value: {
     ...Fonts.semiBold,

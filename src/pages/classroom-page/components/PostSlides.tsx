@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 12,
     borderColor: Palette.line,
-    backgroundColor: Palette.white,
+    backgroundColor: Palette.surface,
     fontSize: 14,
     color: Palette.text,
   },

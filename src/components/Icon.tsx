@@ -1,5 +1,7 @@
 import { Image } from 'react-native';
 
+import { Palette } from '@/styles/palette';
+
 const icons = {
   'file-20': { source: require('@/assets/icons/file-20.png'), size: 20 },
   'file-14': { source: require('@/assets/icons/file-14.png'), size: 14 },
@@ -36,7 +38,11 @@ const icons = {
 
 export type IconName = keyof typeof icons;
 
+// 색 이름이 없는 아이콘(기본 회색 PNG)은 테마 글자색으로 칠한다. 어두운 배경에서도 보이게.
+const COLORED = /-(purple|white|green|red|golden|orange)-/;
+
 export function Icon({ name, color }: { name: IconName; color?: string }) {
   const { source, size } = icons[name];
-  return <Image source={source} style={{ width: size, height: size, tintColor: color }} />;
+  const tint = color ?? (COLORED.test(name) ? undefined : name.includes('-gray-') ? Palette.textSub : Palette.text);
+  return <Image source={source} style={{ width: size, height: size, tintColor: tint }} />;
 }

@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     height: 36,
     borderWidth: 2,
     borderRadius: 18,
-    borderColor: Palette.white,
+    borderColor: Palette.surface,
   },
   label: {
     ...Fonts.extraBold,

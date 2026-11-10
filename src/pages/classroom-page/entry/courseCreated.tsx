@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 20,
     borderColor: Palette.purple,
-    backgroundColor: Palette.white,
+    backgroundColor: Palette.surface,
     boxShadow: `0 4px 0 ${Palette.purpleShadow}`,
   },
   codeLabel: {

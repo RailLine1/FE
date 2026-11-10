@@ -25,7 +25,7 @@ export function Tile({ name, intro, icon, muted, onPress }: TileProps) {
           {name}
         </Text>
         {intro && (
-          <Text numberOfLines={1} style={styles.intro}>
+          <Text numberOfLines={2} style={styles.intro}>
             {intro}
           </Text>
         )}
@@ -36,14 +36,16 @@ export function Tile({ name, intro, icon, muted, onPress }: TileProps) {
 
 const styles = StyleSheet.create({
   tile: {
+    // 정사각형이면 아이콘과 이름 사이가 너무 비어서, 내용만큼만 높이를 둔다(같은 줄은 높이를 맞춘다).
+    flex: 1,
     width: '100%',
-    aspectRatio: 1,
+    gap: 28,
     justifyContent: 'space-between',
     padding: 16,
     borderWidth: 2,
     borderRadius: 16,
     borderColor: Palette.line,
-    backgroundColor: Palette.white,
+    backgroundColor: Palette.surface,
     boxShadow: `0 4px 0 ${Palette.lineStrong}`,
   },
   pressed: {

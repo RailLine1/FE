@@ -11,7 +11,7 @@ import { Fonts } from '@/styles/font';
 import { Palette } from '@/styles/palette';
 
 import { CONNECTOR_CLIENT_KEYS, CONNECTOR_CLIENTS, lastUsedText } from '../connectorClients';
-import { CONNECTOR_LOGOS } from '../connectorLogos';
+import { CONNECTOR_LOGO_TINT, CONNECTOR_LOGOS } from '../connectorLogos';
 
 // P-AI-01, P-AI-04
 export default function ConnectorPage() {
@@ -47,7 +47,7 @@ export default function ConnectorPage() {
               }
               style={styles.row}>
               <View style={styles.mark}>
-                <Image source={CONNECTOR_LOGOS[client]} style={styles.logo} />
+                <Image source={CONNECTOR_LOGOS[client]} style={[styles.logo, { tintColor: CONNECTOR_LOGO_TINT[client] }]} />
               </View>
               <View style={styles.rowText}>
                 <Text style={styles.name}>{name}</Text>
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 12,
     borderColor: Palette.line,
-    backgroundColor: Palette.white,
+    backgroundColor: Palette.surface,
     boxShadow: `0 3px 0 ${Palette.line}`,
   },
   logo: {

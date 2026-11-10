@@ -21,7 +21,7 @@ import {
   copyText,
   lastUsedText,
 } from '../connectorClients';
-import { CONNECTOR_LOGOS } from '../connectorLogos';
+import { CONNECTOR_LOGO_TINT, CONNECTOR_LOGOS } from '../connectorLogos';
 
 // P-AI-02, P-AI-04, P-AI-06. 단계를 한 화면에 모두 보여 주고, 복사할 주소 · 명령은 그 단계 안에 둔다.
 export default function ConnectorGuidePage() {
@@ -74,7 +74,7 @@ export default function ConnectorGuidePage() {
       <ScrollView style={styles.scroll} contentContainerStyle={styles.content}>
         <View style={styles.header}>
           <View style={styles.mark}>
-            <Image source={CONNECTOR_LOGOS[client]} style={styles.logo} />
+            <Image source={CONNECTOR_LOGOS[client]} style={[styles.logo, { tintColor: CONNECTOR_LOGO_TINT[client] }]} />
           </View>
           <View style={styles.headerText}>
             <Text accessibilityRole="header" numberOfLines={1} style={styles.name}>
@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 14,
     borderColor: Palette.line,
-    backgroundColor: Palette.white,
+    backgroundColor: Palette.surface,
   },
   logo: {
     width: 26,
@@ -258,7 +258,7 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
     paddingHorizontal: 10,
     borderRadius: 20,
-    backgroundColor: Palette.white,
+    backgroundColor: Palette.surface,
   },
   connectedLabel: {
     ...Fonts.bold,

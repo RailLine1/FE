@@ -4,7 +4,7 @@ import { Image, Linking, StyleSheet } from 'react-native';
 
 import { IconBox } from '@/components/IconBox';
 import { ListRow } from '@/components/ListRow';
-import { CONNECTOR_LOGOS } from '@/pages/profile-page/connectorLogos';
+import { CONNECTOR_LOGO_TINT, CONNECTOR_LOGOS } from '@/pages/profile-page/connectorLogos';
 
 import { getChatAction } from '../aiChat';
 import { ConnectorClient } from '../courseTypes';
@@ -47,7 +47,7 @@ export function AiSection({ courseName, onNotice }: AiSectionProps) {
           subtitle="앱 열고 질문하기"
           leading={
             <IconBox tone="soft">
-              <Image source={CONNECTOR_LOGOS[client]} style={styles.logo} />
+              <Image source={CONNECTOR_LOGOS[client]} style={[styles.logo, { tintColor: CONNECTOR_LOGO_TINT[client] }]} />
             </IconBox>
           }
           chevron
