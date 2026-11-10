@@ -17,6 +17,7 @@ import { FormField } from '@/components/FormField';
 import { Screen } from '@/components/Screen';
 import { Fonts } from '@/styles/font';
 import { Palette } from '@/styles/palette';
+import { pendingRoute } from '@/lib/pendingRoute';
 
 import { FormErrors, githubErrorMessage, toFormErrors, validateLogin } from '../authForm';
 import { openGithubLogin, startSession } from '../session';
@@ -41,7 +42,7 @@ export default function LoginPage() {
       {
         onSuccess: async ({ tokens, isFirstLogin }) => {
           await startSession(tokens);
-          router.replace(isFirstLogin ? '/onboarding' : '/welcome');
+          router.replace(isFirstLogin ? '/onboarding' : (pendingRoute.take() ?? '/welcome'));
         },
         onError: (error) => setErrors(toFormErrors(error)),
       },
@@ -86,7 +87,12 @@ export default function LoginPage() {
             />
           </View>
 
-          <Button label="로그인" disabled={login.isPending} onPress={submit} style={styles.submit} />
+          <Button
+            label="로그인"
+            disabled={login.isPending}
+            onPress={submit}
+            style={styles.submit}
+          />
           {formError && <Text style={styles.formError}>{formError}</Text>}
 
           <Text style={styles.signup}>
@@ -106,10 +112,7 @@ export default function LoginPage() {
             accessibilityLabel="GitHub으로 계속하기"
             onPress={openGithubLogin}
             style={styles.github}>
-            <Image
-              source={require('@/assets/icons/github-26.png')}
-              style={styles.githubIcon}
-            />
+            <Image source={require('@/assets/icons/github-26.png')} style={styles.githubIcon} />
           </Pressable>
         </ScrollView>
       </KeyboardAvoidingView>

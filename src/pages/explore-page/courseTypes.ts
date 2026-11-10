@@ -14,6 +14,7 @@ export type ExploreCourse = {
 };
 
 export type ExploreCourseDetail = ExploreCourse & {
+  courseId: number;
   term: string | null;
   visibility: 'public' | 'private';
   intro: string | null;
