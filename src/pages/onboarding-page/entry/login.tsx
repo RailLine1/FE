@@ -14,7 +14,6 @@ import {
 import { useLogin } from '@/api/1-인증/1-인증';
 import { Button } from '@/components/Button';
 import { FormField } from '@/components/FormField';
-import { Mascot } from '@/components/Mascot';
 import { Screen } from '@/components/Screen';
 import { Fonts } from '@/styles/font';
 import { Palette } from '@/styles/palette';
@@ -59,8 +58,11 @@ export default function LoginPage() {
           keyboardShouldPersistTaps="handled"
           style={styles.flex}
           contentContainerStyle={styles.content}>
-          <View style={styles.byteMark}>
-            <Mascot pose="byte" size={64} />
+          <View style={styles.mark} accessibilityElementsHidden importantForAccessibility="no">
+            <View style={styles.piece} />
+            <View style={[styles.piece, styles.pieceToday]} />
+            <View style={styles.piece} />
+            <View style={styles.piece} />
           </View>
           <Text accessibilityRole="header" style={styles.logo}>
             Daybit
@@ -131,8 +133,25 @@ const styles = StyleSheet.create({
     paddingBottom: 32,
     paddingTop: 102,
   },
-  byteMark: {
+  // 앱 아이콘과 같은 그림: 조각 네 개 중 오늘의 한 조각만 노랑
+  mark: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     alignSelf: 'center',
+    width: 64,
+    gap: 8,
+    paddingBottom: 4,
+  },
+  piece: {
+    width: 28,
+    height: 28,
+    borderRadius: 8,
+    backgroundColor: '#b18cff',
+    boxShadow: '0 4px 0 #8a52ff',
+  },
+  pieceToday: {
+    backgroundColor: '#ffc800',
+    boxShadow: '0 4px 0 #d9a900',
   },
   logo: {
     ...Fonts.black,
