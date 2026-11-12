@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
 
+import { MascotEmpty } from '@/components/Mascot';
 import { ListGroup } from '@/components/ListGroup';
 import { QueryStatus } from '@/components/QueryStatus';
 import { SectionLabel } from '@/components/SectionLabel';
@@ -23,18 +24,11 @@ export function SearchResults({ query, onPressCourse }: SearchResultsProps) {
 
   if (!data?.length) {
     return (
-      <View style={styles.empty}>
-        <View style={styles.bits}>
-          <View style={styles.bit} />
-          <View style={styles.nextBit} />
-          <View style={styles.nextBit} />
-          <View style={styles.bit} />
-        </View>
-        <Text style={styles.emptyTitle}>찾는 과목이 없어요</Text>
-        <Text style={styles.emptyMessage}>
-          비공개 과목은 과목 코드 전체를{'\n'}입력해야 찾을 수 있어요.
-        </Text>
-      </View>
+      <MascotEmpty
+        pose="kilo"
+        title="찾는 과목이 없어요"
+        hint={'킬로가 우주까지 찾아봤어요.\n비공개 과목은 과목 코드 전체를 입력해 주세요.'}
+      />
     );
   }
 
@@ -64,44 +58,6 @@ const styles = StyleSheet.create({
   note: {
     ...Fonts.semiBold,
     fontSize: 12,
-    color: Palette.textSub,
-    textAlign: 'center',
-  },
-  empty: {
-    alignItems: 'center',
-    gap: 14,
-    paddingVertical: 56,
-    paddingHorizontal: 16,
-  },
-  bits: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8,
-    width: 72,
-  },
-  bit: {
-    width: 32,
-    height: 32,
-    borderRadius: 10,
-    backgroundColor: Palette.line,
-  },
-  nextBit: {
-    width: 32,
-    height: 32,
-    borderWidth: 2,
-    borderStyle: 'dashed',
-    borderRadius: 10,
-    borderColor: Palette.purple,
-  },
-  emptyTitle: {
-    ...Fonts.bold,
-    fontSize: 17,
-    color: Palette.text,
-  },
-  emptyMessage: {
-    ...Fonts.regular,
-    fontSize: 14,
-    lineHeight: 21,
     color: Palette.textSub,
     textAlign: 'center',
   },

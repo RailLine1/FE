@@ -58,8 +58,11 @@ export default function LoginPage() {
           keyboardShouldPersistTaps="handled"
           style={styles.flex}
           contentContainerStyle={styles.content}>
-          <View style={styles.mark}>
-            <Text style={styles.markLetter}>D</Text>
+          <View style={styles.mark} accessibilityElementsHidden importantForAccessibility="no">
+            <View style={styles.piece} />
+            <View style={[styles.piece, styles.pieceToday]} />
+            <View style={styles.piece} />
+            <View style={styles.piece} />
           </View>
           <Text accessibilityRole="header" style={styles.logo}>
             Daybit
@@ -130,21 +133,25 @@ const styles = StyleSheet.create({
     paddingBottom: 32,
     paddingTop: 102,
   },
+  // 앱 아이콘과 같은 그림: 조각 네 개 중 오늘의 한 조각만 노랑
   mark: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     alignSelf: 'center',
     width: 64,
-    height: 64,
-    borderRadius: 16,
-    backgroundColor: Palette.purple,
-    boxShadow: `0 4px 0 ${Palette.purpleShadow}`,
+    gap: 8,
+    paddingBottom: 4,
   },
-  markLetter: {
-    ...Fonts.black,
-    fontSize: 30,
-    lineHeight: 45,
-    color: Palette.white,
+  piece: {
+    width: 28,
+    height: 28,
+    borderRadius: 8,
+    backgroundColor: '#b18cff',
+    boxShadow: '0 4px 0 #8a52ff',
+  },
+  pieceToday: {
+    backgroundColor: '#ffc800',
+    boxShadow: '0 4px 0 #d9a900',
   },
   logo: {
     ...Fonts.black,

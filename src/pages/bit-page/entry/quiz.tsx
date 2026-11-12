@@ -10,6 +10,7 @@ import { Button } from '@/components/Button';
 import { Icon } from '@/components/Icon';
 import { IconButton } from '@/components/IconButton';
 import { QuizChoice } from '@/components/QuizChoice';
+import { Mascot } from '@/components/Mascot';
 import { Screen } from '@/components/Screen';
 import { ApiError } from '@/lib/createApiFetch';
 import { Fonts } from '@/styles/font';
@@ -116,8 +117,8 @@ export default function QuizPage() {
           leading={{ icon: 'back', accessibilityLabel: '뒤로', onPress: close }}
         />
         <View style={styles.loader}>
-          <View style={styles.mark}>
-            <Text style={styles.markLetter}>D</Text>
+          <View style={styles.byteMark}>
+            <Mascot pose="byte" size={64} />
           </View>
           <Text style={styles.logo}>Daybit</Text>
           <View style={styles.stage}>
@@ -278,20 +279,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: 24,
   },
-  mark: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 56,
-    height: 56,
-    borderRadius: 16,
-    backgroundColor: Palette.purple,
-    boxShadow: `0 4px 0 ${Palette.purpleShadow}`,
-  },
-  markLetter: {
-    ...Fonts.black,
-    fontSize: 26,
-    lineHeight: 39,
-    color: Palette.white,
+  byteMark: {
+    alignSelf: 'center',
   },
   logo: {
     ...Fonts.black,
