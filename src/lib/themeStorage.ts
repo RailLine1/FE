@@ -4,12 +4,12 @@ export type ThemeName = 'dark' | 'light';
 
 const KEY = 'daybit.theme';
 
-// 첫 화면부터 고른 테마로 그리려고 모듈을 읽는 순간 동기로 꺼낸다. 기본은 어두운 테마.
+// 첫 화면부터 고른 테마로 그리려고 모듈을 읽는 순간 동기로 꺼낸다. 기본은 흰 테마.
 export function readThemeName(): ThemeName {
   try {
-    return SecureStore.getItem(KEY) === 'light' ? 'light' : 'dark';
+    return SecureStore.getItem(KEY) === 'dark' ? 'dark' : 'light';
   } catch {
-    return 'dark';
+    return 'light';
   }
 }
 

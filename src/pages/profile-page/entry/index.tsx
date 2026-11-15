@@ -32,12 +32,12 @@ export default function ProfilePage() {
   const logout = useLogout();
   const [confirmLogout, setConfirmLogout] = useState(false);
   const [notifyInfo, setNotifyInfo] = useState(false);
-  const [lightMode, setLightMode] = useState(isLight);
+  const [darkMode, setDarkMode] = useState(() => !isLight());
 
   // 스위치가 밀리는 모습을 보여 준 뒤 테마를 바꾼다. 바꾸면 화면이 새 색으로 다시 그려진다.
-  const changeTheme = (light: boolean) => {
-    setLightMode(light);
-    setTimeout(() => setTheme(light ? 'light' : 'dark'), 220);
+  const changeTheme = (dark: boolean) => {
+    setDarkMode(dark);
+    setTimeout(() => setTheme(dark ? 'dark' : 'light'), 220);
   };
 
   const nickname = me.data?.nickname ?? '';
@@ -130,8 +130,8 @@ export default function ProfilePage() {
           />
           <Toggle
             divider
-            title={<Text style={styles.toggleTitle}>화이트 모드</Text>}
-            value={lightMode}
+            title={<Text style={styles.toggleTitle}>다크 모드</Text>}
+            value={darkMode}
             onValueChange={changeTheme}
           />
           <ListRow
