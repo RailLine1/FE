@@ -4,7 +4,7 @@ import { AppBar } from '@/components/AppBar';
 import { QueryStatus } from '@/components/QueryStatus';
 import { Screen } from '@/components/Screen';
 import { Fonts } from '@/styles/font';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
 import { TileGrid } from '../components/TileGrid';
 import { useGoBackToClassroom } from '../hooks/useGoBackToClassroom';
@@ -30,7 +30,7 @@ export default function PastCoursesPage() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   scroll: {
     flex: 1,
   },
@@ -59,4 +59,4 @@ const styles = StyleSheet.create({
     color: Palette.textSub,
     textAlign: 'center',
   },
-});
+}));

@@ -2,7 +2,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { Icon, IconName } from '@/components/Icon';
 import { Fonts } from '@/styles/font';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
 const tabs: Record<string, { label: string; icon: IconName; selectedIcon: IconName }> = {
   classroom: { label: '강의실', icon: 'home-22', selectedIcon: 'home-purple-22' },
@@ -35,7 +35,7 @@ export function TabItem({ tab, selected, onPress }: TabItemProps) {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   item: {
     flex: 1,
     alignItems: 'center',
@@ -64,4 +64,4 @@ const styles = StyleSheet.create({
   labelSelected: {
     color: Palette.purpleStrong,
   },
-});
+}));

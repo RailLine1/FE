@@ -1,15 +1,15 @@
 import { StyleSheet, Text, View } from 'react-native';
 
 import { Fonts } from '@/styles/font';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
-const colors = {
+const colors = themed(() => ({
   purple: Palette.purple,
   blue: Palette.blue,
   orange: Palette.orange,
   green: Palette.green,
   purpleDeep: Palette.purpleShadow,
-};
+}));
 
 type AvatarProps = {
   label: string;
@@ -24,7 +24,7 @@ export function Avatar({ label, color = 'purple' }: AvatarProps) {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   circle: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -40,4 +40,4 @@ const styles = StyleSheet.create({
     lineHeight: 19.5,
     color: Palette.white,
   },
-});
+}));

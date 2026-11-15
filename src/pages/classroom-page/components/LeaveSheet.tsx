@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { BottomSheet } from '@/components/BottomSheet';
 import { Button } from '@/components/Button';
 import { Fonts } from '@/styles/font';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
 import { CourseRole } from '../courseTypes';
 
@@ -79,7 +79,7 @@ export function LeaveSheet({
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   description: {
     ...Fonts.regular,
     marginBottom: 20,
@@ -94,4 +94,4 @@ const styles = StyleSheet.create({
   actions: {
     gap: 12,
   },
-});
+}));

@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
 import { Memo } from '../courseTypes';
 
@@ -45,7 +45,7 @@ export function MemoComposer({ editing, onSubmit, onCancelEdit }: MemoComposerPr
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   composer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -63,4 +63,4 @@ const styles = StyleSheet.create({
   button: {
     alignSelf: 'center',
   },
-});
+}));

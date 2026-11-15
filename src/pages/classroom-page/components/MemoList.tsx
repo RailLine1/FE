@@ -2,7 +2,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { Badge } from '@/components/Badge';
 import { Fonts } from '@/styles/font';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
 import { Memo } from '../courseTypes';
 
@@ -51,7 +51,7 @@ export function MemoList({ memos, canDeleteAll, onEdit, onDelete }: MemoListProp
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   memo: {
     gap: 4,
     paddingVertical: 10,
@@ -84,4 +84,4 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: Palette.red,
   },
-});
+}));

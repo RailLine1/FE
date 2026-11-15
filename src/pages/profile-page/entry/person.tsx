@@ -6,7 +6,7 @@ import { AppBar } from '@/components/AppBar';
 import { QueryStatus } from '@/components/QueryStatus';
 import { Screen } from '@/components/Screen';
 import { Fonts } from '@/styles/font';
-import { Palette } from '@/styles/palette';
+import { Palette, themed, themeName } from '@/styles/palette';
 
 import { streakColor } from '../connectorClients';
 
@@ -58,7 +58,7 @@ export default function PersonPage() {
               {/* 한 열이 한 주이고 위에서 아래로 날짜가 이어진다. */}
               <View style={styles.grid}>
                 {streak?.days?.map(({ date, count }) => (
-                  <View key={date} style={[styles.cell, { backgroundColor: streakColor(count) }]} />
+                  <View key={date} style={[styles.cell, { backgroundColor: streakColor(count, themeName()) }]} />
                 ))}
               </View>
               <View style={styles.gridFooter}>
@@ -74,7 +74,7 @@ export default function PersonPage() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   scroll: {
     flex: 1,
   },
@@ -164,4 +164,4 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: Palette.textSub,
   },
-});
+}));

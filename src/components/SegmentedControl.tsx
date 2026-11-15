@@ -1,7 +1,7 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { Fonts } from '@/styles/font';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
 type SegmentedControlProps<T extends string> = {
   options: readonly { value: T; label: string }[];
@@ -33,7 +33,7 @@ export function SegmentedControl<T extends string>({
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   control: {
     flexDirection: 'row',
     gap: 4,
@@ -63,4 +63,4 @@ const styles = StyleSheet.create({
   selectedLabel: {
     color: Palette.purpleStrong,
   },
-});
+}));

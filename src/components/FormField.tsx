@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import { Input } from '@/components/Input';
 import { Fonts } from '@/styles/font';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
 type FormFieldProps = Omit<ComponentProps<typeof Input>, 'error' | 'children'> & {
   label: string;
@@ -25,7 +25,7 @@ export function FormField({ label, hint, error, children, ...inputProps }: FormF
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   field: {
     gap: 6,
   },
@@ -42,4 +42,4 @@ const styles = StyleSheet.create({
   error: {
     color: Palette.red,
   },
-});
+}));

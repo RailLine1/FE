@@ -2,7 +2,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { Icon } from '@/components/Icon';
 import { Fonts } from '@/styles/font';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
 const MAX_VISIBLE_PAGES = 5;
 
@@ -60,7 +60,7 @@ export function Pagination({ page, totalPages, onChange }: PaginationProps) {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   pagination: {
     flexDirection: 'row',
     justifyContent: 'center',
@@ -88,4 +88,4 @@ const styles = StyleSheet.create({
     ...Fonts.extraBold,
     color: Palette.white,
   },
-});
+}));

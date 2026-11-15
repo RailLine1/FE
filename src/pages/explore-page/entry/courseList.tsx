@@ -8,7 +8,7 @@ import { Pagination } from '@/components/Pagination';
 import { QueryStatus } from '@/components/QueryStatus';
 import { Screen } from '@/components/Screen';
 import { Fonts } from '@/styles/font';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
 import { CourseRow } from '../components/CourseRow';
 import { useExploreCourses } from '../hooks/useExploreCourses';
@@ -69,7 +69,7 @@ export default function CourseListPage() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   scroll: {
     flex: 1,
   },
@@ -84,4 +84,4 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: Palette.textSub,
   },
-});
+}));

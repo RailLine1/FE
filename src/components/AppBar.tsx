@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import { IconButton, IconButtonIcon } from '@/components/IconButton';
 import { Fonts } from '@/styles/font';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
 type AppBarProps = {
   title?: string;
@@ -29,7 +29,7 @@ export function AppBar({ title, leading, trailing, large, borderless }: AppBarPr
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   bar: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -51,4 +51,4 @@ const styles = StyleSheet.create({
   large: {
     fontSize: 24,
   },
-});
+}));

@@ -94,11 +94,15 @@ export function lastUsedText(iso: string, now = new Date(), label = '마지막 �
   return `${label} ${date.getMonth() + 1}월 ${date.getDate()}일`;
 }
 
-// 1단계를 반투명으로 두면 빈 칸(회색)보다 연해 보여서 불투명한 연보라로 둔다
-// 어두운 테마 시안: 빈 칸은 surfaceMuted, 진할수록 밝은 보라. 노드 테스트가 읽는 파일이라 Palette를 가져오지 않는다.
-const STREAK_LEVELS = ['#232132', '#4a3a8a', '#6a52c8', '#8b6cf6', '#b9a5ff'];
+// 1단계를 반투명으로 두면 빈 칸(회색)보다 연해 보여서 불투명한 색으로 둔다. 노드 테스트가 읽는 파일이라 Palette를 가져오지 않는다.
+// 어두운 테마: 빈 칸은 surfaceMuted, 진할수록 밝은 보라. 흰 테마: 빈 칸은 회색, 진할수록 짙은 보라.
+const STREAK_LEVELS = {
+  dark: ['#232132', '#4a3a8a', '#6a52c8', '#8b6cf6', '#b9a5ff'],
+  light: ['#e5e5e5', '#d4c0ff', '#b18cff', '#9e70ff', '#8952ff'],
+};
 
 // P-BIT-13. 그날 푼 Bit 수에 따라 0·1·2·3·4개 이상, 5단계로 진해진다.
-export function streakColor(count = 0) {
-  return STREAK_LEVELS[Math.min(count, STREAK_LEVELS.length - 1)];
+export function streakColor(count = 0, theme?: 'dark' | 'light') {
+  const levels = theme === 'light' ? STREAK_LEVELS.light : STREAK_LEVELS.dark;
+  return levels[Math.min(count, levels.length - 1)];
 }

@@ -1,7 +1,7 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { Fonts } from '@/styles/font';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
 type CheckboxProps = {
   label: string;
@@ -22,7 +22,7 @@ export function Checkbox({ label, checked, onValueChange }: CheckboxProps) {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   box: {
     flexDirection: 'row',
     gap: 10,
@@ -56,4 +56,4 @@ const styles = StyleSheet.create({
   labelChecked: {
     color: Palette.text,
   },
-});
+}));

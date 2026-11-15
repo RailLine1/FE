@@ -3,7 +3,7 @@ import { ReactNode, useEffect, useState } from 'react';
 import { Animated, Easing, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { Palette } from '@/styles/palette';
+import { isLight, Palette, themed } from '@/styles/palette';
 
 type ScreenProps = {
   children: ReactNode;
@@ -54,9 +54,10 @@ export function Screen({ children, background, hasTabBar }: ScreenProps) {
     lastPosition = target;
   }, [position, target]);
 
-  if (background) {
+  // 흰 테마는 밤하늘 없이 흰 바탕만 깐다.
+  if (background || isLight()) {
     return (
-      <SafeAreaView edges={edges} style={{ flex: 1, backgroundColor: background }}>
+      <SafeAreaView edges={edges} style={{ flex: 1, backgroundColor: background ?? Palette.bg }}>
         {children}
       </SafeAreaView>
     );
@@ -81,7 +82,7 @@ export function Screen({ children, background, hasTabBar }: ScreenProps) {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   frame: {
     flex: 1,
     overflow: 'hidden',
@@ -106,4 +107,4 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'transparent',
   },
-});
+}));

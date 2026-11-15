@@ -5,7 +5,7 @@ import { BottomSheet } from '@/components/BottomSheet';
 import { Button } from '@/components/Button';
 import { Icon } from '@/components/Icon';
 import { Fonts } from '@/styles/font';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
 const WEEKDAYS = ['일', '월', '화', '수', '목', '금', '토'];
 
@@ -137,7 +137,7 @@ export function DateField({ label, value, onChange }: DateFieldProps) {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   field: {
     flex: 1,
     minWidth: 0,
@@ -220,4 +220,4 @@ const styles = StyleSheet.create({
     ...Fonts.extraBold,
     color: Palette.white,
   },
-});
+}));

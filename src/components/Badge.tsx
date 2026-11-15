@@ -1,16 +1,16 @@
 import { StyleSheet, Text, View } from 'react-native';
 
 import { Fonts } from '@/styles/font';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
-const variants = {
+const variants = themed(() => ({
   success: { background: Palette.greenTint, text: Palette.green },
   pending: { background: Palette.blueTint, text: Palette.blue },
   subscribed: { background: Palette.purpleTint, text: Palette.purpleStrong },
   danger: { background: Palette.redTint, text: Palette.red },
   admin: { background: Palette.goldenTint, text: Palette.goldenInk },
   member: { background: Palette.surfaceMuted, text: Palette.textSub, border: Palette.line },
-};
+}));
 
 export type BadgeVariant = keyof typeof variants;
 

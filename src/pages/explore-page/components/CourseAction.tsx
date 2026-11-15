@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '@/components/Button';
 import { Fonts } from '@/styles/font';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
 import { ExploreCourseDetail } from '../courseTypes';
 
@@ -52,7 +52,7 @@ export function CourseAction({ course, disabled, onSubscribe, onOpenClassroom }:
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   action: {
     gap: 16,
   },
@@ -62,4 +62,4 @@ const styles = StyleSheet.create({
     color: Palette.textSub,
     textAlign: 'center',
   },
-});
+}));

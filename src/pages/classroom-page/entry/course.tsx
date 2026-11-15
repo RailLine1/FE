@@ -11,7 +11,7 @@ import { QueryStatus } from '@/components/QueryStatus';
 import { Screen } from '@/components/Screen';
 import { Toast } from '@/components/Toast';
 import { Fonts } from '@/styles/font';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
 import { AiSection } from '../components/AiSection';
 import { CourseSummary } from '../components/CourseSummary';
@@ -116,7 +116,7 @@ export default function CoursePage() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   scroll: {
     flex: 1,
   },
@@ -139,4 +139,4 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: Palette.red,
   },
-});
+}));

@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import { Icon } from '@/components/Icon';
 import { Fonts } from '@/styles/font';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
 export function Toast({ message, icon = true }: { message: string; icon?: boolean }) {
   return (
@@ -15,7 +15,7 @@ export function Toast({ message, icon = true }: { message: string; icon?: boolea
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   position: {
     position: 'absolute',
     left: 0,
@@ -38,4 +38,4 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: Palette.white,
   },
-});
+}));

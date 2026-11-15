@@ -3,7 +3,7 @@ import { KeyboardAvoidingView, Modal, Pressable, StyleSheet, Text, View } from '
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Fonts } from '@/styles/font';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
 type BottomSheetProps = {
   visible: boolean;
@@ -37,7 +37,7 @@ export function BottomSheet({ visible, onClose, title, description, children }: 
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   scrim: {
     flex: 1,
     backgroundColor: Palette.scrim,
@@ -77,4 +77,4 @@ const styles = StyleSheet.create({
     lineHeight: 19.5,
     color: Palette.textSub,
   },
-});
+}));

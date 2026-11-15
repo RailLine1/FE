@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { TabItem, TabName } from '@/components/TabItem';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
 const tabNames: TabName[] = ['classroom', 'bit', 'explore', 'profile'];
 
@@ -41,7 +41,7 @@ export function TabBar({ selected, onSelect }: TabBarProps) {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   bar: {
     flexDirection: 'row',
     paddingTop: 6,
@@ -50,4 +50,4 @@ const styles = StyleSheet.create({
     borderTopColor: Palette.line,
     backgroundColor: Palette.bar,
   },
-});
+}));

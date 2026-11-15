@@ -11,7 +11,7 @@ import { ListRow } from '@/components/ListRow';
 import { SegmentedControl } from '@/components/SegmentedControl';
 import { Toggle } from '@/components/Toggle';
 import { Fonts } from '@/styles/font';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
 import { CourseSettings, CourseVisibility, QuizSource, UpdateCourseInput } from '../courseTypes';
 import { useCourseNotify } from '../hooks/useCourseNotify';
@@ -159,7 +159,7 @@ export function ManagerSettings({ courseId, settings, onSaved }: ManagerSettings
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   scroll: {
     flex: 1,
   },
@@ -198,4 +198,4 @@ const styles = StyleSheet.create({
   spacer: {
     flexGrow: 1,
   },
-});
+}));

@@ -20,7 +20,7 @@ import { TabBar } from '@/components/TabBar';
 import { Tile } from '@/components/Tile';
 import { TabItem } from '@/components/TabItem';
 import { Toggle } from '@/components/Toggle';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
 // Figma 문구의 줄바꿈까지 그대로 옮겨 시안과 바로 비교할 수 있게 한다.
 const CONSENT = '본인이 수강 중인 과목 자료이며, 수강생끼리만 사\n용하는 데 동의해요.';
@@ -254,7 +254,7 @@ export default function ComponentCatalog() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   page: {
     flex: 1,
     backgroundColor: Palette.surface,
@@ -285,4 +285,4 @@ const styles = StyleSheet.create({
   sheetActions: {
     gap: 12,
   },
-});
+}));

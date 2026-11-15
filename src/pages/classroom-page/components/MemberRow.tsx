@@ -4,7 +4,7 @@ import { Badge } from '@/components/Badge';
 import { Icon } from '@/components/Icon';
 import { ListRow } from '@/components/ListRow';
 import { Fonts } from '@/styles/font';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
 import { CourseMember } from '../courseTypes';
 import { roleBadges } from './CourseSummary';
@@ -52,7 +52,7 @@ export function MemberRow({ member, isMe, onPressRole }: MemberRowProps) {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   roleButton: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -69,4 +69,4 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: Palette.text,
   },
-});
+}));

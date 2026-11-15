@@ -2,7 +2,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { Icon } from '@/components/Icon';
 import { Fonts } from '@/styles/font';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
 import { ArchivePost } from '../courseTypes';
 import { formatRelativeDate } from '../formatRelativeDate';
@@ -35,7 +35,7 @@ export function ArchiveCard({ post, last, onOpen }: ArchiveCardProps) {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   card: {
     gap: 10,
     paddingVertical: 14,
@@ -87,4 +87,4 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: Palette.textSub,
   },
-});
+}));

@@ -8,7 +8,7 @@ import { QueryStatus } from '@/components/QueryStatus';
 import { Screen } from '@/components/Screen';
 import { Toast } from '@/components/Toast';
 import { Fonts } from '@/styles/font';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
 import { JoinRequestRow } from '../components/JoinRequestRow';
 import { useCourseDetail } from '../hooks/useCourseDetail';
@@ -96,7 +96,7 @@ export default function RequestsPage() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   scroll: {
     flex: 1,
   },
@@ -132,4 +132,4 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: Palette.textSub,
   },
-});
+}));

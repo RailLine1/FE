@@ -3,7 +3,7 @@ import { StyleProp, StyleSheet, TextInput, TextInputProps, View, ViewStyle } fro
 
 import { Icon } from '@/components/Icon';
 import { Fonts } from '@/styles/font';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
 type InputProps = Omit<TextInputProps, 'style'> & {
   search?: boolean;
@@ -48,7 +48,7 @@ export function Input({ search, error, readOnly, value, style, onFocus, onBlur, 
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   box: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -80,4 +80,4 @@ const styles = StyleSheet.create({
   fieldOffset: {
     marginTop: 4,
   },
-});
+}));

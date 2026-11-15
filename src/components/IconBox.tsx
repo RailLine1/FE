@@ -1,15 +1,15 @@
 import { ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
-const tones = {
+const tones = themed(() => ({
   main: { background: Palette.purple },
   soft: { background: Palette.purpleTint },
   golden: { background: Palette.goldenTint },
   muted: { background: Palette.surfaceMuted },
   outline: { background: Palette.surface, border: Palette.line },
-};
+}));
 
 type IconBoxProps = {
   children: ReactNode;
@@ -40,7 +40,7 @@ export function IconBox({ children, size = 36, tone = 'main', raised }: IconBoxP
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   box: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -49,4 +49,4 @@ const styles = StyleSheet.create({
   raised: {
     boxShadow: `0 4px 0 ${Palette.purpleShadow}`,
   },
-});
+}));

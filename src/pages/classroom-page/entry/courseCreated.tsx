@@ -8,7 +8,7 @@ import { CourseIcon } from '@/components/CourseIcon';
 import { Screen } from '@/components/Screen';
 import { Toast } from '@/components/Toast';
 import { Fonts } from '@/styles/font';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
 const TOAST_DURATION = 2500;
 
@@ -58,7 +58,7 @@ export default function CourseCreatedPage() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   scroll: {
     flex: 1,
   },
@@ -129,4 +129,4 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     minHeight: 24,
   },
-});
+}));

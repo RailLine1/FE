@@ -6,7 +6,7 @@ import { useCompleteOnboarding } from '@/api/2-내-정보/2-내-정보';
 import { Button } from '@/components/Button';
 import { Screen } from '@/components/Screen';
 import { Fonts } from '@/styles/font';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
 const SLIDES = [
   { title: '강의자료를 한곳에', body: '과목별로 자료를 모아 두고,\n같이 듣는 사람과 나눠요.' },
@@ -116,7 +116,7 @@ export default function OnboardingPage() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   flex: {
     flex: 1,
   },
@@ -325,4 +325,4 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: Palette.textSub,
   },
-});
+}));

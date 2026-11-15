@@ -9,23 +9,27 @@ import { Nunito_800ExtraBold } from '@expo-google-fonts/nunito/800ExtraBold';
 import { Nunito_900Black } from '@expo-google-fonts/nunito/900Black';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { useFonts } from 'expo-font';
+import { StatusBar } from 'expo-status-bar';
+import { useSyncExternalStore } from 'react';
 import { Platform } from 'react-native';
-import { DarkTheme, Stack, ThemeProvider } from 'expo-router';
+import { DarkTheme, DefaultTheme, Stack, ThemeProvider } from 'expo-router';
 import Head from 'expo-router/head';
 
 import { ErrorToast } from '@/components/ErrorToast';
 import { queryClient } from '@/lib/queryClient';
 import { usePushNotifications } from '@/lib/pushNotifications';
 import { useAuthGate } from '@/lib/useAuthGate';
-import { Palette } from '@/styles/palette';
+import { isLight, Palette, subscribeTheme, themeVersion } from '@/styles/palette';
 
-// 화면 뒤 바탕을 어두운 테마 색으로. 기본 테마는 흰색이라 화면이 그려지기 전 · 넘어갈 때 흰 화면이 잠깐 보였다.
-const theme = {
-  ...DarkTheme,
-  colors: { ...DarkTheme.colors, background: Palette.bg, card: Palette.bg },
-};
+// 화면 뒤 바탕을 테마 색으로. 그리기 전 · 넘어갈 때 다른 색이 잠깐 보이지 않게 한다.
+function navigationTheme() {
+  const base = isLight() ? DefaultTheme : DarkTheme;
+  return { ...base, colors: { ...base.colors, background: Palette.bg, card: Palette.bg } };
+}
 
 export default function App() {
+  // 테마를 바꾸면 화면을 새로 그려 바뀐 색을 읽게 한다. 이동 상태는 바깥 내비게이션 컨테이너가 들고 있다.
+  const version = useSyncExternalStore(subscribeTheme, themeVersion);
   const [fontsLoaded] = useFonts({
     Nunito_400Regular,
     Nunito_500Medium,
@@ -42,7 +46,8 @@ export default function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider value={theme}>
+      <ThemeProvider key={version} value={navigationTheme()}>
+        <StatusBar style={isLight() ? 'dark' : 'light'} />
         <Head>
           <link
             rel="stylesheet"

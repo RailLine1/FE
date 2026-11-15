@@ -7,7 +7,7 @@ import { Input } from '@/components/Input';
 import { Screen } from '@/components/Screen';
 import { TabBar } from '@/components/TabBar';
 import { Fonts } from '@/styles/font';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
 import { CourseSection } from '../components/CourseSection';
 import { SearchResults } from '../components/SearchResults';
@@ -94,7 +94,7 @@ export default function ExplorePage() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   scroll: {
     flex: 1,
   },
@@ -122,4 +122,4 @@ const styles = StyleSheet.create({
     letterSpacing: -0.8,
     color: Palette.text,
   },
-});
+}));

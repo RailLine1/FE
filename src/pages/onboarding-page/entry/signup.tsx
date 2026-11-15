@@ -15,7 +15,7 @@ import { Button } from '@/components/Button';
 import { FormField } from '@/components/FormField';
 import { Screen } from '@/components/Screen';
 import { Fonts } from '@/styles/font';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
 import { FormErrors, toFormErrors, validateSignup } from '../authForm';
 import { startSession } from '../session';
@@ -118,7 +118,7 @@ export default function SignupPage() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   flex: {
     flex: 1,
   },
@@ -159,4 +159,4 @@ const styles = StyleSheet.create({
     color: Palette.purpleStrong,
     textDecorationLine: 'underline',
   },
-});
+}));

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Animated, Easing, Image, StyleSheet, Text, View } from 'react-native';
 
 import { Fonts } from '@/styles/font';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
 // 마스코트(도트): 바이트(귀 쫑긋 강아지, 매일 문제를 물어 오는 bite) · 킬로(납작 외계인, 바이트보다 큰 친구).
 // 16x16 도트를 8배(128px)로 키운 그림이라 32 · 64 · 128처럼 나눠 떨어지는 크기로 쓰면 또렷하다.
@@ -77,7 +77,7 @@ export function Mascot({ pose = 'byte', size = 64, says }: MascotProps) {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   row: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     lineHeight: 21,
     color: Palette.text,
   },
-});
+}));
 
 // 빈 화면 안내: 가운데 캐릭터 + 제목 + 다음에 할 일 한 줄.
 export function MascotEmpty({ pose = 'byte', title, hint }: { pose?: MascotPose; title: string; hint?: string }) {
@@ -125,7 +125,7 @@ export function MascotEmpty({ pose = 'byte', title, hint }: { pose?: MascotPose;
   );
 }
 
-const emptyStyles = StyleSheet.create({
+const emptyStyles = themed(() => StyleSheet.create({
   box: {
     alignItems: 'center',
     gap: 6,
@@ -146,4 +146,4 @@ const emptyStyles = StyleSheet.create({
     color: Palette.textSub,
     textAlign: 'center',
   },
-});
+}));
