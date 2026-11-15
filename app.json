@@ -2,7 +2,7 @@
   "expo": {
     "name": "Daybit",
     "slug": "daybit",
-    "owner": "daybit",
+    "owner": "robseul372",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./src/assets/images/icon.png",
@@ -13,6 +13,7 @@
     },
     "android": {
       "package": "app.daybit",
+      "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "backgroundColor": "#13111c",
         "foregroundImage": "./src/assets/images/android-icon-foreground.png",
@@ -49,7 +50,19 @@
       [
         "expo-notifications",
         {
+          "icon": "./src/assets/images/notification-icon.png",
+          "color": "#b18cff",
           "defaultChannel": "default"
+        }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "buildArchs": ["arm64-v8a"],
+            "enableMinifyInReleaseBuilds": true,
+            "enableShrinkResourcesInReleaseBuilds": true
+          }
         }
       ]
     ],
@@ -59,7 +72,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "5115c471-2c15-49d4-8d29-ea35ef0ad4ef"
+        "projectId": "1c46358e-c0e8-4296-95cb-3d6b7f6b4da1"
       }
     }
   }

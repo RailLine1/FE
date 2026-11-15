@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "658131208899",
+    "project_id": "daybit-fcb80",
+    "storage_bucket": "daybit-fcb80.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:658131208899:android:dd7342c8c784ca82437076",
+        "android_client_info": {
+          "package_name": "app.daybit"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkdjHqtiy7LCDRpFJyOoopJli18YWru8E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
