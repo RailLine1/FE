@@ -3,7 +3,7 @@ import { Platform, StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '@/components/Button';
 import { Fonts } from '@/styles/font';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
 // 등록 가이드(커넥터, 예약 작업)의 번호 단계. 복사할 값은 단계 안에 CopyBox로 둔다.
 export function GuideStep({
@@ -55,7 +55,7 @@ export function CopyBox({
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   step: {
     flexDirection: 'row',
     gap: 10,
@@ -107,4 +107,4 @@ const styles = StyleSheet.create({
   copyPlaceholder: {
     color: Palette.textSub,
   },
-});
+}));

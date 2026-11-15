@@ -12,7 +12,7 @@ import { Screen } from '@/components/Screen';
 import { SectionLabel } from '@/components/SectionLabel';
 import { Toast } from '@/components/Toast';
 import { Fonts } from '@/styles/font';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
 import { CourseAction } from '../components/CourseAction';
 import { useCourseInfo } from '../hooks/useCourseInfo';
@@ -119,7 +119,7 @@ export default function CourseInfoPage() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   scroll: {
     flex: 1,
   },
@@ -161,4 +161,4 @@ const styles = StyleSheet.create({
   spacer: {
     flexGrow: 1,
   },
-});
+}));

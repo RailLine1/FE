@@ -2,7 +2,7 @@ import { Image } from 'react-native';
 
 import { COURSE_ICON_KEYS, CourseIconKey, toCourseIcon } from '@/components/courseIcons';
 import { IconBox } from '@/components/IconBox';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
 const sources: Record<CourseIconKey, number> = {
   activity: require('@/assets/line/activity.png'),
@@ -62,12 +62,12 @@ export const getCourseIconSource = (icon: string) => sources[toCourseIcon(icon)]
 
 const glyphSizes = { 32: 18, 36: 20, 48: 26, 56: 28, 64: 30, 72: 34 };
 
-const glyphColors = {
+const glyphColors = themed(() => ({
   main: Palette.white,
   soft: Palette.purpleStrong,
   muted: Palette.textSub,
   golden: Palette.goldenInk,
-};
+}));
 
 type CourseIconProps = {
   // API의 과목 icon 값. 예전 아이콘 값도 가까운 아이콘으로, 모르는 값이면 책으로 보여 준다.

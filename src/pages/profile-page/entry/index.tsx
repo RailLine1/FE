@@ -15,11 +15,12 @@ import { ListRow } from '@/components/ListRow';
 import { QueryStatus } from '@/components/QueryStatus';
 import { Screen } from '@/components/Screen';
 import { TabBar } from '@/components/TabBar';
+import { Toggle } from '@/components/Toggle';
 import { unregisterPushToken } from '@/lib/pushNotifications';
 import { queryClient } from '@/lib/queryClient';
 import { tokenStorage } from '@/lib/tokenStorage';
 import { Fonts } from '@/styles/font';
-import { Palette } from '@/styles/palette';
+import { isLight, Palette, setTheme, themed, themeName } from '@/styles/palette';
 
 import { connectedSummary, streakColor } from '../connectorClients';
 
@@ -31,6 +32,13 @@ export default function ProfilePage() {
   const logout = useLogout();
   const [confirmLogout, setConfirmLogout] = useState(false);
   const [notifyInfo, setNotifyInfo] = useState(false);
+  const [lightMode, setLightMode] = useState(isLight);
+
+  // 스위치가 밀리는 모습을 보여 준 뒤 테마를 바꾼다. 바꾸면 화면이 새 색으로 다시 그려진다.
+  const changeTheme = (light: boolean) => {
+    setLightMode(light);
+    setTimeout(() => setTheme(light ? 'light' : 'dark'), 220);
+  };
 
   const nickname = me.data?.nickname ?? '';
   const stats = [
@@ -88,7 +96,7 @@ export default function ProfilePage() {
           {/* P-BIT-13. 한 열이 한 주이고 위에서 아래로 날짜가 이어진다. */}
           <View style={styles.grid}>
             {streak.data?.days?.map(({ date, count }) => (
-              <View key={date} style={[styles.cell, { backgroundColor: streakColor(count) }]} />
+              <View key={date} style={[styles.cell, { backgroundColor: streakColor(count, themeName()) }]} />
             ))}
           </View>
           <View style={styles.gridFooter}>
@@ -119,6 +127,12 @@ export default function ProfilePage() {
               </View>
             }
             onPress={() => setNotifyInfo(true)}
+          />
+          <Toggle
+            divider
+            title={<Text style={styles.toggleTitle}>화이트 모드</Text>}
+            value={lightMode}
+            onValueChange={changeTheme}
           />
           <ListRow
             title={<Text style={styles.menuTitle}>로그아웃</Text>}
@@ -164,7 +178,7 @@ export default function ProfilePage() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   scroll: {
     flex: 1,
   },
@@ -261,6 +275,12 @@ const styles = StyleSheet.create({
   menuTitle: {
     ...Fonts.bold,
   },
+  // 위아래 메뉴(ListRow)와 같은 글자
+  toggleTitle: {
+    ...Fonts.bold,
+    fontSize: 15,
+    lineHeight: 22.5,
+  },
   menuTrailing: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -276,4 +296,4 @@ const styles = StyleSheet.create({
     gap: 12,
     marginTop: 8,
   },
-});
+}));

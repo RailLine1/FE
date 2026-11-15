@@ -4,7 +4,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { Badge, BadgeVariant } from '@/components/Badge';
 import { Icon } from '@/components/Icon';
 import { Fonts } from '@/styles/font';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
 type ListRowProps = {
   title: ReactNode;
@@ -107,7 +107,7 @@ export function ListRow({
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   row: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -174,4 +174,4 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
     color: Palette.text,
   },
-});
+}));

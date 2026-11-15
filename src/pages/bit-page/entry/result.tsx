@@ -19,7 +19,7 @@ import { QueryStatus } from '@/components/QueryStatus';
 import { Screen } from '@/components/Screen';
 import { Toast } from '@/components/Toast';
 import { Fonts } from '@/styles/font';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
 import { NightSparkles } from '../components/NightSparkles';
 import {
@@ -333,7 +333,7 @@ const Ticket = {
   goldenShadow: '#d9a900',
 } as const;
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   // 이미지 저장 범위. 화면과 같은 남색 바탕에 여백을 두어 찍힌 이미지만 봐도 결과를 알 수 있게 한다.
   capture: {
     alignSelf: 'stretch',
@@ -535,4 +535,4 @@ const styles = StyleSheet.create({
     height: 42,
     marginTop: 8,
   },
-});
+}));

@@ -1,8 +1,8 @@
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
 // Figma `24 결과 · 정답 (폭죽) / motion` 프레임의 조각 110개.
 // 가운데 기준 x, 위 기준 y, 길이, 두께, 각도, 색 번호, 원 여부, 투명도. 각도와 두께는 경계 상자에서 계산한 값이다.
-export const CONFETTI_COLORS = [
+export const CONFETTI_COLORS = themed(() => ([
   Palette.purple,
   '#9e70ff',
   Palette.golden,
@@ -10,7 +10,7 @@ export const CONFETTI_COLORS = [
   Palette.green,
   Palette.orange,
   Palette.red,
-];
+]));
 
 export const CONFETTI_PIECES = [
   [79, 372, 13, 5, 90, 0, 0, 1],

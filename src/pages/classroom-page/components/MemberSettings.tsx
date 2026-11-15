@@ -2,7 +2,7 @@ import { ScrollView, StyleSheet, Text } from 'react-native';
 
 import { Toggle } from '@/components/Toggle';
 import { Fonts } from '@/styles/font';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
 import { CourseSettings } from '../courseTypes';
 import { useCourseNotify } from '../hooks/useCourseNotify';
@@ -34,7 +34,7 @@ export function MemberSettings({ courseId, settings }: MemberSettingsProps) {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   scroll: {
     flex: 1,
   },
@@ -48,4 +48,4 @@ const styles = StyleSheet.create({
     color: Palette.textSub,
     textAlign: 'center',
   },
-});
+}));

@@ -2,7 +2,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { CourseIcon } from '@/components/CourseIcon';
 import { Fonts } from '@/styles/font';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
 type TileProps = {
   name: string;
@@ -34,7 +34,7 @@ export function Tile({ name, intro, icon, muted, onPress }: TileProps) {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   tile: {
     // 정사각형이면 아이콘과 이름 사이가 너무 비어서, 내용만큼만 높이를 둔다(같은 줄은 높이를 맞춘다).
     flex: 1,
@@ -63,4 +63,4 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: Palette.textSub,
   },
-});
+}));

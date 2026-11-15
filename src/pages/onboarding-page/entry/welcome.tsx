@@ -15,7 +15,7 @@ import { ListRow } from '@/components/ListRow';
 import { Mascot } from '@/components/Mascot';
 import { Screen } from '@/components/Screen';
 import { Fonts } from '@/styles/font';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 import { pendingRoute } from '@/lib/pendingRoute';
 
 import { HOME_ROUTE } from '../session';
@@ -98,7 +98,7 @@ export default function WelcomePage() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   loading: {
     flex: 1,
     alignItems: 'center',
@@ -139,4 +139,4 @@ const styles = StyleSheet.create({
   start: {
     marginTop: 28,
   },
-});
+}));

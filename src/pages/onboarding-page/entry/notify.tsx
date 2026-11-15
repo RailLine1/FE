@@ -4,7 +4,7 @@ import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Button } from '@/components/Button';
 import { Screen } from '@/components/Screen';
 import { Fonts } from '@/styles/font';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 import { pendingRoute } from '@/lib/pendingRoute';
 
 import { requestNotificationPermission } from '../notificationPermission';
@@ -53,7 +53,7 @@ export default function NotifyPage() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   flex: {
     flex: 1,
   },
@@ -150,4 +150,4 @@ const styles = StyleSheet.create({
   actions: {
     gap: 8,
   },
-});
+}));

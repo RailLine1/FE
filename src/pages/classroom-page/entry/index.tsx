@@ -12,7 +12,7 @@ import { SectionLabel } from '@/components/SectionLabel';
 import { TabBar } from '@/components/TabBar';
 import { Fonts } from '@/styles/font';
 import { prefetchCourse, prefetchTabs } from '@/lib/prefetch';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
 import { TileGrid } from '../components/TileGrid';
 import { useMyCourses } from '../hooks/useMyCourses';
@@ -65,7 +65,7 @@ export default function ClassroomPage() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   scroll: {
     flex: 1,
   },
@@ -85,4 +85,4 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: Palette.purpleStrong,
   },
-});
+}));

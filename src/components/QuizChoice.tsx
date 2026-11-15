@@ -2,14 +2,14 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { Icon } from '@/components/Icon';
 import { Fonts } from '@/styles/font';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
-const states = {
+const states = themed(() => ({
   default: { border: Palette.line, shadow: Palette.line, background: Palette.surface, number: Palette.textMuted },
   selected: { border: Palette.purple, shadow: Palette.purple, background: Palette.purpleTint, number: Palette.purpleStrong },
   correct: { border: Palette.green, shadow: Palette.greenShadow, background: Palette.greenTint, number: Palette.white },
   wrong: { border: Palette.red, shadow: Palette.redShadow, background: Palette.redTint, number: Palette.red },
-};
+}));
 
 type QuizChoiceProps = {
   number: number;
@@ -54,7 +54,7 @@ export function QuizChoice({ number, label, state = 'default', explanation, onPr
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   box: {
     paddingVertical: 12,
     paddingHorizontal: 16,
@@ -98,4 +98,4 @@ const styles = StyleSheet.create({
     lineHeight: 19.5,
     color: Palette.textSub,
   },
-});
+}));

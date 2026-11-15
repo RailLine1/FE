@@ -8,7 +8,7 @@ import { ListGroup } from '@/components/ListGroup';
 import { QueryStatus } from '@/components/QueryStatus';
 import { Screen } from '@/components/Screen';
 import { Fonts } from '@/styles/font';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
 import { EditFileSheet } from '../components/EditFileSheet';
 import { FileRow } from '../components/FileRow';
@@ -116,7 +116,7 @@ export default function FolderPage() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   addFile: {
     alignSelf: 'center',
     marginRight: 8,
@@ -141,4 +141,4 @@ const styles = StyleSheet.create({
     color: Palette.textSub,
     textAlign: 'center',
   },
-});
+}));

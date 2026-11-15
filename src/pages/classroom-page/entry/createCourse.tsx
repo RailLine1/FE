@@ -11,7 +11,7 @@ import { FormField } from '@/components/FormField';
 import { Screen } from '@/components/Screen';
 import { SegmentedControl } from '@/components/SegmentedControl';
 import { Fonts } from '@/styles/font';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
 import { CourseVisibility } from '../courseTypes';
 import { useCreateCourse } from '../hooks/useCreateCourse';
@@ -152,7 +152,7 @@ export default function CreateCoursePage() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   keyboard: {
     flex: 1,
   },
@@ -191,4 +191,4 @@ const styles = StyleSheet.create({
   spacer: {
     flexGrow: 1,
   },
-});
+}));

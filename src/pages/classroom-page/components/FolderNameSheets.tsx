@@ -5,7 +5,7 @@ import { BottomSheet } from '@/components/BottomSheet';
 import { Button } from '@/components/Button';
 import { FormField } from '@/components/FormField';
 import { Fonts } from '@/styles/font';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
 import { CourseFolder } from '../courseTypes';
 
@@ -98,7 +98,7 @@ export function EditFolderSheet({ folder, onClose, onRename, onDelete }: EditFol
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   body: {
     gap: 14,
     marginTop: 10,
@@ -125,4 +125,4 @@ const styles = StyleSheet.create({
     lineHeight: 19.5,
     color: Palette.textSub,
   },
-});
+}));

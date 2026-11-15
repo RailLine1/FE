@@ -4,7 +4,7 @@ import { ListGroup } from '@/components/ListGroup';
 import { QueryStatus } from '@/components/QueryStatus';
 import { SectionLabel } from '@/components/SectionLabel';
 import { Fonts } from '@/styles/font';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
 import { ExploreCourse } from '../courseTypes';
 import { CourseRow } from './CourseRow';
@@ -46,7 +46,7 @@ export function CourseSection({
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   section: {
     gap: 12,
     marginTop: 8,
@@ -61,4 +61,4 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: Palette.purpleStrong,
   },
-});
+}));

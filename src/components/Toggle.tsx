@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { ReactNode, useEffect } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, {
   interpolateColor,
@@ -8,7 +8,7 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import { Fonts } from '@/styles/font';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
 // Claude Design db-toggle: 0.2초 동안 동그라미가 밀리고 색이 바뀐다.
 // 기기의 동작 줄이기 설정을 켜면 Reanimated가 애니메이션 없이 바로 바꾼다.
@@ -16,7 +16,8 @@ const DURATION = 200;
 const THUMB_TRAVEL = 20;
 
 type ToggleProps = {
-  title: string;
+  // 목록(ListGroup) 안에서 다른 줄과 글자를 맞출 때는 Text를 넘긴다.
+  title: ReactNode;
   description?: string;
   value: boolean;
   onValueChange?: (value: boolean) => void;
@@ -31,8 +32,10 @@ export function Toggle({ title, description, value, onValueChange, divider }: To
   }, [progress, value]);
 
   // ponytail: Figma에 꺼진 상태가 없어 line 색으로 임시 처리. 디자인이 나오면 교체
+  // 워크릿은 UI 스레드로 값을 복사해 가므로, 테마 Proxy(Palette) 대신 지금 색을 문자열로 넘긴다.
+  const trackColors = [Palette.line, Palette.purple];
   const trackStyle = useAnimatedStyle(() => ({
-    backgroundColor: interpolateColor(progress.value, [0, 1], [Palette.line, Palette.purple]),
+    backgroundColor: interpolateColor(progress.value, [0, 1], trackColors),
   }));
   const thumbStyle = useAnimatedStyle(() => ({
     transform: [{ translateX: progress.value * THUMB_TRAVEL }],
@@ -55,7 +58,7 @@ export function Toggle({ title, description, value, onValueChange, divider }: To
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   row: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -97,4 +100,4 @@ const styles = StyleSheet.create({
     backgroundColor: Palette.surface,
     boxShadow: '0 1px 3px rgba(0, 0, 0, 0.2)',
   },
-});
+}));

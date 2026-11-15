@@ -6,7 +6,7 @@ import { Icon } from '@/components/Icon';
 import { ListGroup } from '@/components/ListGroup';
 import { ListRow } from '@/components/ListRow';
 import { Fonts } from '@/styles/font';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
 import { CourseMember, CourseRole, CourseVisibility } from '../courseTypes';
 import { MemberAvatar } from './MemberAvatar';
@@ -117,7 +117,7 @@ export function MemberConfirmSheet({
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   content: {
     gap: 12,
   },
@@ -139,4 +139,4 @@ const styles = StyleSheet.create({
   actions: {
     gap: 12,
   },
-});
+}));

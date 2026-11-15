@@ -2,9 +2,9 @@ import { Pressable, StyleProp, StyleSheet, Text, ViewStyle } from 'react-native'
 
 import { Icon, IconName } from '@/components/Icon';
 import { Fonts } from '@/styles/font';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
-const variants = {
+const variants = themed(() => ({
   primary: { background: Palette.purple, shadow: Palette.purpleShadow, text: Palette.white },
   danger: { background: Palette.red, shadow: Palette.redShadow, text: Palette.white },
   success: { background: Palette.green, shadow: Palette.greenShadow, text: Palette.white },
@@ -14,7 +14,7 @@ const variants = {
   neutral: { border: Palette.lineStrong, shadow: Palette.lineStrong, text: Palette.text },
   text: { text: Palette.purpleStrong },
   textInverse: { text: Palette.white },
-};
+}));
 
 type ButtonProps = {
   label: string;

@@ -4,7 +4,7 @@ import { Icon } from '@/components/Icon';
 import { IconBox } from '@/components/IconBox';
 import { IconButton } from '@/components/IconButton';
 import { Fonts } from '@/styles/font';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
 import { PickedFile } from '../hooks/useUploadFiles';
 
@@ -76,7 +76,7 @@ export function FilePicker({ items, disabled, onPick, onRemove }: FilePickerProp
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   empty: {
     alignItems: 'center',
     gap: 6,
@@ -146,4 +146,4 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: Palette.textSub,
   },
-});
+}));

@@ -14,7 +14,7 @@ import { Mascot } from '@/components/Mascot';
 import { Screen } from '@/components/Screen';
 import { ApiError } from '@/lib/createApiFetch';
 import { Fonts } from '@/styles/font';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
 import { evidenceText, formatSeconds } from '../bitFormat';
 
@@ -274,7 +274,7 @@ export default function QuizPage() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   loader: {
     alignItems: 'center',
     paddingTop: 24,
@@ -500,4 +500,4 @@ const styles = StyleSheet.create({
   panelButton: {
     marginTop: 13,
   },
-});
+}));

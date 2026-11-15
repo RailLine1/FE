@@ -8,7 +8,7 @@ import { QueryStatus } from '@/components/QueryStatus';
 import { Screen } from '@/components/Screen';
 import { Toast } from '@/components/Toast';
 import { Fonts } from '@/styles/font';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
 import { MemberRow } from '../components/MemberRow';
 import { MemberAction, MemberConfirmSheet, MemberRoleSheet } from '../components/MemberSheets';
@@ -134,7 +134,7 @@ export default function MembersPage() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   scroll: {
     flex: 1,
   },
@@ -154,4 +154,4 @@ const styles = StyleSheet.create({
     lineHeight: 19.2,
     color: Palette.textSub,
   },
-});
+}));

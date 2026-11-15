@@ -12,7 +12,7 @@ import { QueryStatus } from '@/components/QueryStatus';
 import { Screen } from '@/components/Screen';
 import { Toast } from '@/components/Toast';
 import { Fonts } from '@/styles/font';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
 import { FilePicker, PickedItem } from '../components/FilePicker';
 import { useCourseDetail } from '../hooks/useCourseDetail';
@@ -139,7 +139,7 @@ export default function UploadPage() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   scroll: {
     flex: 1,
   },
@@ -156,4 +156,4 @@ const styles = StyleSheet.create({
   spacer: {
     flexGrow: 1,
   },
-});
+}));

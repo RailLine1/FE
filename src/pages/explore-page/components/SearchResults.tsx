@@ -5,7 +5,7 @@ import { ListGroup } from '@/components/ListGroup';
 import { QueryStatus } from '@/components/QueryStatus';
 import { SectionLabel } from '@/components/SectionLabel';
 import { Fonts } from '@/styles/font';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
 import { useExploreSearch } from '../hooks/useExploreSearch';
 import { CourseRow } from './CourseRow';
@@ -50,7 +50,7 @@ export function SearchResults({ query, onPressCourse }: SearchResultsProps) {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   results: {
     gap: 12,
     marginTop: 8,
@@ -61,4 +61,4 @@ const styles = StyleSheet.create({
     color: Palette.textSub,
     textAlign: 'center',
   },
-});
+}));

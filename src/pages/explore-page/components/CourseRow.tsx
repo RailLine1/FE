@@ -4,7 +4,7 @@ import { StyleSheet, Text } from 'react-native';
 import { BadgeVariant } from '@/components/Badge';
 import { CourseIcon } from '@/components/CourseIcon';
 import { ListRow } from '@/components/ListRow';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
 import { ExploreCourse } from '../courseTypes';
 
@@ -54,8 +54,8 @@ export function CourseRow({ course, compact, highlight, onPress }: CourseRowProp
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   highlight: {
     color: Palette.purpleStrong,
   },
-});
+}));

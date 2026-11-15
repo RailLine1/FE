@@ -7,7 +7,7 @@ import { Pagination } from '@/components/Pagination';
 import { QueryStatus } from '@/components/QueryStatus';
 import { Screen } from '@/components/Screen';
 import { Fonts } from '@/styles/font';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
 import { ArchiveCard } from '../components/ArchiveCard';
 import { useArchivePosts } from '../hooks/useArchivePosts';
@@ -65,7 +65,7 @@ export default function ArchivePage() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   scroll: {
     flex: 1,
   },
@@ -80,4 +80,4 @@ const styles = StyleSheet.create({
     color: Palette.textSub,
     textAlign: 'center',
   },
-});
+}));

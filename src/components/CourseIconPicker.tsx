@@ -3,7 +3,7 @@ import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { getCourseIconSource } from '@/components/CourseIcon';
 import { COURSE_ICON_GROUPS, toCourseIcon } from '@/components/courseIcons';
 import { Fonts } from '@/styles/font';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
 type CourseIconPickerProps = {
   value: string;
@@ -44,7 +44,7 @@ export function CourseIconPicker({ value, onChange }: CourseIconPickerProps) {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   groups: {
     gap: 12,
     marginTop: 6,
@@ -78,4 +78,4 @@ const styles = StyleSheet.create({
     width: 22,
     height: 22,
   },
-});
+}));

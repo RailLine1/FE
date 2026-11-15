@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
 export function ListGroup({ children }: { children: ReactNode }) {
   return (
@@ -11,7 +11,7 @@ export function ListGroup({ children }: { children: ReactNode }) {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   group: {
     overflow: 'hidden',
     paddingHorizontal: 16,
@@ -24,4 +24,4 @@ const styles = StyleSheet.create({
   rows: {
     marginBottom: -1,
   },
-});
+}));

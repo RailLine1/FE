@@ -14,7 +14,7 @@ import { Mascot } from '@/components/Mascot';
 import { Screen } from '@/components/Screen';
 import { openAiApp } from '@/lib/openAiApp';
 import { Fonts } from '@/styles/font';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
 import {
   CONNECTOR_CLIENTS,
@@ -168,7 +168,7 @@ export default function ConnectorGuidePage() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   scroll: {
     flex: 1,
   },
@@ -274,4 +274,4 @@ const styles = StyleSheet.create({
     lineHeight: 18,
     color: Palette.textSub,
   },
-});
+}));

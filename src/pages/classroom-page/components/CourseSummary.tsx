@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { Badge, BadgeVariant } from '@/components/Badge';
 import { CourseIcon } from '@/components/CourseIcon';
 import { Fonts } from '@/styles/font';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
 import { CourseDetail, CourseRole } from '../courseTypes';
 
@@ -33,7 +33,7 @@ export function CourseSummary({ course }: { course: CourseDetail }) {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   summary: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -54,4 +54,4 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: Palette.textSub,
   },
-});
+}));

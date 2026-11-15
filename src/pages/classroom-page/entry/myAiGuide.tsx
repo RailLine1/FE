@@ -21,7 +21,7 @@ import {
   scheduleCopy,
 } from '@/pages/profile-page/myAi';
 import { Fonts } from '@/styles/font';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
 // P-AI-08, P-AI-11. 과목 환경설정 › 퀴즈 출처에서 여는 예약 작업 가이드. 커넥터 연결이 먼저다.
 export default function MyAiGuidePage() {
@@ -157,7 +157,7 @@ export default function MyAiGuidePage() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   scroll: {
     flex: 1,
   },
@@ -265,4 +265,4 @@ const styles = StyleSheet.create({
     lineHeight: 18,
     color: Palette.textSub,
   },
-});
+}));

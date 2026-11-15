@@ -18,7 +18,7 @@ import { SectionLabel } from '@/components/SectionLabel';
 import { SegmentedControl } from '@/components/SegmentedControl';
 import { Toggle } from '@/components/Toggle';
 import { Fonts } from '@/styles/font';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
 import { circledNumber, evidenceText, formatSeconds, gridOpacity } from '../bitFormat';
 
@@ -189,7 +189,7 @@ export default function RecordsPage() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   scroll: {
     flex: 1,
   },
@@ -340,4 +340,4 @@ const styles = StyleSheet.create({
     lineHeight: 18,
     color: Palette.purpleStrong,
   },
-});
+}));

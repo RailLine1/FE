@@ -11,7 +11,7 @@ import { QueryStatus } from '@/components/QueryStatus';
 import { Screen } from '@/components/Screen';
 import { TabBar } from '@/components/TabBar';
 import { Fonts } from '@/styles/font';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
 import { formatSeconds } from '../bitFormat';
 
@@ -126,7 +126,7 @@ export default function BitPage() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   scroll: {
     flex: 1,
   },
@@ -247,4 +247,4 @@ const styles = StyleSheet.create({
     lineHeight: 19.5,
     color: Palette.textSub,
   },
-});
+}));

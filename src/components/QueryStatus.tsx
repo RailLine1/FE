@@ -1,7 +1,7 @@
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 
 import { Fonts } from '@/styles/font';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
 type QueryStatusProps = {
   isLoading: boolean;
@@ -32,7 +32,7 @@ export function QueryStatus({
   return null;
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   box: {
     alignItems: 'center',
     paddingVertical: 24,
@@ -43,4 +43,4 @@ const styles = StyleSheet.create({
     color: Palette.textSub,
     textAlign: 'center',
   },
-});
+}));

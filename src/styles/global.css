@@ -53,3 +53,29 @@ input:-webkit-autofill:focus {
   box-shadow: 0 0 0 1000px #1a1828 inset;
   transition: background-color 9999s ease-out 0s;
 }
+
+/* 흰 테마(내 정보에서 고른다). themeStorage.web.ts가 html에 data-theme을 단다. */
+html[data-theme='light'] * {
+  scrollbar-color: #0000002e transparent;
+}
+html[data-theme='light'] ::-webkit-scrollbar-thumb {
+  background: #0000002e;
+}
+html[data-theme='light'] ::selection {
+  background: #b18cff66;
+  color: #4b4b4b;
+}
+html[data-theme='light'] input,
+html[data-theme='light'] textarea {
+  caret-color: #7c3dff;
+}
+html[data-theme='light'],
+html[data-theme='light'] body {
+  background: #ffffff;
+}
+html[data-theme='light'] input:-webkit-autofill,
+html[data-theme='light'] input:-webkit-autofill:hover,
+html[data-theme='light'] input:-webkit-autofill:focus {
+  -webkit-text-fill-color: #4b4b4b;
+  box-shadow: 0 0 0 1000px #ffffff inset;
+}

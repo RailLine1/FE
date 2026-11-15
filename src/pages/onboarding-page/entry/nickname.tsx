@@ -18,7 +18,7 @@ import { Icon } from '@/components/Icon';
 import { Screen } from '@/components/Screen';
 import { tokenStorage } from '@/lib/tokenStorage';
 import { Fonts } from '@/styles/font';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
 import { FormErrors, toFormErrors, validateNickname } from '../authForm';
 
@@ -93,7 +93,7 @@ export default function NicknamePage() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   flex: {
     flex: 1,
   },
@@ -149,4 +149,4 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: Palette.red,
   },
-});
+}));

@@ -2,7 +2,7 @@ import { ComponentRef, useEffect, useRef, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { Fonts } from '@/styles/font';
-import { Palette } from '@/styles/palette';
+import { Palette, themed } from '@/styles/palette';
 
 import { ArchivePost } from '../courseTypes';
 
@@ -111,7 +111,7 @@ export function PostSlides({ post, initialSlide = 0, onPress }: PostSlidesProps)
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themed(() => StyleSheet.create({
   container: {
     gap: 10,
   },
@@ -222,4 +222,4 @@ const styles = StyleSheet.create({
   dotActive: {
     backgroundColor: Palette.purple,
   },
-});
+}));
