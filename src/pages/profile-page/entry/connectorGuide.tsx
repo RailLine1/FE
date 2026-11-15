@@ -12,6 +12,7 @@ import { Button } from '@/components/Button';
 import { CopyBox, GuideStep as Step } from '@/components/GuideStep';
 import { Mascot } from '@/components/Mascot';
 import { Screen } from '@/components/Screen';
+import { openAiApp } from '@/lib/openAiApp';
 import { Fonts } from '@/styles/font';
 import { Palette } from '@/styles/palette';
 
@@ -88,7 +89,11 @@ export default function ConnectorGuidePage() {
               label="바로가기"
               variant="secondary"
               size="small"
-              onPress={() => Linking.openURL(info.shortcut as string)}
+              onPress={() => {
+                const url = info.shortcut as string;
+                if ('shortcutInApp' in info) openAiApp(url);
+                else Linking.openURL(url);
+              }}
             />
           )}
         </View>

@@ -1,5 +1,4 @@
 import * as Clipboard from 'expo-clipboard';
-import * as Linking from 'expo-linking';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useState } from 'react';
 import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
@@ -11,6 +10,7 @@ import { Button } from '@/components/Button';
 import { CopyBox, GuideStep } from '@/components/GuideStep';
 import { QueryStatus } from '@/components/QueryStatus';
 import { Screen } from '@/components/Screen';
+import { openAiApp } from '@/lib/openAiApp';
 import { lastUsedText } from '@/pages/profile-page/connectorClients';
 import { CONNECTOR_LOGO_TINT, CONNECTOR_LOGOS } from '@/pages/profile-page/connectorLogos';
 import {
@@ -77,7 +77,7 @@ export default function MyAiGuidePage() {
               label="바로가기"
               variant="secondary"
               size="small"
-              onPress={() => Linking.openURL(guide.shortcut)}
+              onPress={() => openAiApp(guide.shortcut)}
             />
           )}
         </View>

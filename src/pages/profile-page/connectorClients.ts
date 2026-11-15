@@ -9,11 +9,15 @@ export const CONNECTOR_CLIENTS = {
     name: 'Claude',
     description: '웹 · 데스크톱 · 모바일 앱',
     shortcut: 'https://claude.ai/customize/connectors',
+    // 모바일 앱에서도 커넥터를 추가할 수 있어 설치된 앱으로 연다. ChatGPT는 웹에서만 만들 수 있다.
+    shortcutInApp: true,
     steps: [
       {
         text: "[바로가기]로 Claude 커넥터 화면을 열어요. 왼쪽 사이드바의 '사용자 지정' › '커넥터'와 같은 화면이에요.",
       },
-      { text: "오른쪽 위 '추가' › '커스텀 커넥터 추가'를 눌러요." },
+      {
+        text: "오른쪽 위 '추가' › '커스텀 커넥터 추가'를 눌러요. 모바일 앱에서는 '설정' › '커넥터' › '맞춤 커넥터 추가'예요.",
+      },
       {
         text: "이름은 Daybit, 서버 URL은 아래 주소를 붙여넣어요. 인증은 '로그인 없음'을 고르고, 나머지는 그대로 두고 '추가'를 눌러요.",
         copy: 'url',
@@ -45,7 +49,13 @@ export const CONNECTOR_CLIENTS = {
   },
 } as const satisfies Record<
   string,
-  { name: string; description: string; shortcut?: string; steps: readonly GuideStep[] }
+  {
+    name: string;
+    description: string;
+    shortcut?: string;
+    shortcutInApp?: boolean;
+    steps: readonly GuideStep[];
+  }
 >;
 
 // 복사 상자에 보여 줄 값. 주소가 없으면(발급 전 · 화면을 나갔다 온 뒤) 자리표시를 넣는다.

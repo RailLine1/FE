@@ -1,9 +1,10 @@
 import * as Clipboard from 'expo-clipboard';
 import { useRouter } from 'expo-router';
-import { Image, Linking, StyleSheet } from 'react-native';
+import { Image, StyleSheet } from 'react-native';
 
 import { IconBox } from '@/components/IconBox';
 import { ListRow } from '@/components/ListRow';
+import { openAiApp } from '@/lib/openAiApp';
 import { CONNECTOR_LOGO_TINT, CONNECTOR_LOGOS } from '@/pages/profile-page/connectorLogos';
 
 import { getChatAction } from '../aiChat';
@@ -34,7 +35,7 @@ export function AiSection({ courseName, onNotice }: AiSectionProps) {
     const title = clientLabels[client];
     // 앱에서 질문이 채워지지 않을 때를 대비해 질문도 복사해 둔다(검증 필요).
     Clipboard.setStringAsync(action.copied);
-    Linking.openURL(action.url);
+    openAiApp(action.url);
     onNotice(`${title}를 열어요. 질문도 복사해 뒀어요`);
   };
 
