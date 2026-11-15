@@ -117,6 +117,13 @@ export default function LoginPage() {
             style={styles.github}>
             <Image source={require('@/assets/icons/github-26.png')} style={styles.githubIcon} />
           </Pressable>
+
+          {/* 행사 부스용. 포스터 QR이 이 주소로 들어오므로 웹에만 보인다. */}
+          {Platform.OS === 'web' && (
+            <View style={styles.booth}>
+              <Button label="부스 퀴즈 풀기" variant="neutral" onPress={() => router.push('/booth')} />
+            </View>
+          )}
         </ScrollView>
       </KeyboardAvoidingView>
     </Screen>
@@ -226,6 +233,11 @@ const styles = themed(() => StyleSheet.create({
     borderColor: Palette.lineStrong,
     backgroundColor: Palette.surface,
     boxShadow: `0 3px 0 ${Palette.lineStrong}`,
+  },
+  booth: {
+    flexGrow: 1,
+    justifyContent: 'flex-end',
+    paddingTop: 40,
   },
   // 검은 GitHub 마크를 어두운 테마 글자색으로 칠한다.
   githubIcon: {
