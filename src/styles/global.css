@@ -17,65 +17,65 @@ textarea:focus-visible {
   margin: 0 auto;
 }
 
-/* 브라우저가 그리는 부분도 테마 색으로 (스크롤바 · 선택 · 커서) */
+/* 브라우저가 그리는 부분도 테마 색으로 (스크롤바 · 선택 · 커서). 기본은 흰 테마. */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #ffffff2e transparent;
+  scrollbar-color: #0000002e transparent;
 }
 ::-webkit-scrollbar {
   width: 6px;
 }
 ::-webkit-scrollbar-thumb {
-  background: #ffffff2e;
+  background: #0000002e;
   border-radius: 3px;
 }
 ::-webkit-scrollbar-track {
   background: transparent;
 }
 ::selection {
-  background: #8b6cf666;
-  color: #ffffff;
+  background: #b18cff66;
+  color: #4b4b4b;
 }
 input,
 textarea {
-  caret-color: #b9a5ff;
+  caret-color: #7c3dff;
 }
 html,
 body {
-  background: #0a0912;
+  background: #ffffff;
 }
 
 /* 브라우저 자동 완성이 입력칸을 밝은 하늘색으로 칠하지 않게 테마 색으로 덮는다. */
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus {
-  -webkit-text-fill-color: #f7f7f8;
-  box-shadow: 0 0 0 1000px #1a1828 inset;
+  -webkit-text-fill-color: #4b4b4b;
+  box-shadow: 0 0 0 1000px #ffffff inset;
   transition: background-color 9999s ease-out 0s;
 }
 
-/* 흰 테마(내 정보에서 고른다). themeStorage.web.ts가 html에 data-theme을 단다. */
-html[data-theme='light'] * {
-  scrollbar-color: #0000002e transparent;
+/* 다크 모드(내 정보에서 켠다). themeStorage.web.ts가 html에 data-theme을 단다. */
+html[data-theme='dark'] * {
+  scrollbar-color: #ffffff2e transparent;
 }
-html[data-theme='light'] ::-webkit-scrollbar-thumb {
-  background: #0000002e;
+html[data-theme='dark'] ::-webkit-scrollbar-thumb {
+  background: #ffffff2e;
 }
-html[data-theme='light'] ::selection {
-  background: #b18cff66;
-  color: #4b4b4b;
+html[data-theme='dark'] ::selection {
+  background: #8b6cf666;
+  color: #ffffff;
 }
-html[data-theme='light'] input,
-html[data-theme='light'] textarea {
-  caret-color: #7c3dff;
+html[data-theme='dark'] input,
+html[data-theme='dark'] textarea {
+  caret-color: #b9a5ff;
 }
-html[data-theme='light'],
-html[data-theme='light'] body {
-  background: #ffffff;
+html[data-theme='dark'],
+html[data-theme='dark'] body {
+  background: #0a0912;
 }
-html[data-theme='light'] input:-webkit-autofill,
-html[data-theme='light'] input:-webkit-autofill:hover,
-html[data-theme='light'] input:-webkit-autofill:focus {
-  -webkit-text-fill-color: #4b4b4b;
-  box-shadow: 0 0 0 1000px #ffffff inset;
+html[data-theme='dark'] input:-webkit-autofill,
+html[data-theme='dark'] input:-webkit-autofill:hover,
+html[data-theme='dark'] input:-webkit-autofill:focus {
+  -webkit-text-fill-color: #f7f7f8;
+  box-shadow: 0 0 0 1000px #1a1828 inset;
 }

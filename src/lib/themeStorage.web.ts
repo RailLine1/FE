@@ -9,10 +9,10 @@ function markDocument(name: ThemeName) {
 
 export function readThemeName(): ThemeName {
   // 서버 렌더링 중에는 localStorage가 없다.
-  if (typeof window === 'undefined') return 'dark';
-  let name: ThemeName = 'dark';
+  if (typeof window === 'undefined') return 'light';
+  let name: ThemeName = 'light';
   try {
-    name = window.localStorage.getItem(KEY) === 'light' ? 'light' : 'dark';
+    name = window.localStorage.getItem(KEY) === 'dark' ? 'dark' : 'light';
   } catch {
     // 저장소를 막아 둔 브라우저는 기본 테마로 그린다.
   }
